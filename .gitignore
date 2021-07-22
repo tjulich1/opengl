@@ -1,0 +1,9 @@
+.vscode
+/include
+/lib
+glew32.dll
+glewinfo.exe
+test_opengl.exe
+visualinfo.exe
+makefile
+SDL2.dll
