@@ -23,7 +23,7 @@ Mat4::Mat4(float initialValue) {
 }
 
 /**
- * Constructor for identity matrix, which is a 4x4 matrix with 1.0f along the diagonal (starting at 
+ * Factory method for identity matrix, which is a 4x4 matrix with 1.0f along the diagonal (starting at 
  * the top left, ending at bottom right).
  */
 Mat4 Mat4::Identity() {
@@ -32,6 +32,23 @@ Mat4 Mat4::Identity() {
     newVec.setElement(i, i, 1.0f);
   } 
   return newVec;
+}
+
+/**
+ * Factory method for translation matrices, used to translate a vecor in space.
+ * 
+ * xTranslate: the value to translate x by.
+ * yTranslate: the value to translate y by.
+ * zTranslate: the value to translate z by.
+ * 
+ * returns: matrix used to translate a 4D vector in space by the given values.
+ */
+Mat4 Mat4::Translation(float xTranslate, float yTranslate, float zTranslate) {
+  Mat4 translateVec = Mat4::Identity();
+  translateVec.setElement(3, 0, xTranslate);
+  translateVec.setElement(3, 1, yTranslate);
+  translateVec.setElement(3, 2, zTranslate);
+  return translateVec;
 }
 
 /**

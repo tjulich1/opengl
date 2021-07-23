@@ -53,6 +53,7 @@ namespace custom_math {
     Mat4();
     Mat4(float initialValue);
     static Mat4 Identity();
+    static Mat4 Translation(float xTranslate, float yTranslate, float zTranslate);
 
     /* * * * * * *
     * Mutators  *
