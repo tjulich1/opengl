@@ -13,33 +13,33 @@ namespace custom_math {
     * Constructors  *
     * * * * * * * * */
     Vec4();
-    Vec4(int x, int y, int z, int w);
-    Vec4(int initialValue);
+    Vec4(float x, float y, float z, float w);
+    Vec4(float initialValue);
 
     /* * * * * * *
     * Mutators  *
     * * * * * * */
-    void setX(int newX);
-    void setY(int newY);
-    void setZ(int newZ);
-    void setW(int newW);
+    void setX(float newX);
+    void setY(float newY);
+    void setZ(float newZ);
+    void setW(float newW);
 
     /* * * * * * *
     * Accessors *
     * * * * * * */
-    int getX();
-    int getY();
-    int getZ();
-    int getW();
+    float getX();
+    float getY();
+    float getZ();
+    float getW();
 
   private:
     /* * * * * * * * *
     * Member fields *
     * * * * * * * * */
-    int x;
-    int y;
-    int z;
-    int w;
+    float x;
+    float y;
+    float z;
+    float w;
   };
 
   /**
@@ -47,7 +47,28 @@ namespace custom_math {
    */
   class Mat4 {
   public:
+    /* * * * * * * * *
+    * Constructors  *
+    * * * * * * * * */
+    Mat4();
+    Mat4(float initialValue);
+    static Mat4 Identity();
 
+    /* * * * * * *
+    * Mutators  *
+    * * * * * * */
+    void setElement(int col, int row, float value);
+
+    /* * * * * * *
+    * Accessors *
+    * * * * * * */
+    float getElement(int col, int row);
+
+  private:
+    /* * * * * * * * *
+    * Member fields *
+    * * * * * * * * */
+    float values[16];
   };
 }; 
 

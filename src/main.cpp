@@ -51,11 +51,8 @@ int main(int argc, char* argv[]) {
   // Code that is returned by the program.
   int success = 0;
 
-  custom_math::Vec4 test_vect = custom_math::Vec4(0, 1, 2, 3);
-  std::cout << "X: " << test_vect.getX() << std::endl;
-  std::cout << "Y: " << test_vect.getY() << std::endl;
-  std::cout << "Z: " << test_vect.getZ() << std::endl;
-  std::cout << "W: " << test_vect.getW() << std::endl;
+  custom_math::Mat4 test_identity = custom_math::Mat4::Identity();
+  std::cout << "First should be 1: " << test_identity.getElement(0, 0) << std::endl;
 
   if (initSDL()) {
     
@@ -108,7 +105,6 @@ int main(int argc, char* argv[]) {
               // Change color used to clear buffer.
               glClearColor(0.2, 0.0, 0.0, 1.0);
               
-
               GLfloat vertices[] = {
                 -1.0f, -1.0f, 0.0f,
                 1.0f, -1.0f, 0.0f,
