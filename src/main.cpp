@@ -51,12 +51,6 @@ int main(int argc, char* argv[]) {
   // Code that is returned by the program.
   int success = 0;
 
-  custom_math::Mat4 xrotate = custom_math::Mat4::XRotation(90);
-  custom_math::Mat4 yrotate = custom_math::Mat4::YRotation(90);
-  custom_math::Mat4 zrotate = custom_math::Mat4::ZRotation(90);
-
-  std::cout << xrotate << std::endl;
-
   if (initSDL()) {
     
     // Set SDL version info.

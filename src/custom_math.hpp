@@ -72,6 +72,8 @@ namespace custom_math {
     * * * * * * */
     float getElement(int col, int row) const;
 
+    Mat4 operator*(const Mat4& other);
+
   private:
     /* * * * * * * * *
     * Member fields *

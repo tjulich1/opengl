@@ -164,6 +164,30 @@ float Mat4::getElement(int col, int row) const {
   return element;
 }
 
+/**
+ * Override of the * operator. When used, it will return the product of the matrix multiplication 
+ * with "other" matrix being on the right hand side.
+ */
+Mat4 Mat4::operator*(const Mat4& other) {
+  Mat4 temp;
+  // Loop iterates over the rows of the first matrix.
+  for (int i = 0; i < 4; i++) {
+    // Loop iterates over the columns of the second matrix
+    for (int j = 0; j < 4; j++) {
+      float sum = 0;
+      // Loop for the 4 multiplications that need to be done.
+      for (int k = 0; k < 4; k++) {
+        sum += getElement(k, i) * other.getElement(j, k);
+      }
+      temp.setElement(j, i, sum);
+    }
+  }
+  return temp;
+}
+
+/**
+ * Override of << Operator. Used to output a representation of a matrix to the given output stream.
+ */
 std::ostream& operator <<(std::ostream &os, const Mat4& mat) {
   os << "[\n";
   for (int i = 0; i < 4; i++) {
