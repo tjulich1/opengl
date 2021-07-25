@@ -3,6 +3,9 @@
 #ifndef CUSTOM_MATH_HPP
 #define CUSTOM_MATH_HPP
 
+#include <iostream>
+#include <string>
+
 namespace custom_math {
   /**
    * Class representing a 4D vector used in graphics programming.
@@ -54,6 +57,10 @@ namespace custom_math {
     Mat4(float initialValue);
     static Mat4 Identity();
     static Mat4 Translation(float xTranslate, float yTranslate, float zTranslate);
+    static Mat4 Scale(float xFactor, float yFactor, float zFactor);
+    static Mat4 XRotation(int angleOfRotation);
+    static Mat4 YRotation(int angleOfRotation);
+    static Mat4 ZRotation(int angleOfRotation);
 
     /* * * * * * *
     * Mutators  *
@@ -63,7 +70,7 @@ namespace custom_math {
     /* * * * * * *
     * Accessors *
     * * * * * * */
-    float getElement(int col, int row);
+    float getElement(int col, int row) const;
 
   private:
     /* * * * * * * * *
@@ -72,5 +79,7 @@ namespace custom_math {
     float values[16];
   };
 }; 
+
+std::ostream& operator<< (std::ostream& stream, const custom_math::Mat4& matrix);
 
 #endif

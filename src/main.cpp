@@ -51,13 +51,11 @@ int main(int argc, char* argv[]) {
   // Code that is returned by the program.
   int success = 0;
 
-  custom_math::Mat4 test_identity = custom_math::Mat4::Identity();
-  std::cout << "First should be 1: " << test_identity.getElement(0, 0) << std::endl;
+  custom_math::Mat4 xrotate = custom_math::Mat4::XRotation(90);
+  custom_math::Mat4 yrotate = custom_math::Mat4::YRotation(90);
+  custom_math::Mat4 zrotate = custom_math::Mat4::ZRotation(90);
 
-  custom_math::Mat4 test_translate = custom_math::Mat4::Translation(1.0f, 2.0f, 3.0f);
-  std::cout << "X translate: " << test_translate.getElement(3, 0) << std::endl;
-  std::cout << "Y translate: " << test_translate.getElement(3, 1) << std::endl;
-  std::cout << "Z translate: " << test_translate.getElement(3, 2) << std::endl;
+  std::cout << xrotate << std::endl;
 
   if (initSDL()) {
     
