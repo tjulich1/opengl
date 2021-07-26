@@ -51,6 +51,15 @@ int main(int argc, char* argv[]) {
   // Code that is returned by the program.
   int success = 0;
 
+  custom_math::Vec4 direction;
+  direction.setX(1);
+  direction.setY(0);
+  direction.setZ(0);
+
+  custom_math::Mat4 test = custom_math::Mat4::RotateFromAxisAngle(90, direction);
+
+  std::cout << test << std::endl;
+
   if (initSDL()) {
     
     // Set SDL version info.

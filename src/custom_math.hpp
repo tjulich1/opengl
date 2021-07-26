@@ -61,6 +61,7 @@ namespace custom_math {
     static Mat4 XRotation(int angleOfRotation);
     static Mat4 YRotation(int angleOfRotation);
     static Mat4 ZRotation(int angleOfRotation);
+    static Mat4 RotateFromAxisAngle(int angleOfRotation, Vec4 axis);
 
     /* * * * * * *
     * Mutators  *

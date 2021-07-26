@@ -137,6 +137,51 @@ Mat4 Mat4::ZRotation(int angleOfRotation) {
 }
 
 /**
+ * Factory method for constructing matrices used for rotations around any desired axis.
+ * 
+ * angleOfRotation: the angle in degrees to rotate the vertex.
+ * axis: the axis to rotate around. Only the first 3 elements in the vector are used, and are first
+ * normalized to a unit vector.
+ */
+Mat4 Mat4::RotateFromAxisAngle(int angleOfRotation, Vec4 axis) {
+  Mat4 rotate;
+
+  float angleInRads = to_radians(angleOfRotation);
+  float x = axis.getX();
+  float y = axis.getY();
+  float z= axis.getZ();
+
+  float length = sqrt(x*x + y*y + z*z);
+  x /= length;
+  y /= length;
+  z /= length;
+
+  float angleCos = cos(angleInRads);
+  float angleSin = sin(angleInRads);
+  float oneMinusCos = 1 - angleCos;
+
+  // First row elements.
+  rotate.setElement(0, 0, angleCos + x*x*oneMinusCos);
+  rotate.setElement(1, 0, x*y*oneMinusCos - z*angleSin);
+  rotate.setElement(2, 0, x*z*oneMinusCos + y*angleSin);
+  
+  // Second row elements
+  rotate.setElement(0, 1, y*x*oneMinusCos + z*angleSin);
+  rotate.setElement(1, 1, angleCos + y*y*oneMinusCos);
+  rotate.setElement(2, 1, y*z*oneMinusCos - x*angleSin);
+
+  // Third row elements.
+  rotate.setElement(0, 2, z*x*oneMinusCos - y*angleSin);
+  rotate.setElement(1, 2, z*y*oneMinusCos + x*angleSin);
+  rotate.setElement(2, 2, angleCos + z*z*oneMinusCos);
+
+  // Set bottom right to 1.
+  rotate.setElement(3, 3, 1);
+
+  return rotate;
+}
+
+/**
  * Sets the element at (col, row) in the matrix to the given value.
  *
  * col: column of the element to set.
