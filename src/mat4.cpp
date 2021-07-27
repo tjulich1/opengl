@@ -193,6 +193,19 @@ void Mat4::setElement(int col, int row, float value) {
 }
 
 /**
+ * Sets desired row of matrix to the values of the given vector. Makes no changes if the row is not 
+ * within [0, 3].
+ */
+void Mat4::setRow(int row, Vec4 rowValues) {
+  // Make sure row is valid.
+  if (row >= 0 && row < 4) {
+    for (int i = 0; i < 4; i++) {
+      values[row * 4 + i] = rowValues.getElement(i);
+    }
+  }
+}
+
+/**
  * Returns the element located at (col, row) in the matrix.
  * 
  * col: column of element to access.
@@ -207,6 +220,23 @@ float Mat4::getElement(int col, int row) const {
     element = values[row * 4 + col];
   }
   return element;
+}
+
+/**
+ * Takes a float array and writes the contents of the matrix to it. Contents are written in order of 
+ * row.
+ * 
+ * dest: the array to write the elements to.
+ * 
+ * returns: pointer to array that was passed in.
+ */
+GLfloat* Mat4::getFloats(GLfloat dest[]) {
+  for (int i = 0; i < 4; i++) {
+    for (int j = 0; j < 4; j++) {
+      dest[i * 4 + j] = values[i * 4 + j];
+    }
+  }
+  return dest;
 }
 
 /**

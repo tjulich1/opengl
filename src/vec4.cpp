@@ -7,45 +7,65 @@ using namespace custom_math;
 /**
  * Default constructor, sets all vector values to 0.
  */
-Vec4::Vec4() : x(0), y(0), z(0), w(0) {};
+Vec4::Vec4() {
+  for (int i = 0; i < MAX_ELEMENTS; i++) {
+    values[i] = 0;
+  }
+}
 
 /**
  * Constructor which initializes each vector element with the given arguments.
  */
-Vec4::Vec4(float x, float y, float z, float w) : x(x), y(y), z(z), w(w) {};
+Vec4::Vec4(float x, float y, float z, float w) {
+  values[0] = x;
+  values[1] = y;
+  values[2] = z;
+  values[3] = w;
+}
 
 /**
  * Constructor which initializes all vector elements with the same value.
  */
-Vec4::Vec4(float initialValue) : x(initialValue), y(initialValue), z(initialValue), 
-  w(initialValue) {};
+Vec4::Vec4(float initialValue) {
+  for (int i = 0; i < MAX_ELEMENTS; i++) {
+    values[i] = initialValue;
+  }
+}
 
 /* * * * * * *
  * Mutators  *
  * * * * * * */
 void Vec4::setX(float newX) {
-  x = newX;
+  values[0] = newX;
 }
 
 void Vec4::setY(float newY) {
-  y = newY;
+  values[1] = newY;
 }
 
 void Vec4::setZ(float newZ) {
-  z = newZ;
+  values[2] = newZ;
 }
 
 void Vec4::setW(float newW) {
-  w = newW;
+  values[3] = newW;
 }
 
 /* * * * * * *
  * Accessors *
  * * * * * * */
-float Vec4::getX() { return x; }
+float Vec4::getX() { return values[0]; }
 
-float Vec4::getY() { return y; }
+float Vec4::getY() { return values[1]; }
 
-float Vec4::getZ() { return z; }
+float Vec4::getZ() { return values[2]; }
 
-float Vec4::getW() { return w; }
+float Vec4::getW() { return values[3]; }
+
+float Vec4::getElement(int element) {
+  float result = 0;
+  if (element >= 0 && element < 4) {
+    result = values[element];
+  }
+  return result;
+}

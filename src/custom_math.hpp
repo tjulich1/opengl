@@ -5,6 +5,8 @@
 
 #include <iostream>
 #include <string>
+#include <gl/GL.h>
+#include <array>
 
 namespace custom_math {
   /**
@@ -12,6 +14,9 @@ namespace custom_math {
    */
   class Vec4 {
   public:
+
+    static const int MAX_ELEMENTS = 4;
+
     /* * * * * * * * *
     * Constructors  *
     * * * * * * * * */
@@ -34,15 +39,13 @@ namespace custom_math {
     float getY();
     float getZ();
     float getW();
+    float getElement(int element);
 
   private:
     /* * * * * * * * *
     * Member fields *
     * * * * * * * * */
-    float x;
-    float y;
-    float z;
-    float w;
+    float values[MAX_ELEMENTS];
   };
 
   /**
@@ -55,6 +58,7 @@ namespace custom_math {
     * * * * * * * * */
     Mat4();
     Mat4(float initialValue);
+
     static Mat4 Identity();
     static Mat4 Translation(float xTranslate, float yTranslate, float zTranslate);
     static Mat4 Scale(float xFactor, float yFactor, float zFactor);
@@ -67,11 +71,13 @@ namespace custom_math {
     * Mutators  *
     * * * * * * */
     void setElement(int col, int row, float value);
+    void setRow(int row, Vec4 rowValues);
 
     /* * * * * * *
     * Accessors *
     * * * * * * */
     float getElement(int col, int row) const;
+    GLfloat* getFloats(GLfloat dest[]);
 
     Mat4 operator*(const Mat4& other);
 

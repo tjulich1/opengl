@@ -15,6 +15,7 @@
 #include <fstream>
 
 #include "custom_math.hpp"
+#include "util.hpp"
 
 /* * * * * * *
  * Constants *
@@ -52,8 +53,8 @@ int main(int argc, char* argv[]) {
   int success = 0;
 
   custom_math::Vec4 direction;
-  direction.setX(1);
-  direction.setY(0);
+  direction.setX(0);
+  direction.setY(1);
   direction.setZ(0);
 
   custom_math::Mat4 test = custom_math::Mat4::RotateFromAxisAngle(90, direction);
@@ -111,11 +112,42 @@ int main(int argc, char* argv[]) {
               // Change color used to clear buffer.
               glClearColor(0.2, 0.0, 0.0, 1.0);
               
-              GLfloat vertices[] = {
-                -1.0f, -1.0f, 0.0f,
-                1.0f, -1.0f, 0.0f,
-                0.0f,  1.0f, 0.0f,
-              };
+              // Vertices fo
+              custom_math::Mat4 testTriangle;
+              custom_math::Vec4 firstPoint(-1.0f, -1.0f, 0.0f, 0.0f);
+              custom_math::Vec4 secondPoint(1.0f, -1.0f, 0.0f, 0.0f);
+              custom_math::Vec4 thirdPoint(0.0f, 1.0f, 0.0f, 0.0f);
+              testTriangle.setRow(0, firstPoint);
+              testTriangle.setRow(1, secondPoint);
+              testTriangle.setRow(2, thirdPoint);
+              testTriangle.setElement(3, 3, 1);
+
+              custom_math::Mat4 testScale = custom_math::Mat4::Scale(0.5f, 0.5f, 0.5f);
+              custom_math::Mat4 testScale2 = custom_math::Mat4::Scale(4, 0.5f, 0.5f);
+
+              testTriangle = testTriangle * testScale * testScale2;
+
+              GLfloat pleaseGodWork[16];
+              testTriangle.getFloats(pleaseGodWork);
+
+
+              // Strip homogeneous coordinates to draw to screen.
+              GLfloat* vertices = util::stripHomogeneous(pleaseGodWork, 3);
+
+              // // First point
+              // vertices[0] = pleaseGodWork[0];
+              // vertices[1] = pleaseGodWork[1];
+              // vertices[2] = pleaseGodWork[2];
+
+              // // Second point
+              // vertices[3] = pleaseGodWork[4];
+              // vertices[4] = pleaseGodWork[5];
+              // vertices[5] = pleaseGodWork[6];
+
+              // // Third point
+              // vertices[6] = pleaseGodWork[8];
+              // vertices[7] = pleaseGodWork[9];
+              // vertices[8] = pleaseGodWork[10];
 
               // Generate vertex buffer object.
               unsigned int VBO;
@@ -125,7 +157,7 @@ int main(int argc, char* argv[]) {
               glBindBuffer(GL_ARRAY_BUFFER, VBO);
 
               // Pass vertex information to opengl.
-              glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+              glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 9, vertices, GL_STATIC_DRAW);
 
               glEnableVertexAttribArray(0);
               glBindBuffer(GL_ARRAY_BUFFER, VBO);
