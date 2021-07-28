@@ -113,8 +113,7 @@ int main(int argc, char* argv[]) {
 
               // Change color used to clear buffer.
               glClearColor(0.2, 0.0, 0.0, 1.0);
-              
-              // Vertices fo
+            
               custom_math::Mat4 testTriangle;
               
               custom_math::Vec4 firstPoint(-1.0f, -1.0f, 0.0f, 0.0f);
@@ -154,7 +153,6 @@ int main(int argc, char* argv[]) {
               glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 9, vertices, GL_STATIC_DRAW);
 
               glEnableVertexAttribArray(0);
-              glBindBuffer(GL_ARRAY_BUFFER, VBO);
 
               glVertexAttribPointer(
                 0,
@@ -165,8 +163,18 @@ int main(int argc, char* argv[]) {
                 (void *)0
               );
 
+              bool running = true;
+
               // Main loop of engine.
-              while (true) {
+              while (running) {
+
+                SDL_Event e;
+                while (SDL_PollEvent(&e)) {
+                  if (e.type == SDL_QUIT) {
+                    running = false;
+                  }
+                }
+
                 glClear(GL_COLOR_BUFFER_BIT);
                 
                 // Set program object as current shader program.
