@@ -14,8 +14,10 @@
 #include <sstream>
 #include <fstream>
 
+// Included from source
 #include "custom_math.hpp"
 #include "util.hpp"
+#include "model.hpp"
 
 /* * * * * * *
  * Constants *
@@ -114,9 +116,15 @@ int main(int argc, char* argv[]) {
               
               // Vertices fo
               custom_math::Mat4 testTriangle;
+              
               custom_math::Vec4 firstPoint(-1.0f, -1.0f, 0.0f, 0.0f);
               custom_math::Vec4 secondPoint(1.0f, -1.0f, 0.0f, 0.0f);
               custom_math::Vec4 thirdPoint(0.0f, 1.0f, 0.0f, 0.0f);
+
+              std::vector<custom_math::Vec4> testList{firstPoint, secondPoint, thirdPoint};
+              Model testModel(testList);
+              testModel.listVertices();
+
               testTriangle.setRow(0, firstPoint);
               testTriangle.setRow(1, secondPoint);
               testTriangle.setRow(2, thirdPoint);
@@ -125,29 +133,15 @@ int main(int argc, char* argv[]) {
               custom_math::Mat4 testScale = custom_math::Mat4::Scale(0.5f, 0.5f, 0.5f);
               custom_math::Mat4 testScale2 = custom_math::Mat4::Scale(4, 0.5f, 0.5f);
 
-              testTriangle = testTriangle * testScale * testScale2;
+              custom_math::Mat4 testRotate = custom_math::Mat4::YRotation(45);
+
+              testTriangle = testTriangle * testScale * testRotate;
 
               GLfloat pleaseGodWork[16];
               testTriangle.getFloats(pleaseGodWork);
 
-
               // Strip homogeneous coordinates to draw to screen.
-              GLfloat* vertices = util::stripHomogeneous(pleaseGodWork, 3);
-
-              // // First point
-              // vertices[0] = pleaseGodWork[0];
-              // vertices[1] = pleaseGodWork[1];
-              // vertices[2] = pleaseGodWork[2];
-
-              // // Second point
-              // vertices[3] = pleaseGodWork[4];
-              // vertices[4] = pleaseGodWork[5];
-              // vertices[5] = pleaseGodWork[6];
-
-              // // Third point
-              // vertices[6] = pleaseGodWork[8];
-              // vertices[7] = pleaseGodWork[9];
-              // vertices[8] = pleaseGodWork[10];
+              GLfloat* vertices = util::convertToScreen(pleaseGodWork, 3);
 
               // Generate vertex buffer object.
               unsigned int VBO;

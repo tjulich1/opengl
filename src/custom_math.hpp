@@ -24,6 +24,8 @@ namespace custom_math {
     Vec4(float x, float y, float z, float w);
     Vec4(float initialValue);
 
+    Vec4 copy();
+
     /* * * * * * *
     * Mutators  *
     * * * * * * */

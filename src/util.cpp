@@ -1,8 +1,9 @@
 // Trent Julich ~ 26 July 2021
 
+// Included from source
 #include "util.hpp"
 
-GLfloat* util::stripHomogeneous(GLfloat* floats, int numPoints) {
+GLfloat* util::convertToScreen(GLfloat* floats, int numPoints) {
   GLfloat* cartesianFloats = new GLfloat[numPoints*3];
 
   // Offset used when storing non-homogeneous coordinates to new array.

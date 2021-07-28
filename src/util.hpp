@@ -6,7 +6,7 @@
 #include <gl/GL.h>
 
 namespace util {
-  GLfloat* stripHomogeneous(GLfloat* floats, int numPoints);
+  GLfloat* convertToScreen(GLfloat* floats, int numPoints);
 };
 
 #endif

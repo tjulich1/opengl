@@ -32,6 +32,14 @@ Vec4::Vec4(float initialValue) {
   }
 }
 
+/**
+ * Returns a new Vec4 that is a copy of the Vec4 the method was called on.
+ */
+Vec4 Vec4::copy() {
+  Vec4 theCopy(values[0], values[1], values[2], values[3]);
+  return theCopy;
+}
+
 /* * * * * * *
  * Mutators  *
  * * * * * * */
