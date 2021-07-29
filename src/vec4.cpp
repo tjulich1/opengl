@@ -2,6 +2,8 @@
 
 #include "custom_math.hpp"
 
+#include <math.h>
+
 using namespace custom_math;
 
 /**
@@ -76,4 +78,21 @@ float Vec4::getElement(int element) {
     result = values[element];
   }
   return result;
+}
+
+Vec4 Vec4::cross(Vec4 other) {
+  float x = getY()*other.getZ() - getZ()*other.getY();
+  float y = getZ()*other.getX() - getX()*other.getZ();
+  float z = getX()*other.getY() - getY()*other.getX();
+
+  std::cout << "X: " << x << ", Y: " << y << ", Z: " << z << std::endl;
+
+  return Vec4(x, y, z, 0);
+}
+
+void Vec4::normalize() {
+  float length =sqrt(values[0]*values[0] + values[1]*values[1] + values[2]*values[2]);
+  values[0] = values[0] / length;
+  values[1] = values[1] / length;
+  values[2] = values[2] / length;
 }

@@ -54,15 +54,6 @@ int main(int argc, char* argv[]) {
   // Code that is returned by the program.
   int success = 0;
 
-  custom_math::Vec4 direction;
-  direction.setX(0);
-  direction.setY(1);
-  direction.setZ(0);
-
-  custom_math::Mat4 test = custom_math::Mat4::RotateFromAxisAngle(90, direction);
-
-  std::cout << test << std::endl;
-
   if (initSDL()) {
     
     // Set SDL version info.
@@ -134,7 +125,11 @@ int main(int argc, char* argv[]) {
 
               custom_math::Mat4 testRotate = custom_math::Mat4::YRotation(45);
 
-              testTriangle = testTriangle * testScale * testRotate;
+              custom_math::Vec4 testCameraLocation(-1, 7, 0, 0);
+              custom_math::Vec4 dest(0, 0, 0, 0);
+              custom_math::Mat4 lookAt = custom_math::Mat4::LookAt(testCameraLocation, dest);
+
+              testTriangle = testTriangle * testScale * testRotate * lookAt;
 
               GLfloat pleaseGodWork[16];
               testTriangle.getFloats(pleaseGodWork);
@@ -192,6 +187,8 @@ int main(int argc, char* argv[]) {
         }
       }
     }
+    SDL_DestroyWindow(gWindow);
+    SDL_Quit();
   }
   return success;
 }

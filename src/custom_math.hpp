@@ -43,6 +43,9 @@ namespace custom_math {
     float getW();
     float getElement(int element);
 
+    Vec4 cross(Vec4 other);
+    void normalize();
+
   private:
     /* * * * * * * * *
     * Member fields *
@@ -68,6 +71,7 @@ namespace custom_math {
     static Mat4 YRotation(int angleOfRotation);
     static Mat4 ZRotation(int angleOfRotation);
     static Mat4 RotateFromAxisAngle(int angleOfRotation, Vec4 axis);
+    static Mat4 LookAt(Vec4 cameraPosition, Vec4 viewDirection);
 
     /* * * * * * *
     * Mutators  *

@@ -181,6 +181,42 @@ Mat4 Mat4::RotateFromAxisAngle(int angleOfRotation, Vec4 axis) {
   return rotate;
 }
 
+
+/**
+ * Generates a Mat4 which moves the camera to cameraLocation, and points it towards viewDirection.
+ */
+Mat4 Mat4::LookAt(Vec4 cameraLocation, Vec4 viewDirection) {
+  // Vector in direction cam is pointing.
+  float x = cameraLocation.getX() - viewDirection.getX();
+  float y = cameraLocation.getY() - viewDirection.getY();
+  float z = cameraLocation.getZ() - viewDirection.getZ();
+
+  Vec4 forward(x, y, z, 0);
+  forward.normalize();
+
+  // Temp vec used to calculate right vector.
+  Vec4 temp(0, 1, 0, 0);
+  Vec4 right = temp.cross(forward);
+
+  Vec4 up = forward.cross(right);
+  up.normalize();
+
+  Mat4 lookAt;
+  lookAt.setRow(0, right);
+  lookAt.setRow(1, up);
+  lookAt.setRow(2, forward);
+  lookAt.setElement(3, 3, 1);
+
+  Mat4 posMat = custom_math::Mat4::Identity();
+  posMat.setElement(3, 0, -cameraLocation.getX());
+  posMat.setElement(3, 1, -cameraLocation.getY());
+  posMat.setElement(3, 2, -cameraLocation.getZ());
+
+  Mat4 result = lookAt*posMat;
+
+  return result;
+}
+
 /**
  * Sets the element at (col, row) in the matrix to the given value.
  *
