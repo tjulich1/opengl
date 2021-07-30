@@ -6,7 +6,15 @@
 #include <gl/GL.h>
 
 namespace util {
+  /**
+   * 
+   */
   GLfloat* convertToScreen(GLfloat* floats, int numPoints);
+  
+  /**
+   * 
+   */ 
+  void printProgramLog(GLuint program);
 };
 
 #endif

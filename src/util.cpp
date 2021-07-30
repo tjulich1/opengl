@@ -1,8 +1,14 @@
 // Trent Julich ~ 26 July 2021
 
+#include <glew.h>
+#include <iostream>
+
 // Included from source
 #include "util.hpp"
 
+/**
+ * Takes a 
+ */
 GLfloat* util::convertToScreen(GLfloat* floats, int numPoints) {
   GLfloat* cartesianFloats = new GLfloat[numPoints*3];
 
@@ -20,4 +26,31 @@ GLfloat* util::convertToScreen(GLfloat* floats, int numPoints) {
   }
 
   return cartesianFloats;
+}
+
+/**
+ * Prints the program log of the OpenGL program pointed to by program.
+ */
+void util::printProgramLog(GLuint program) {
+  //Make sure name is shader
+  if( glIsProgram( program ) == GL_TRUE) {
+    //Program log length
+    int infoLogLength = 0;
+    int maxLength = infoLogLength;
+        
+    // Get the length of the log.
+    glGetProgramiv( program, GL_INFO_LOG_LENGTH, &maxLength );
+        
+    // String to store program log.
+    char* infoLog = new char[ maxLength ];
+        
+    glGetProgramInfoLog( program, maxLength, &infoLogLength, infoLog );
+
+    if( infoLogLength > 0 ) {
+      std::cout << infoLog << std::endl;
+    }
+    delete[] infoLog;
+  } else {
+    printf( "Name %d is not a program\n", program );
+  }
 }

@@ -63,14 +63,8 @@ namespace custom_math {
     * * * * * * * * */
     Mat4();
     Mat4(float initialValue);
-
+    
     static Mat4 Identity();
-    static Mat4 Translation(float xTranslate, float yTranslate, float zTranslate);
-    static Mat4 Scale(float xFactor, float yFactor, float zFactor);
-    static Mat4 XRotation(int angleOfRotation);
-    static Mat4 YRotation(int angleOfRotation);
-    static Mat4 ZRotation(int angleOfRotation);
-    static Mat4 RotateFromAxisAngle(int angleOfRotation, Vec4 axis);
     static Mat4 LookAt(Vec4 cameraPosition, Vec4 viewDirection);
 
     /* * * * * * *

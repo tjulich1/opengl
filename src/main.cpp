@@ -18,6 +18,8 @@
 #include "custom_math.hpp"
 #include "util.hpp"
 #include "model.hpp"
+#include "shader.hpp"
+#include "transformation_builder.hpp"
 
 /* * * * * * *
  * Constants *
@@ -31,17 +33,19 @@ const static std::string TITLE = "OpenGL test";;
 
 const static Uint32 WINDOW_FLAGS = SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL;  
 
+const static int MAJOR_VERSION = 3;
+const static int MINOR_VERSION = 2;
+
 /* * * * * * * * * * * *
  * Method Declarations *
  * * * * * * * * * * * */
 
 int create_vertex_shader(GLuint shaderProgram);
 int create_fragment_shader(GLuint shaderProgram);
-void printProgramLog(GLuint program);
 void printShaderLog(GLuint shader);
+void setGLVersion();
 bool initSDL();
 bool initGLEW();
-std::string open_shader(std::string path);
 
 /* * * * * * * * * * * *
  * Method Definitions  *
@@ -55,11 +59,7 @@ int main(int argc, char* argv[]) {
   int success = 0;
 
   if (initSDL()) {
-    
-    // Set SDL version info.
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+    setGLVersion();
 
     SDL_Window* gWindow = SDL_CreateWindow(TITLE.c_str(), SDL_WINDOWPOS_UNDEFINED, 
       SDL_WINDOWPOS_UNDEFINED, WIDTH, HEIGHT, WINDOW_FLAGS);
@@ -120,10 +120,12 @@ int main(int argc, char* argv[]) {
               testTriangle.setRow(2, thirdPoint);
               testTriangle.setElement(3, 3, 1);
 
-              custom_math::Mat4 testScale = custom_math::Mat4::Scale(0.5f, 0.5f, 0.5f);
-              custom_math::Mat4 testScale2 = custom_math::Mat4::Scale(4, 0.5f, 0.5f);
+              TransformationBuilder transformer;
 
-              custom_math::Mat4 testRotate = custom_math::Mat4::YRotation(45);
+              custom_math::Mat4 testScale = transformer.scale(0.5f, 0.5f, 0.5f);
+              custom_math::Mat4 testScale2 = transformer.scale(4, 0.5f, 0.5f);
+
+              custom_math::Mat4 testRotate = transformer.yRotation(45);
 
               custom_math::Vec4 testCameraLocation(-1, 7, 0, 0);
               custom_math::Vec4 dest(0, 0, 0, 0);
@@ -224,42 +226,10 @@ bool initGLEW() {
   return success;
 }
 
-void printProgramLog( GLuint program )
-{
-    //Make sure name is shader
-    if( glIsProgram( program ) == GL_TRUE)
-    {
-        //Program log length
-        int infoLogLength = 0;
-        int maxLength = infoLogLength;
-        
-        //Get info string length
-        glGetProgramiv( program, GL_INFO_LOG_LENGTH, &maxLength );
-        
-        //Allocate string
-        char* infoLog = new char[ maxLength ];
-        
-        //Get info log
-        glGetProgramInfoLog( program, maxLength, &infoLogLength, infoLog );
-        if( infoLogLength > 0 )
-        {
-            //Print Log
-            printf( "%s\n", infoLog );
-        }
-        
-        //Deallocate string
-        delete[] infoLog;
-    }
-    else
-    {
-        printf( "Name %d is not a program\n", program );
-    }
-}
-
 int create_vertex_shader(GLuint shaderProgram) {
   int success;
 
-  std::string vertexShader = open_shader("res/shaders/default.vert");
+  std::string vertexShader = openShader("res/shaders/default.vert");
 
   if (!vertexShader.empty()) {
     const char* vertSource = vertexShader.c_str();
@@ -293,7 +263,7 @@ int create_fragment_shader(GLuint shaderProgram) {
   int success;
 
   // Read in the shader from file.
-  std::string fragmentShader = open_shader("res/shaders/default.frag");
+  std::string fragmentShader = openShader("res/shaders/default.frag");
 
   // Make sure the shader that was read in actually has content.
   if (!fragmentShader.empty()) {
@@ -383,4 +353,13 @@ std::string open_shader(std::string path) {
     shader = buffer.str();    
   } 
   return shader;
+}
+
+/**
+ * Helper method used to set the version of OpenGL to be used by SDL.
+ */
+void setGLVersion() {
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, MAJOR_VERSION);
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, MINOR_VERSION);
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 }
