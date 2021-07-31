@@ -6,9 +6,6 @@
 // Included from source
 #include "util.hpp"
 
-/**
- * Takes a 
- */
 GLfloat* util::convertToScreen(GLfloat* floats, int numPoints) {
   GLfloat* cartesianFloats = new GLfloat[numPoints*3];
 
@@ -28,9 +25,6 @@ GLfloat* util::convertToScreen(GLfloat* floats, int numPoints) {
   return cartesianFloats;
 }
 
-/**
- * Prints the program log of the OpenGL program pointed to by program.
- */
 void util::printProgramLog(GLuint program) {
   //Make sure name is shader
   if( glIsProgram( program ) == GL_TRUE) {

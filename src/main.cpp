@@ -92,6 +92,11 @@ int main(int argc, char* argv[])
               // Change color used to clear buffer.
               glClearColor(0.2, 0.0, 0.0, 1.0);
             
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+              /*
+               * Setup model vertex data.
+               */ 
               custom_math::Mat4 testTriangle;
               
               custom_math::Vec4 firstPoint(-1.0f, -1.0f, 0.0f, 0.0f);
@@ -107,37 +112,64 @@ int main(int argc, char* argv[])
               testTriangle.setRow(2, thirdPoint);
               testTriangle.setElement(3, 3, 1);
 
-              TransformationBuilder transformer;
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
+              /*
+               * Values for transforming the model.
+               */
               float translateX = 0.0f;
               float translateY = 0.0f;
               float translateZ = -1.0f;
 
-              float scaleX = 0.0f;
-              float scaleY = 0.0f;
-              float scaleZ = 0.0f;
+              float scaleX = 1.0f;
+              float scaleY = 1.0f;
+              float scaleZ = 1.0f;
 
-              int rotationAngle = 0;
+              int rotationAngle = 45;
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+              TransformationBuilder transformer;
 
               custom_math::Mat4 testTranslate = 
                 transformer.translation(translateX, translateY, translateZ);
 
+              std::cout << "Translate" << std::endl;
+              std::cout << testTranslate << std::endl;
+
               custom_math::Mat4 testScale = 
                 transformer.scale(scaleX, scaleY, scaleZ);
 
+              std::cout << "Scale" << std::endl;
+              std::cout << testScale << std::endl;
+
               custom_math::Mat4 testRotate = transformer.yRotation(rotationAngle);
+              std::cout << "Rotate" << std::endl;
+              std::cout << testRotate << std::endl;
+
+              // Apply transformations to model. (Model -> World).
+              testTriangle = testTriangle * testRotate * testTranslate * testScale;
 
               custom_math::Vec4 testCameraLocation(0, 0, 5, 0);
               custom_math::Vec4 dest(0, 0, 0, 0);
-              custom_math::Mat4 lookAt = custom_math::Mat4::LookAt(testCameraLocation, dest);
+              custom_math::Mat4 view = custom_math::Mat4::LookAt(testCameraLocation, dest);
 
-              custom_math::Mat4 camera = custom_math::Mat4::Identity();
+              std::cout << testTriangle << std::endl;
+
+              // View transformation (World -> Camera)
+              testTriangle = testTriangle * view;
+
+
 
               GLfloat pleaseGodWork[16];
               testTriangle.getFloats(pleaseGodWork);
 
+              std::cout << testTriangle << std::endl;
+
               // Strip homogeneous coordinates to draw to screen.
               GLfloat* vertices = util::convertToScreen(pleaseGodWork, 3);
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
               // Generate vertex buffer object.
               unsigned int VBO;
