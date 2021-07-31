@@ -6,19 +6,8 @@
 
 #include <math.h>
 
-TransformationBuilder::TransformationBuilder() {
-  identity = Mat4::Identity();
-}
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
-/**
- * Factory method for translation matrices, used to translate a vector in space.
- * 
- * xTranslate: the value to translate x by.
- * yTranslate: the value to translate y by.
- * zTranslate: the value to translate z by.
- * 
- * returns: matrix used to translate a 4D vector in space by the given values.
- */
 Mat4 TransformationBuilder::translation(float xTranslate, float yTranslate, float zTranslate) {
   Mat4 translateVec = Mat4::Identity();
   translateVec.setElement(3, 0, xTranslate);
@@ -27,13 +16,8 @@ Mat4 TransformationBuilder::translation(float xTranslate, float yTranslate, floa
   return translateVec;
 }
 
-/**
- * Factory method for scaling matrices, used to scale a vector in the x, y, and z directions.
- * 
- * xFactor: scale factor in the x direction.
- * yFactor: scale factor in the y direction.
- * zFactor: scale factor in the z direction.
- */
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
 Mat4 TransformationBuilder::scale(float xFactor, float yFactor, float zFactor) {
   Mat4 scaleVec;
   scaleVec.setElement(0, 0, xFactor);
@@ -43,16 +27,16 @@ Mat4 TransformationBuilder::scale(float xFactor, float yFactor, float zFactor) {
   return scaleVec;
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// Helper //////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////// 
+
 float to_radians(int angleOfRotation) {
   return M_PI / 180 * angleOfRotation;
 }
 
-/**
- * Factory method for constructing rotation matrices used for rotations of angleOfRotation degrees
- * around the x-axis.
- * 
- * angleOfRotation: The angle in degrees to rotate around the x-axis.
- */
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
 Mat4 TransformationBuilder::xRotation(int angleOfRotation) {
   Mat4 rotateVec = Mat4::Identity();
   float angleInRads =  to_radians(angleOfRotation);
@@ -67,12 +51,8 @@ Mat4 TransformationBuilder::xRotation(int angleOfRotation) {
   return rotateVec;
 }
 
-/**
- * Factory method for constructing rotation matrices used for rotations of angleOfRotation degrees
- * around the y-axis.
- * 
- * angleOfRotation: The angle in degrees to rotate around the y-axis.
- */
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
 Mat4 TransformationBuilder::yRotation(int angleOfRotation) {
   Mat4 rotateVec = Mat4::Identity();
   float angleInRads = to_radians(angleOfRotation);
@@ -87,12 +67,8 @@ Mat4 TransformationBuilder::yRotation(int angleOfRotation) {
   return rotateVec;
 }
 
-/**
- * Factory method for constructing rotation matrices used for rotations of angleOfRotation degrees
- * around the z-axis.
- * 
- * angleOfRotation: The angle in degrees to rotate around the z-axis.
- */
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
 Mat4 TransformationBuilder::zRotation(int angleOfRotation) {
   Mat4 rotateVec = Mat4::Identity();
   float angleInRads = to_radians(angleOfRotation);
@@ -107,13 +83,8 @@ Mat4 TransformationBuilder::zRotation(int angleOfRotation) {
   return rotateVec;
 }
 
-/**
- * Factory method for constructing matrices used for rotations around any desired axis.
- * 
- * angleOfRotation: the angle in degrees to rotate the vertex.
- * axis: the axis to rotate around. Only the first 3 elements in the vector are used, and are first
- * normalized to a unit vector.
- */
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
 Mat4 TransformationBuilder::rotateFromAxisAngle(int angleOfRotation, Vec4 axis) {
   Mat4 rotate;
 
@@ -151,3 +122,5 @@ Mat4 TransformationBuilder::rotateFromAxisAngle(int angleOfRotation, Vec4 axis) 
 
   return rotate;
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////

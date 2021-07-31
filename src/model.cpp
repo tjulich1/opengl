@@ -1,9 +1,11 @@
 // Trent Julich ~ 27 July 2021
 
+#include <iostream>
+
 // Included from source
 #include "model.hpp"
 
-Model::Model() {};
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 Model::Model(std::vector<custom_math::Vec4>& modelVertices) {
   for (int i = 0; i < modelVertices.size(); i++) {
@@ -11,6 +13,8 @@ Model::Model(std::vector<custom_math::Vec4>& modelVertices) {
     vertices.emplace_back(modelVertices[i].copy());
   }
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void Model::listVertices() {
   for (int i = 0; i < vertices.size(); i++) {
@@ -22,3 +26,5 @@ void Model::listVertices() {
     std::cout << "(" << x << ", " << y << ", " << z << ", " << w << ")" << std::endl;
   }
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////

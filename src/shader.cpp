@@ -5,27 +5,12 @@
 
 #include "shader.hpp"
 
-/**
- * 
- */
-Shader::Shader() {
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
-}
-
-/**
- * 
- */
 Shader::Shader(std::string shaderSrc) {
 
 }
 
-/**
- * Reads in a shader that is located at the given path.
- * 
- * args: std::string path = path to the shader that should be opened.
- * returns: std::string shader = string contents of shader that was read. Empty string if shader 
- *              cannot be found at path.
- */
 std::string openShader(std::string path) {
   // Init shader with empty string in case of failure to open file.
   std::string shader = "";
@@ -42,3 +27,5 @@ std::string openShader(std::string path) {
   } 
   return shader;
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////

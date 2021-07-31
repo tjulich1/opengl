@@ -1,9 +1,5 @@
 // Trent Julich ~ 12 July 2021
 
-/* * * * * * *
- * Includes  *
- * * * * * * */
-
 #include <SDL.h>
 #include <glew.h>
 #include <gl\GL.h>
@@ -21,10 +17,6 @@
 #include "shader.hpp"
 #include "transformation_builder.hpp"
 
-/* * * * * * *
- * Constants *
- * * * * * * */
-
 /* Dimensions of main window. */
 const static int WIDTH = 500;
 const static int HEIGHT = 500;
@@ -36,10 +28,6 @@ const static Uint32 WINDOW_FLAGS = SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL;
 const static int MAJOR_VERSION = 3;
 const static int MINOR_VERSION = 2;
 
-/* * * * * * * * * * * *
- * Method Declarations *
- * * * * * * * * * * * */
-
 int create_vertex_shader(GLuint shaderProgram);
 int create_fragment_shader(GLuint shaderProgram);
 void printShaderLog(GLuint shader);
@@ -47,14 +35,13 @@ void setGLVersion();
 bool initSDL();
 bool initGLEW();
 
-/* * * * * * * * * * * *
- * Method Definitions  *
- * * * * * * * * * * * */
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
  * Main entry point of program. Accepts no arguments.
  */
-int main(int argc, char* argv[]) {
+int main(int argc, char* argv[]) 
+{
   // Code that is returned by the program.
   int success = 0;
 
@@ -122,16 +109,29 @@ int main(int argc, char* argv[]) {
 
               TransformationBuilder transformer;
 
-              custom_math::Mat4 testScale = transformer.scale(0.5f, 0.5f, 0.5f);
-              custom_math::Mat4 testScale2 = transformer.scale(4, 0.5f, 0.5f);
+              float translateX = 0.0f;
+              float translateY = 0.0f;
+              float translateZ = -1.0f;
 
-              custom_math::Mat4 testRotate = transformer.yRotation(45);
+              float scaleX = 0.0f;
+              float scaleY = 0.0f;
+              float scaleZ = 0.0f;
 
-              custom_math::Vec4 testCameraLocation(-1, 7, 0, 0);
+              int rotationAngle = 0;
+
+              custom_math::Mat4 testTranslate = 
+                transformer.translation(translateX, translateY, translateZ);
+
+              custom_math::Mat4 testScale = 
+                transformer.scale(scaleX, scaleY, scaleZ);
+
+              custom_math::Mat4 testRotate = transformer.yRotation(rotationAngle);
+
+              custom_math::Vec4 testCameraLocation(0, 0, 5, 0);
               custom_math::Vec4 dest(0, 0, 0, 0);
               custom_math::Mat4 lookAt = custom_math::Mat4::LookAt(testCameraLocation, dest);
 
-              testTriangle = testTriangle * testScale * testRotate * lookAt;
+              custom_math::Mat4 camera = custom_math::Mat4::Identity();
 
               GLfloat pleaseGodWork[16];
               testTriangle.getFloats(pleaseGodWork);
@@ -200,7 +200,8 @@ int main(int argc, char* argv[]) {
  * 
  * returns: true if SDL was initialized, else false.
  */
-bool initSDL() {
+bool initSDL() 
+{
   bool success = true;
   if (SDL_Init(SDL_INIT_VIDEO) == -1) {
     success = false;
@@ -214,7 +215,8 @@ bool initSDL() {
  * 
  * returns: true if GLEW was initialized, else false.
  */
-bool initGLEW() {
+bool initGLEW() 
+{
   bool success = true;
   glewExperimental = GL_TRUE;
   GLenum glewError = glewInit();
@@ -226,7 +228,8 @@ bool initGLEW() {
   return success;
 }
 
-int create_vertex_shader(GLuint shaderProgram) {
+int create_vertex_shader(GLuint shaderProgram) 
+{
   int success;
 
   std::string vertexShader = openShader("res/shaders/default.vert");
@@ -259,7 +262,8 @@ int create_vertex_shader(GLuint shaderProgram) {
 /**
  * Creates a fragment shader and attaches it to shaderProgram.
  */
-int create_fragment_shader(GLuint shaderProgram) {
+int create_fragment_shader(GLuint shaderProgram) 
+{
   int success;
 
   // Read in the shader from file.
@@ -329,30 +333,6 @@ void printShaderLog( GLuint shader )
     {
         printf( "Name %d is not a shader\n", shader );
     }
-}
-
-/**
- * Reads in a shader that is located at the given path.
- * 
- * args: std::string path = path to the shader that should be opened.
- * returns: std::string shader = string contents of shader that was read. Empty string if shader 
- *              cannot be found at path.
- */
-std::string open_shader(std::string path) {
-  // Init shader with empty string in case of failure to open file.
-  std::string shader = "";
-
-  // Try to open file.
-  std::fstream shaderFile(path);
-  
-  // If the file was successfully opened
-  if (shaderFile.is_open()) {
-    // Read and store shader file.
-    std::stringstream buffer;
-    buffer << shaderFile.rdbuf();
-    shader = buffer.str();    
-  } 
-  return shader;
 }
 
 /**
