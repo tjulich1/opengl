@@ -16,14 +16,13 @@
 #include "model.hpp"
 #include "shader.hpp"
 #include "transformation_builder.hpp"
+#include "setup.hpp"
 
 /* Dimensions of main window. */
 const static int WIDTH = 500;
 const static int HEIGHT = 500;
 
-const static std::string TITLE = "OpenGL test";;
-
-const static Uint32 WINDOW_FLAGS = SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL;  
+const static std::string TITLE = "OpenGL test";
 
 const static int MAJOR_VERSION = 3;
 const static int MINOR_VERSION = 2;
@@ -31,9 +30,6 @@ const static int MINOR_VERSION = 2;
 int create_vertex_shader(GLuint shaderProgram);
 int create_fragment_shader(GLuint shaderProgram);
 void printShaderLog(GLuint shader);
-void setGLVersion();
-bool initSDL();
-bool initGLEW();
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -45,185 +41,165 @@ int main(int argc, char* argv[])
   // Code that is returned by the program.
   int success = 0;
 
-  if (initSDL()) {
-    setGLVersion();
+  Setup config(TITLE, WIDTH, HEIGHT);
+  config.initialize();
+  SDL_Window* window = config.getWindow();
 
-    SDL_Window* gWindow = SDL_CreateWindow(TITLE.c_str(), SDL_WINDOWPOS_UNDEFINED, 
-      SDL_WINDOWPOS_UNDEFINED, WIDTH, HEIGHT, WINDOW_FLAGS);
+  // Create the opengl program object.
+  unsigned int shaderProgram;
+  shaderProgram = glCreateProgram();
 
-    if (gWindow) {
-      SDL_GLContext gContext = SDL_GL_CreateContext(gWindow);
+  // Try to create vertex and fragment shader.
+  if (create_fragment_shader(shaderProgram) && create_vertex_shader(shaderProgram)) {
+    
+    // Try linking shader program.
+    glLinkProgram(shaderProgram);
+    int success;
+    glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
 
-      // Check if an SDL context was successfully created.
-      if (gContext == nullptr || !initGLEW()) {
-        std::cout << "Failed to create context: " << SDL_GetError() << std::endl;
-        success = -1;
-      } else {
-        /*
-        * Use Vsync
+    // Check if the shader program linked successfully.
+    if (!success) {
+      std::cout << "Failed to link program" << std::endl;
+    } else {
+      // Generate a single VAO object.
+      unsigned int VAO;
+      glGenVertexArrays(1, &VAO);
+
+      // Set the VAO as the current one.
+      glBindVertexArray(VAO);
+
+      // Change color used to clear buffer.
+      glClearColor(0.2, 0.0, 0.0, 1.0);
+    
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+      /*
+        * Setup model vertex data.
+        */ 
+      custom_math::Mat4 testTriangle;
+      
+      custom_math::Vec4 firstPoint(-1.0f, -1.0f, 0.0f, 0.0f);
+      custom_math::Vec4 secondPoint(1.0f, -1.0f, 0.0f, 0.0f);
+      custom_math::Vec4 thirdPoint(0.0f, 1.0f, 0.0f, 0.0f);
+
+      std::vector<custom_math::Vec4> testList{firstPoint, secondPoint, thirdPoint};
+      Model testModel(testList);
+      testModel.listVertices();
+
+      testTriangle.setRow(0, firstPoint);
+      testTriangle.setRow(1, secondPoint);
+      testTriangle.setRow(2, thirdPoint);
+      testTriangle.setElement(3, 3, 1);
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+      /*
+        * Values for transforming the model.
         */
-        if (SDL_GL_SetSwapInterval(1) < 0) {
-          std::cout << "Unable to use vsync: " << SDL_GetError() << std::endl;
-          success = -1;
-        } else {
-          // Create the opengl program object.
-          unsigned int shaderProgram;
-          shaderProgram = glCreateProgram();
+      float translateX = 0.0f;
+      float translateY = 0.0f;
+      float translateZ = -1.0f;
 
-          // Try to create vertex and fragment shader.
-          if (create_fragment_shader(shaderProgram) && create_vertex_shader(shaderProgram)) {
-            
-            // Try linking shader program.
-            glLinkProgram(shaderProgram);
-            int success;
-            glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
+      float scaleX = 1.0f;
+      float scaleY = 1.0f;
+      float scaleZ = 1.0f;
 
-            // Check if the shader program linked successfully.
-            if (!success) {
-              std::cout << "Failed to link program" << std::endl;
-            } else {
-              // Generate a single VAO object.
-              unsigned int VAO;
-              glGenVertexArrays(1, &VAO);
-
-              // Set the VAO as the current one.
-              glBindVertexArray(VAO);
-
-              // Change color used to clear buffer.
-              glClearColor(0.2, 0.0, 0.0, 1.0);
-            
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
-              /*
-               * Setup model vertex data.
-               */ 
-              custom_math::Mat4 testTriangle;
-              
-              custom_math::Vec4 firstPoint(-1.0f, -1.0f, 0.0f, 0.0f);
-              custom_math::Vec4 secondPoint(1.0f, -1.0f, 0.0f, 0.0f);
-              custom_math::Vec4 thirdPoint(0.0f, 1.0f, 0.0f, 0.0f);
-
-              std::vector<custom_math::Vec4> testList{firstPoint, secondPoint, thirdPoint};
-              Model testModel(testList);
-              testModel.listVertices();
-
-              testTriangle.setRow(0, firstPoint);
-              testTriangle.setRow(1, secondPoint);
-              testTriangle.setRow(2, thirdPoint);
-              testTriangle.setElement(3, 3, 1);
+      int rotationAngle = 45;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-              /*
-               * Values for transforming the model.
-               */
-              float translateX = 0.0f;
-              float translateY = 0.0f;
-              float translateZ = -1.0f;
+      TransformationBuilder transformer;
 
-              float scaleX = 1.0f;
-              float scaleY = 1.0f;
-              float scaleZ = 1.0f;
+      custom_math::Mat4 testTranslate = 
+        transformer.translation(translateX, translateY, translateZ);
 
-              int rotationAngle = 45;
+      std::cout << "Translate" << std::endl;
+      std::cout << testTranslate << std::endl;
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
+      custom_math::Mat4 testScale = 
+        transformer.scale(scaleX, scaleY, scaleZ);
 
-              TransformationBuilder transformer;
+      std::cout << "Scale" << std::endl;
+      std::cout << testScale << std::endl;
 
-              custom_math::Mat4 testTranslate = 
-                transformer.translation(translateX, translateY, translateZ);
+      custom_math::Mat4 testRotate = transformer.yRotation(rotationAngle);
+      std::cout << "Rotate" << std::endl;
+      std::cout << testRotate << std::endl;
 
-              std::cout << "Translate" << std::endl;
-              std::cout << testTranslate << std::endl;
+      // Apply transformations to model. (Model -> World).
+      testTriangle = testTriangle * testRotate * testTranslate * testScale;
 
-              custom_math::Mat4 testScale = 
-                transformer.scale(scaleX, scaleY, scaleZ);
+      custom_math::Vec4 testCameraLocation(0, 0, 5, 0);
+      custom_math::Vec4 dest(0, 0, 0, 0);
+      custom_math::Mat4 view = custom_math::Mat4::LookAt(testCameraLocation, dest);
 
-              std::cout << "Scale" << std::endl;
-              std::cout << testScale << std::endl;
+      std::cout << testTriangle << std::endl;
 
-              custom_math::Mat4 testRotate = transformer.yRotation(rotationAngle);
-              std::cout << "Rotate" << std::endl;
-              std::cout << testRotate << std::endl;
-
-              // Apply transformations to model. (Model -> World).
-              testTriangle = testTriangle * testRotate * testTranslate * testScale;
-
-              custom_math::Vec4 testCameraLocation(0, 0, 5, 0);
-              custom_math::Vec4 dest(0, 0, 0, 0);
-              custom_math::Mat4 view = custom_math::Mat4::LookAt(testCameraLocation, dest);
-
-              std::cout << testTriangle << std::endl;
-
-              // View transformation (World -> Camera)
-              testTriangle = testTriangle * view;
+      // View transformation (World -> Camera)
+      testTriangle = testTriangle * view;
 
 
 
-              GLfloat pleaseGodWork[16];
-              testTriangle.getFloats(pleaseGodWork);
+      GLfloat pleaseGodWork[16];
+      testTriangle.getFloats(pleaseGodWork);
 
-              std::cout << testTriangle << std::endl;
+      std::cout << testTriangle << std::endl;
 
-              // Strip homogeneous coordinates to draw to screen.
-              GLfloat* vertices = util::convertToScreen(pleaseGodWork, 3);
+      // Strip homogeneous coordinates to draw to screen.
+      GLfloat* vertices = util::convertToScreen(pleaseGodWork, 3);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-              // Generate vertex buffer object.
-              unsigned int VBO;
-              glGenBuffers(1, &VBO);
+      // Generate vertex buffer object.
+      unsigned int VBO;
+      glGenBuffers(1, &VBO);
 
-              // Set vertex buffer object as the current one.
-              glBindBuffer(GL_ARRAY_BUFFER, VBO);
+      // Set vertex buffer object as the current one.
+      glBindBuffer(GL_ARRAY_BUFFER, VBO);
 
-              // Pass vertex information to opengl.
-              glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 9, vertices, GL_STATIC_DRAW);
+      // Pass vertex information to opengl.
+      glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 9, vertices, GL_STATIC_DRAW);
 
-              glEnableVertexAttribArray(0);
+      glEnableVertexAttribArray(0);
 
-              glVertexAttribPointer(
-                0,
-                3,
-                GL_FLOAT,
-                GL_FALSE,
-                0,
-                (void *)0
-              );
+      glVertexAttribPointer(
+        0,
+        3,
+        GL_FLOAT,
+        GL_FALSE,
+        0,
+        (void *)0
+      );
 
-              bool running = true;
+      bool running = true;
 
-              // Main loop of engine.
-              while (running) {
+      // Main loop of engine.
+      while (running) {
 
-                SDL_Event e;
-                while (SDL_PollEvent(&e)) {
-                  if (e.type == SDL_QUIT) {
-                    running = false;
-                  }
-                }
-
-                glClear(GL_COLOR_BUFFER_BIT);
-                
-                // Set program object as current shader program.
-                glUseProgram(shaderProgram);
-
-                // Draw triangle using 3 vertices.
-                glDrawArrays(GL_TRIANGLES, 0, 3);
-                SDL_GL_SwapWindow(gWindow);
-              }
-
-              glDisableVertexAttribArray(0);
-              
-            }
+        SDL_Event e;
+        while (SDL_PollEvent(&e)) {
+          if (e.type == SDL_QUIT) {
+            running = false;
           }
         }
+
+        glClear(GL_COLOR_BUFFER_BIT);
+        
+        // Set program object as current shader program.
+        glUseProgram(shaderProgram);
+
+        // Draw triangle using 3 vertices.
+        glDrawArrays(GL_TRIANGLES, 0, 3);
+        SDL_GL_SwapWindow(window);
       }
+
+      glDisableVertexAttribArray(0);
+          
     }
-    SDL_DestroyWindow(gWindow);
-    SDL_Quit();
   }
+  SDL_DestroyWindow(window);
+  SDL_Quit();
+  
   return success;
 }
 
@@ -238,24 +214,6 @@ bool initSDL()
   if (SDL_Init(SDL_INIT_VIDEO) == -1) {
     success = false;
     std::cout << "Failed to initialize SDL: " << SDL_GetError() << std::endl;
-  }
-  return success;
-}
-
-/**
- * Called to attempt to initialize GLEW. 
- * 
- * returns: true if GLEW was initialized, else false.
- */
-bool initGLEW() 
-{
-  bool success = true;
-  glewExperimental = GL_TRUE;
-  GLenum glewError = glewInit();
-
-  if (glewError != GLEW_OK) {
-    std::cout << "Error initializing GLEW: " << glewGetErrorString(glewError) << std::endl;
-    success = false;
   }
   return success;
 }
