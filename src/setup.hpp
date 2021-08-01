@@ -1,6 +1,8 @@
- // Trent Julich ~ 31 July 2021
+////////////////////////////////////////////////////////////////////////////////////////////////////
+/* Trent Julich ~ 31 July 2021                                                                    */
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
- #pragma once
+#pragma once
 
 #include <string>
 #include <SDL.h>
@@ -13,7 +15,6 @@
 class Setup 
 {
 public:
-
   const static bool USE_VSYNC = true;
 
   /**
@@ -50,6 +51,45 @@ public:
   inline SDL_GLContext getContext() { return context; }
 
 private:
+
+  /**
+   * Array which stores success codes for different stages of initialization.
+   * 
+   * 0: SDL init
+   * 1: Window created
+   * 2: Context created
+   * 3: GLEW initialized
+   * 4: V-Sync
+   */
+  bool successCodes[5];
+
+  /**
+   * Fields which store the OpenGL version that SDL should use. 
+   */
+  int majorVersion = 3;
+  int minorVersion = 2;
+
+  /**
+   * Title of the window.
+   */
+  std::string windowTitle;
+
+  /**
+   * Window dimensions in pixels.
+   */
+  int windowWidth;
+  int windowHeight;
+
+  /**
+   * SDL window that is attempted to be created when initialize method is called.
+   */
+  SDL_Window* window;
+
+  /**
+   * OpenGL context corresponding to window member field, initialized if window creation is 
+   * successul.
+   */
+  SDL_GLContext context;
 
   /**
    * Attempts to initialize the basic SDL systems. 
@@ -93,46 +133,6 @@ private:
    * Attempts to initialize vsync.
    */
   bool initVsync();
-
-  /**
-   * Array which stores success codes for different stages of initialization.
-   * 
-   * 0: SDL init
-   * 1: Window created
-   * 2: Context created
-   * 3: GLEW initialized
-   * 4: V-Sync
-   */
-  bool successCodes[5];
-
-  /**
-   * Fields which store the OpenGL version that SDL should use. 
-   */
-  int majorVersion = 3;
-  int minorVersion = 2;
-
-  /**
-   * Title of the window.
-   */
-  std::string windowTitle;
-
-  /**
-   * Window dimensions in pixels.
-   */
-  int windowWidth;
-  int windowHeight;
-
-  /**
-   * SDL window that is attempted to be created when initialize method is called.
-   */
-  SDL_Window* window;
-
-  /**
-   * OpenGL context corresponding to window member field, initialized if window creation is 
-   * successul.
-   */
-  SDL_GLContext context;
-
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
