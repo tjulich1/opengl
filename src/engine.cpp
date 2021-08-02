@@ -10,12 +10,14 @@
 /**
  * Included from src.
  */
+#include "camera.hpp"
 #include "custom_math.hpp"
 #include "engine.hpp"
 #include "model.hpp"
 #include "shader.hpp"
 #include "transformation_builder.hpp"
 #include "util.hpp"
+#include "frustum.hpp"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -57,9 +59,10 @@ void Engine::start()
         */ 
       custom_math::Mat4 testTriangle;
       
-      custom_math::Vec4 firstPoint(-1.0f, -1.0f, 0.0f, 0.0f);
-      custom_math::Vec4 secondPoint(1.0f, -1.0f, 0.0f, 0.0f);
-      custom_math::Vec4 thirdPoint(0.0f, 1.0f, 0.0f, 0.0f);
+      // Triangle with base at bottom of screen.
+      custom_math::Vec4 firstPoint(-1.0f, -1.0f, 0.0f, 1.0f);
+      custom_math::Vec4 secondPoint(1.0f, -1.0f, 0.0f, 1.0f);
+      custom_math::Vec4 thirdPoint(0.0f, 1.0f, 0.0f, 1.0f);
 
       std::vector<custom_math::Vec4> testList{firstPoint, secondPoint, thirdPoint};
       Model testModel(testList);
@@ -75,52 +78,51 @@ void Engine::start()
       /*
         * Values for transforming the model.
         */
-      float translateX = 0.0f;
+      float translateX = -0.2f;
       float translateY = 0.0f;
-      float translateZ = -1.0f;
+      float translateZ = 0.0f;
 
       float scaleX = 1.0f;
       float scaleY = 1.0f;
       float scaleZ = 1.0f;
 
-      int rotationAngle = 45;
+      int rotationAngle = 0;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
       TransformationBuilder transformer;
+      Camera camera(0, 1, 1, 0, 0, 0);
 
       custom_math::Mat4 testTranslate = 
         transformer.translation(translateX, translateY, translateZ);
 
-      std::cout << "Translate" << std::endl;
-      std::cout << testTranslate << std::endl;
+      custom_math::Mat4 view = camera.getLookat();
+      std::cout << "Lookat matrix: " << view << std::endl;
 
-      custom_math::Mat4 testScale = 
-        transformer.scale(scaleX, scaleY, scaleZ);
+      std::cout << "Translate: "  << testTranslate << std::endl;
+      // std::cout << "Scale: " << testScale << std::endl;
+      // std::cout << "Rotate: " << testRotate << std::endl;
+      std::cout << "Model start: " << testTriangle << std::endl;
 
-      std::cout << "Scale" << std::endl;
-      std::cout << testScale << std::endl;
+      std::cout << testTriangle * testTranslate << std::endl;
 
-      custom_math::Mat4 testRotate = transformer.yRotation(rotationAngle);
-      std::cout << "Rotate" << std::endl;
-      std::cout << testRotate << std::endl;
+      // Frustum testFrustum(-1.0f, 1.0f, 1.0f, -1.0f, 0.1, 100);
+      // custom_math::Mat4 perspectiveMatrix = testFrustum.createPerspectiveMatrix();
 
       // Apply transformations to model. (Model -> World).
-      testTriangle = testTriangle * testRotate * testTranslate * testScale;
-
-      custom_math::Vec4 testCameraLocation(0, 0, 5, 0);
-      custom_math::Vec4 dest(0, 0, 0, 0);
-      custom_math::Mat4 view = custom_math::Mat4::LookAt(testCameraLocation, dest);
-
-      std::cout << testTriangle << std::endl;
+      testTriangle = testTriangle * testTranslate; // testRotate * testScale * testTranslate ;
+      std::cout << "Transformed Model: " << testTriangle << std::endl;
 
       // View transformation (World -> Camera)
       testTriangle = testTriangle * view;
- 
+      std::cout << "Model after view: " << testTriangle << std::endl;
+      
+      // Projection
+      // testTriangle = testTriangle * perspectiveMatrix;
+      // std::cout << "Projection: " << testTriangle << std::endl;
+
       GLfloat pleaseGodWork[16];
       testTriangle.getFloats(pleaseGodWork);
-
-      std::cout << testTriangle << std::endl;
 
       // Strip homogeneous coordinates to draw to screen.
       GLfloat* vertices = util::convertToScreen(pleaseGodWork, 3);

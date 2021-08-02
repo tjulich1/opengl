@@ -37,26 +37,26 @@ Mat4 Mat4::LookAt(Vec4 cameraLocation, Vec4 viewDirection) {
   float y = cameraLocation.getY() - viewDirection.getY();
   float z = cameraLocation.getZ() - viewDirection.getZ();
 
+  // Viewing plane normal.
   Vec4 forward(x, y, z, 0);
   forward.normalize();
 
-  // Temp vec used to calculate right vector.
+  // Normal vector pointing up along the y axis.
   Vec4 temp(0, 1, 0, 0);
-  Vec4 right = temp.cross(forward);
 
-  Vec4 up = forward.cross(right);
-  up.normalize();
+  // U vector
+  Vec4 right = temp.cross(forward);
 
   Mat4 lookAt;
   lookAt.setRow(0, right);
-  lookAt.setRow(1, up);
+  lookAt.setRow(1, temp);
   lookAt.setRow(2, forward);
   lookAt.setElement(3, 3, 1);
 
   Mat4 posMat = Identity();
-  posMat.setElement(3, 0, -cameraLocation.getX());
-  posMat.setElement(3, 1, -cameraLocation.getY());
-  posMat.setElement(3, 2, -cameraLocation.getZ());
+  posMat.setElement(0, 3, -cameraLocation.getX());
+  posMat.setElement(1, 3, -cameraLocation.getY());
+  posMat.setElement(2, 3, -cameraLocation.getZ());
 
   Mat4 result = lookAt*posMat;
 

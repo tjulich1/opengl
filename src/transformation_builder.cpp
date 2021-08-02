@@ -20,9 +20,9 @@ float to_radians(int angleOfRotation) {
 
 Mat4 TransformationBuilder::translation(float xTranslate, float yTranslate, float zTranslate) {
   Mat4 translateVec = Mat4::Identity();
-  translateVec.setElement(3, 0, xTranslate);
-  translateVec.setElement(3, 1, yTranslate);
-  translateVec.setElement(3, 2, zTranslate);
+  translateVec.setElement(0, 3, xTranslate);
+  translateVec.setElement(1, 3, yTranslate);
+  translateVec.setElement(2, 3, zTranslate);
   return translateVec;
 }
 
