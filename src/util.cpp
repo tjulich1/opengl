@@ -21,9 +21,17 @@ GLfloat* util::convertToScreen(GLfloat* floats, int numPoints) {
 
   for (int i = 0; i < numPoints; i++) {
     // Grab the x, y, z coordinates from the current point.
-    cartesianFloats[i*cartesianOffset] = floats[i*homogeneousOffset]; // x
-    cartesianFloats[(i*cartesianOffset)+1] = floats[(i*homogeneousOffset)+1]; // y
-    cartesianFloats[(i*cartesianOffset)+2] = floats[(i*homogeneousOffset)+2]; // z
+    float w = floats[i*homogeneousOffset+3];
+
+    if (w == 0.0f) { w = 1.0f; }
+
+    float x = floats[i*homogeneousOffset] / w;
+    float y = floats[(i*homogeneousOffset)+1] / w;
+    float z = floats[(i*homogeneousOffset)+2] / w;
+
+    cartesianFloats[i*cartesianOffset] = x;
+    cartesianFloats[(i*cartesianOffset)+1] = y; // y
+    cartesianFloats[(i*cartesianOffset)+2] = z; // z
   }
 
   return cartesianFloats;

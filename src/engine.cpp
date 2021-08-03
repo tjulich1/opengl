@@ -80,7 +80,7 @@ void Engine::start()
         */
       float translateX = -0.2f;
       float translateY = 0.0f;
-      float translateZ = -1.0f;
+      float translateZ = 0.0f;
 
       float scaleX = 1.0f;
       float scaleY = 2.0f;
@@ -91,7 +91,7 @@ void Engine::start()
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
       TransformationBuilder transformer;
-      Camera camera(0, 0, 1, 0, 0, 0);
+      Camera camera(0, 1, 1, 0, 0, 0);
 
       Frustum testFrustum(-1.0f, 1.0f, 1.0f, -1.0f, 0.1, 100);
       custom_math::Mat4 perspectiveMatrix = testFrustum.createPerspectiveMatrix();
@@ -107,8 +107,9 @@ void Engine::start()
       std::cout << "Lookat matrix: " << view << std::endl;
       std::cout << "Translate: "  << testTranslate << std::endl;
       std::cout << "Scale: " << testScale << std::endl;
+      std::cout << "Perspective matrix: " << perspectiveMatrix << std::endl;
       std::cout << "Model start: " << testTriangle << std::endl;
-
+    
       // Apply transformations to model. (Model -> World).
       testTriangle = testTriangle * testScale * testTranslate;
       std::cout << "Model after transformations: " << testTriangle << std::endl;
@@ -126,6 +127,10 @@ void Engine::start()
 
       // Strip homogeneous coordinates to draw to screen.
       GLfloat* vertices = util::convertToScreen(pleaseGodWork, 3);
+
+      for (int i = 0; i < 12; i++) {
+        std::cout << vertices[i] << std::endl;
+      }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 

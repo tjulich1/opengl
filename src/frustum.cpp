@@ -30,15 +30,15 @@ custom_math::Mat4 Frustum::createPerspectiveMatrix()
   };
 
   custom_math::Vec4 thirdRow {
-    0, 0, 
-    -(farValue+nearValue)/(farValue-nearValue),
+    (rightValue+leftValue) / (rightValue-leftValue),
+    (topValue+bottomValue) / (topValue-bottomValue), 
+    -(farValue+nearValue) / (farValue-nearValue),
     -1
   };
 
   custom_math::Vec4 fourthRow {
-    -nearValue*(rightValue+leftValue) / (rightValue-leftValue),
-    -nearValue*(topValue+bottomValue) / (topValue-bottomValue),
-    2*farValue*nearValue / (nearValue-farValue),
+    0, 0, 
+    -2*farValue*nearValue / (farValue-nearValue),
     0
   };
 
