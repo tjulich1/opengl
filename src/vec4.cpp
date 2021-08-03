@@ -43,14 +43,25 @@ Vec4 Vec4::copy()
   return theCopy;
 }
 
-Vec4 Vec4::cross(Vec4 other) {
+Vec4 Vec4::cross(Vec4 other) 
+{
   float x = getY()*other.getZ() - getZ()*other.getY();
   float y = getZ()*other.getX() - getX()*other.getZ();
   float z = getX()*other.getY() - getY()*other.getX();
   return Vec4(x, y, z, 0);
 }
 
-void Vec4::normalize() {
+float Vec4::dot(Vec4 other) 
+{
+  float sum = 0;
+  for (int i = 0; i < 4; i++) {
+    sum += getElement(i) * other.getElement(i);
+  }
+  return sum;
+}
+
+void Vec4::normalize() 
+{
   float length =sqrt(values[0]*values[0] + values[1]*values[1] + values[2]*values[2]);
   values[0] = values[0] / length;
   values[1] = values[1] / length;

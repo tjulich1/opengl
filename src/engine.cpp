@@ -80,10 +80,10 @@ void Engine::start()
         */
       float translateX = -0.2f;
       float translateY = 0.0f;
-      float translateZ = 0.0f;
+      float translateZ = -1.0f;
 
       float scaleX = 1.0f;
-      float scaleY = 1.0f;
+      float scaleY = 2.0f;
       float scaleZ = 1.0f;
 
       int rotationAngle = 0;
@@ -91,35 +91,35 @@ void Engine::start()
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
       TransformationBuilder transformer;
-      Camera camera(0, 1, 1, 0, 0, 0);
+      Camera camera(0, 0, 1, 0, 0, 0);
+
+      Frustum testFrustum(-1.0f, 1.0f, 1.0f, -1.0f, 0.1, 100);
+      custom_math::Mat4 perspectiveMatrix = testFrustum.createPerspectiveMatrix();
 
       custom_math::Mat4 testTranslate = 
         transformer.translation(translateX, translateY, translateZ);
 
-      custom_math::Mat4 view = camera.getLookat();
-      std::cout << "Lookat matrix: " << view << std::endl;
+      custom_math::Mat4 testScale = 
+        transformer.scale(scaleX, scaleY, scaleZ);
 
+      custom_math::Mat4 view = camera.getLookat();
+
+      std::cout << "Lookat matrix: " << view << std::endl;
       std::cout << "Translate: "  << testTranslate << std::endl;
-      // std::cout << "Scale: " << testScale << std::endl;
-      // std::cout << "Rotate: " << testRotate << std::endl;
+      std::cout << "Scale: " << testScale << std::endl;
       std::cout << "Model start: " << testTriangle << std::endl;
 
-      std::cout << testTriangle * testTranslate << std::endl;
-
-      // Frustum testFrustum(-1.0f, 1.0f, 1.0f, -1.0f, 0.1, 100);
-      // custom_math::Mat4 perspectiveMatrix = testFrustum.createPerspectiveMatrix();
-
       // Apply transformations to model. (Model -> World).
-      testTriangle = testTriangle * testTranslate; // testRotate * testScale * testTranslate ;
-      std::cout << "Transformed Model: " << testTriangle << std::endl;
+      testTriangle = testTriangle * testScale * testTranslate;
+      std::cout << "Model after transformations: " << testTriangle << std::endl;
 
       // View transformation (World -> Camera)
       testTriangle = testTriangle * view;
       std::cout << "Model after view: " << testTriangle << std::endl;
       
       // Projection
-      // testTriangle = testTriangle * perspectiveMatrix;
-      // std::cout << "Projection: " << testTriangle << std::endl;
+      testTriangle = testTriangle * perspectiveMatrix;
+      std::cout << "Model after projection: " << testTriangle << std::endl;
 
       GLfloat pleaseGodWork[16];
       testTriangle.getFloats(pleaseGodWork);

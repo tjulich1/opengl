@@ -53,6 +53,13 @@ namespace custom_math
     Vec4 cross(Vec4 other);
 
     /**
+     * Calculates the dot product between two Vec4's.
+     * 
+     * returns: The dot product of the two vectors.
+     */
+    float dot(Vec4 other);
+
+    /**
      * Turns a Vec4 into a unit vector, dividing each element by the original length of the vector.
      */
     void normalize();

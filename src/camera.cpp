@@ -10,29 +10,47 @@ custom_math::Mat4 Camera::getLookat()
 {
   custom_math::Mat4 lookat;
 
-  custom_math::Vec4 temp(0, 1, 0, 1);
-  temp.normalize();
+  float z_x = lookatX - cameraX;
+  float z_y = lookatY - cameraY;
+  float z_z = lookatZ - cameraZ;
 
-  float forwardX = cameraX - lookatX;
-  float forwardY = cameraY - lookatY;
-  float forwardZ = cameraZ - lookatZ;
+  custom_math::Vec4 zAxis(z_x, z_y, z_z, 0);
+  zAxis.normalize();
 
-  custom_math::Vec4 forward(forwardX, forwardY, forwardZ, 1);
-  forward.normalize();
+  custom_math::Vec4 up(0, 1, 0, 0);
 
-  custom_math::Vec4 right = temp.cross(forward);
+  custom_math::Vec4 xAxis = zAxis.cross(up);
 
-  custom_math::Vec4 up = forward.cross(right);
-
-  right.setW(0);
-  lookat.setRow(0, right);
-  up.setW(0);
-  lookat.setRow(1, up);
-  forward.setW(0);
-  lookat.setRow(2, forward);
+  custom_math::Vec4 yAxis = xAxis.cross(zAxis);
   
-  const custom_math::Vec4 cameraTranslate(cameraX, cameraY, cameraZ, 1);
-  lookat.setRow(3, cameraTranslate);
+  zAxis.setX(-zAxis.getX());
+  zAxis.setY(-zAxis.getY());
+  zAxis.setZ(-zAxis.getZ());
+
+  custom_math::Vec4 cameraVec(cameraX, cameraY, cameraZ, 0);
+
+  custom_math::Vec4 bottomRow(-xAxis.dot(cameraVec), -yAxis.dot(cameraVec), 
+    -zAxis.dot(cameraVec), 1);
+
+  lookat.setElement(0, 0, xAxis.getX());
+  lookat.setElement(1, 0, yAxis.getX());
+  lookat.setElement(2, 0, zAxis.getX());
+  lookat.setElement(3, 0, 0);
+
+  lookat.setElement(0, 1, xAxis.getY());
+  lookat.setElement(1, 1, yAxis.getY());
+  lookat.setElement(2, 1, zAxis.getY());
+  lookat.setElement(3, 1, 0);
+  
+  lookat.setElement(0, 2, xAxis.getZ());
+  lookat.setElement(1, 2, yAxis.getZ());
+  lookat.setElement(2, 2, zAxis.getZ());
+  lookat.setElement(3, 2, 0);
+
+  lookat.setElement(0, 3, bottomRow.getX());
+  lookat.setElement(1, 3, bottomRow.getY());
+  lookat.setElement(2, 3, bottomRow.getZ());
+  lookat.setElement(3, 3, 1);
 
   return lookat;
 }
