@@ -4,6 +4,8 @@
 
 #include "frustum.hpp"
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
 Frustum::Frustum(float left, float right, float top, float bottom, float nearVal, float farVal) 
 {
   leftValue = left;

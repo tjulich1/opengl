@@ -1,33 +1,55 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////
+/* Trent Julich ~ 2 August 2021                                                                   */
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
 /**
  * Included from src. 
  */
 #include "camera.hpp"
 
-Camera::Camera(float x, float y, float z, float destX, float destY, float destZ) :
-cameraX(x), cameraY(y), cameraZ(z), lookatX(destX), lookatY(destY), lookatZ(destZ) { }
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Camera::Camera()
+{
+  position = custom_math::Vec3();
+  lookDirection = custom_math::Vec3();
+}
+
+Camera::Camera(custom_math::Vec3 cameraPosition, custom_math::Vec3 cameraLook) 
+{
+  position = cameraPosition;
+  lookDirection = cameraLook;
+}
 
 custom_math::Mat4 Camera::getLookat() 
 {
   custom_math::Mat4 lookat;
 
-  float z_x = lookatX - cameraX;
-  float z_y = lookatY - cameraY;
-  float z_z = lookatZ - cameraZ;
-
-  custom_math::Vec4 zAxis(z_x, z_y, z_z, 0);
+  // Calculate vector pointing in the direction the camera (new z-axis).
+  custom_math::Vec4 zAxis(
+    lookDirection.getX() - position.getX(), 
+    lookDirection.getY() - position.getY(), 
+    lookDirection.getZ() - position.getZ(), 
+    0
+  );
   zAxis.normalize();
 
+  // Choose arbitrary vector pointing in positive y direction.
   custom_math::Vec4 up(0, 1, 0, 0);
 
+  // Calculate x-axis from z-axis and arbitrary vector.
   custom_math::Vec4 xAxis = zAxis.cross(up);
+  xAxis.normalize();
 
+  // Calculate true camera up from z-axis and x-axis.
   custom_math::Vec4 yAxis = xAxis.cross(zAxis);
   
+  // Flip z-axis, so +z points behind the camera.
   zAxis.setX(-zAxis.getX());
   zAxis.setY(-zAxis.getY());
   zAxis.setZ(-zAxis.getZ());
 
-  custom_math::Vec4 cameraVec(cameraX, cameraY, cameraZ, 0);
+  custom_math::Vec4 cameraVec(position.getX(), position.getY(), position.getZ(), 0);
 
   custom_math::Vec4 bottomRow(-xAxis.dot(cameraVec), -yAxis.dot(cameraVec), 
     -zAxis.dot(cameraVec), 1);
@@ -54,3 +76,5 @@ custom_math::Mat4 Camera::getLookat()
 
   return lookat;
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////

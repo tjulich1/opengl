@@ -68,4 +68,14 @@ void Vec4::normalize()
   values[2] = values[2] / length;
 }
 
+Vec4 Vec4::operator*(const Mat4& other) 
+{
+  Vec4 result(0);
+  for (int i = 0; i < 4; i++) {
+    Vec4 temp = other.getCol(i);
+    result.setElement(i, dot(temp));
+  }
+  return result;
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////

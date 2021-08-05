@@ -29,6 +29,8 @@ int create_fragment_shader(GLuint shaderProgram);
 Engine::Engine(SDL_Window* window) 
 {
   mainWindow = window;
+  camera = Camera(CAMERA_START, CAMERA_LOOK);
+  frustum = Frustum(LEFT, RIGHT, TOP, BOTTOM, NEAR_VAL, FAR_VAL);
 }
 
 void Engine::start()
@@ -78,26 +80,26 @@ void Engine::start()
       /*
         * Values for transforming the model.
         */
-      float translateX = -0.2f;
+      float translateX = 0.0f;
       float translateY = 0.0f;
       float translateZ = 0.0f;
 
-      float scaleX = 1.0f;
-      float scaleY = 2.0f;
-      float scaleZ = 1.0f;
+      float scaleX = 5.0f;
+      float scaleY = 5.0f;
+      float scaleZ = 5.0f;
 
       int rotationAngle = 0;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-
-      TransformationBuilder transformer;
-      Camera camera(0, 1, 1, 0, 0, 0);
-
-      Frustum testFrustum(-1.0f, 1.0f, 1.0f, -1.0f, 0.1, 100);
-      custom_math::Mat4 perspectiveMatrix = testFrustum.createPerspectiveMatrix();
+      custom_math::Mat4 perspectiveMatrix = frustum.createPerspectiveMatrix();
 
       custom_math::Mat4 testTranslate = 
         transformer.translation(translateX, translateY, translateZ);
+
+      std::cout << "X: " << firstPoint.getX() << std::endl;
+      std::cout << "Translate: " << testTranslate << std::endl;
+      custom_math::Vec4 temp = firstPoint * testTranslate;
+      std::cout << "X after translate: " << temp.getX() << std::endl;
 
       custom_math::Mat4 testScale = 
         transformer.scale(scaleX, scaleY, scaleZ);

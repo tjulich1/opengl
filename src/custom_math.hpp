@@ -12,6 +12,9 @@
 
 namespace custom_math 
 {
+
+  class Mat4;
+
   /**
    * Class representing a 4D vector used in graphics programming.
    */
@@ -127,6 +130,22 @@ namespace custom_math
       return result;
     }
 
+    /**
+     * Used to set a Vec4's elements by index. Takes index within [0, 3] inclusive. No value set if 
+     * index is outside range. 
+     */
+    inline void setElement(int index, float element) 
+    {
+      if (index >= 0 && index <= 3) {
+        values[index] = element;
+      }
+    }
+
+    /**
+     * Multiplies a Vec4 (as a row-vector) on the left by a Mat4.
+     */
+    Vec4 operator*(const Mat4& other);
+
   private:
     /**
      * Simple float array containing the elements of the Vec4.
@@ -197,6 +216,23 @@ namespace custom_math
     GLfloat* getFloats(GLfloat dest[]);
 
     /**
+     * Accesses a column within range [0, 3] and returns it as a vector.
+     */
+    inline Vec4 getCol(int column) const
+    {
+      Vec4 result(0);
+      
+      if (column >= 0 && column <= 3) {
+        result.setX(getElement(column, 0));
+        result.setY(getElement(column, 1));
+        result.setZ(getElement(column, 2));
+        result.setW(getElement(column, 3));
+      }
+
+      return result;
+    }
+
+    /**
      * Override of the * operator. When used, it will perform matrix multiplication between the 
      * two matrices.
      * 
@@ -209,6 +245,85 @@ namespace custom_math
      * Array containing the float values of the 4x4 matrix.  
      */
     float values[16];
+  };
+
+  /**
+   * Class representing a 3D vector.
+   */
+  class Vec3
+  {
+  public:
+    /**
+     * Constructor for new Vec3, taking initial values for each element.
+     * 
+     * x: initial value for x.
+     * y: initial value for y.
+     * z: initial value for z.
+     */
+    Vec3(float x, float y, float z) 
+    {
+      values[0] = x;
+      values[1] = y;
+      values[2] = z; 
+    }
+
+    /**
+     * Default constructor, initializes all vector elements to zero.
+     */
+    Vec3() 
+    {
+      values[0] = 0;
+      values[1] = 0;
+      values[2] = 0;
+    }
+
+    /**
+     * Method used to access the x component of the Vec3.
+     *
+     * returns: The x component of the Vec3.
+     */
+    float getX() { return values[0]; }
+
+    /**
+     * Method used to access the y component of the Vec3.
+     * 
+     * returns: The y component of the Vec3.
+     */
+    float getY() { return values[1]; }
+
+    /**
+     * Method used to access the z component of the Vec3.
+     * 
+     * returns: The z component of the Vec3.
+     */
+    float getZ() { return values[2]; }
+
+    /**
+     * Method used to set the x component of the Vec3.
+     * 
+     * x: The new x component.
+     */
+    void setX(float x) { values[0] = x; }
+
+    /**
+     * Method used to set the y component of the Vec3.
+     * 
+     * y: The new y component.
+     */
+    void setY(float y) { values[1] = y; }
+
+    /**
+     * Method used to set the z component of the Vec3.
+     * 
+     * z: The new z component.
+     */
+    void setZ(float z) { values[2] = z; }
+
+  private:
+    /**
+     * Array of length 3 containing the x, y, z components of the Vec3.
+     */
+    float values[3];
   };
 }; 
 

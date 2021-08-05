@@ -1,6 +1,10 @@
-// Trent Julich ~ 2 August 2021
+////////////////////////////////////////////////////////////////////////////////////////////////////
+/* Trent Julich ~ 2 August 2021                                                                   */
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #pragma once
+
+#include <array>
 
 /**
  * Included from src.
@@ -9,63 +13,43 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
+/**
+ * Class representing a camera in 3D space. Also used to get LookAt matrix for view transformation.
+ */
 class Camera
 {
 public:
   /**
+   * Constructor for a camera with the given position and looking in the direction defined by 
+   * cameraLook.
    * 
+   * cameraPosition: A 3D vector defining the position of the camera in 3D space.
+   * cameraLook: A 3D vector defining the direction the camera is viewing in 3D space.
    */
-  Camera(float x, float y, float z, float destX, float destY, float destZ);
-  
+  Camera(custom_math::Vec3 cameraPosition, custom_math::Vec3 cameraLook);
+
   /**
-   * 
+   * Default constructor for empty camera object.
+   */
+  Camera();
+
+  /**
+   * Method used to generate a lookat matrix using the given camera objects current orientation 
+   * (camera position and camera view point).
    */
   custom_math::Mat4 getLookat();
 
-  /**
-   * 
-   */
-  inline void setX(float newX) { cameraX = newX; }
-
-  /**
-   * 
-   */
-  inline void setY(float newY) { cameraY = newY; }
-
-  /**
-   * 
-   */
-  inline void setZ(float newZ) { cameraZ = newZ; }
-
-  /**
-   * 
-   */
-  inline float getX() { return cameraX; };
-
-  /**
-   * 
-   */
-  inline float getY() { return cameraY; }
-
-  /**
-   * 
-   */
-  inline float getZ() { return cameraZ; }
-
 private:
-  /**
-   * 
-   */
-  float cameraX; 
-  float cameraY;
-  float cameraZ;
 
   /**
-   * 
+   * Vector containing the position of the camera in 3D space.
    */
-  float lookatX;
-  float lookatY;
-  float lookatZ;
+  custom_math::Vec3 position;
+
+  /**
+   * Vector containing the point that the camera is looking towards.
+   */
+  custom_math::Vec3 lookDirection;
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

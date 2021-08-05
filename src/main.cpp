@@ -10,8 +10,8 @@
 #include "setup.hpp"
 
 /* Dimensions of main window. */
-const static int WIDTH = 500;
-const static int HEIGHT = 500;
+const static int WIDTH = 720;
+const static int HEIGHT = 480;
 
 const static std::string TITLE = "OpenGL test";
 
