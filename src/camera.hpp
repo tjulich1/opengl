@@ -10,6 +10,7 @@
  * Included from src.
  */
 #include "custom_math.hpp"
+#include "graphics_vec.hpp"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -26,7 +27,7 @@ public:
    * cameraPosition: A 3D vector defining the position of the camera in 3D space.
    * cameraLook: A 3D vector defining the direction the camera is viewing in 3D space.
    */
-  Camera(custom_math::Vec3 cameraPosition, custom_math::Vec3 cameraLook);
+  Camera(GraphicsVec cameraPosition, GraphicsVec cameraLook);
 
   /**
    * Default constructor for empty camera object.
@@ -44,12 +45,12 @@ private:
   /**
    * Vector containing the position of the camera in 3D space.
    */
-  custom_math::Vec3 position;
+  GraphicsVec position;
 
   /**
    * Vector containing the point that the camera is looking towards.
    */
-  custom_math::Vec3 lookDirection;
+  GraphicsVec lookDirection;
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

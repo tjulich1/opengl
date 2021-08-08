@@ -4,15 +4,15 @@
 
 #pragma once
 
-#include <string>
-#include <gl/GL.h>
 #include <array>
+#include <gl/GL.h>
+#include <string>
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 namespace custom_math 
 {
-
+  class Vec4;
   class Mat4;
 
   /**
@@ -247,84 +247,7 @@ namespace custom_math
     float values[16];
   };
 
-  /**
-   * Class representing a 3D vector.
-   */
-  class Vec3
-  {
-  public:
-    /**
-     * Constructor for new Vec3, taking initial values for each element.
-     * 
-     * x: initial value for x.
-     * y: initial value for y.
-     * z: initial value for z.
-     */
-    Vec3(float x, float y, float z) 
-    {
-      values[0] = x;
-      values[1] = y;
-      values[2] = z; 
-    }
-
-    /**
-     * Default constructor, initializes all vector elements to zero.
-     */
-    Vec3() 
-    {
-      values[0] = 0;
-      values[1] = 0;
-      values[2] = 0;
-    }
-
-    /**
-     * Method used to access the x component of the Vec3.
-     *
-     * returns: The x component of the Vec3.
-     */
-    float getX() { return values[0]; }
-
-    /**
-     * Method used to access the y component of the Vec3.
-     * 
-     * returns: The y component of the Vec3.
-     */
-    float getY() { return values[1]; }
-
-    /**
-     * Method used to access the z component of the Vec3.
-     * 
-     * returns: The z component of the Vec3.
-     */
-    float getZ() { return values[2]; }
-
-    /**
-     * Method used to set the x component of the Vec3.
-     * 
-     * x: The new x component.
-     */
-    void setX(float x) { values[0] = x; }
-
-    /**
-     * Method used to set the y component of the Vec3.
-     * 
-     * y: The new y component.
-     */
-    void setY(float y) { values[1] = y; }
-
-    /**
-     * Method used to set the z component of the Vec3.
-     * 
-     * z: The new z component.
-     */
-    void setZ(float z) { values[2] = z; }
-
-  private:
-    /**
-     * Array of length 3 containing the x, y, z components of the Vec3.
-     */
-    float values[3];
-  };
+  
 }; 
 
 /**

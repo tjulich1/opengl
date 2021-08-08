@@ -96,39 +96,27 @@ void Engine::start()
       custom_math::Mat4 testTranslate = 
         transformer.translation(translateX, translateY, translateZ);
 
-      std::cout << "X: " << firstPoint.getX() << std::endl;
-      std::cout << "Translate: " << testTranslate << std::endl;
       custom_math::Vec4 temp = firstPoint * testTranslate;
-      std::cout << "X after translate: " << temp.getX() << std::endl;
 
       custom_math::Mat4 testScale = 
         transformer.scale(scaleX, scaleY, scaleZ);
 
       custom_math::Mat4 view = camera.getLookat();
-
-      std::cout << "Lookat matrix: " << view << std::endl;
-      std::cout << "Translate: "  << testTranslate << std::endl;
-      std::cout << "Scale: " << testScale << std::endl;
-      std::cout << "Perspective matrix: " << perspectiveMatrix << std::endl;
-      std::cout << "Model start: " << testTriangle << std::endl;
     
       // Apply transformations to model. (Model -> World).
       testTriangle = testTriangle * testScale * testTranslate;
-      std::cout << "Model after transformations: " << testTriangle << std::endl;
 
       // View transformation (World -> Camera)
       testTriangle = testTriangle * view;
-      std::cout << "Model after view: " << testTriangle << std::endl;
       
       // Projection
       testTriangle = testTriangle * perspectiveMatrix;
-      std::cout << "Model after projection: " << testTriangle << std::endl;
 
-      GLfloat pleaseGodWork[16];
-      testTriangle.getFloats(pleaseGodWork);
+      GLfloat rawFloats[16];
+      testTriangle.getFloats(rawFloats);
 
       // Strip homogeneous coordinates to draw to screen.
-      GLfloat* vertices = util::convertToScreen(pleaseGodWork, 3);
+      GLfloat* vertices = util::convertToScreen(rawFloats, 3);
 
       for (int i = 0; i < 12; i++) {
         std::cout << vertices[i] << std::endl;
@@ -161,11 +149,16 @@ void Engine::start()
 
       // Main loop of engine.
       while (running) {
-
         SDL_Event e;
         while (SDL_PollEvent(&e)) {
+
+          // Check if the user has requested to quit the program.
           if (e.type == SDL_QUIT) {
             running = false;
+          } 
+          // Otherwise handle all other user events.
+          else {
+            inputHandler.handleEvent(e);
           }
         }
 

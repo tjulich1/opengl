@@ -6,8 +6,12 @@
 
 #include <SDL.h>
 
+/**
+ * Included from src.
+ */
 #include "camera.hpp"
 #include "frustum.hpp"
+#include "input_handler.hpp"
 #include "transformation_builder.hpp"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -21,8 +25,8 @@ static const float BOTTOM = -TOP;
 static const float NEAR_VAL = 0.1;
 static const float FAR_VAL = 100;
 
-static custom_math::Vec3 CAMERA_START(0, 0, 1);
-static custom_math::Vec3 CAMERA_LOOK(0, 0, 0);
+static GraphicsVec CAMERA_START(0, 0, 1);
+static GraphicsVec CAMERA_LOOK(0, 0, 0);
 
 /**
  * Class that handles the creation and management of resources needed for graphics engine.
@@ -65,6 +69,11 @@ private:
    * Object used to create transformation matrices for different graphical transformations.
    */
   TransformationBuilder transformer;
+
+  /**
+   * Object used to handle user input to the game engine.
+   */
+  InputHandler inputHandler;
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

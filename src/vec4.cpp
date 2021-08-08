@@ -2,8 +2,6 @@
 /* Trent Julich ~ 21 July 2021                                                                    */
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
 #include <math.h>
 
 /**
@@ -39,8 +37,7 @@ Vec4::Vec4(float initialValue)
 
 Vec4 Vec4::copy() 
 {
-  Vec4 theCopy(values[0], values[1], values[2], values[3]);
-  return theCopy;
+  return Vec4(values[0], values[1], values[2], values[3]);
 }
 
 Vec4 Vec4::cross(Vec4 other) 

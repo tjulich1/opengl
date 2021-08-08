@@ -11,11 +11,11 @@
 
 Camera::Camera()
 {
-  position = custom_math::Vec3();
-  lookDirection = custom_math::Vec3();
+  position = GraphicsVec(3);
+  lookDirection = GraphicsVec(3);
 }
 
-Camera::Camera(custom_math::Vec3 cameraPosition, custom_math::Vec3 cameraLook) 
+Camera::Camera(GraphicsVec cameraPosition, GraphicsVec cameraLook) 
 {
   position = cameraPosition;
   lookDirection = cameraLook;
