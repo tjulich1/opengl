@@ -14,11 +14,28 @@
 bool InputHandler::handleKeyDown(SDL_Event e)
 {
   bool success = true;
+
   switch(e.key.keysym.sym) {
-    case SDLK_a: std::cout << "Move camera left." << std::endl; break;
-    case SDLK_d: std::cout << "Move camera right." << std::endl; break;
-    case SDLK_w: myCameraController.moveY(1); break;
-    case SDLK_s: myCameraController.moveY(-1); break;
+
+    // X-axis camera controls.
+    case SDLK_a: 
+      myCameraController.moveAxis(-1, myCameraController.X_AXIS); break;
+    case SDLK_d: 
+      myCameraController.moveAxis(1, myCameraController.X_AXIS); break;
+      case SDLK_s: 
+
+    // Z-axis camera controls.
+      myCameraController.moveAxis(-1, myCameraController.Z_AXIS); break;
+    case SDLK_w: 
+      myCameraController.moveAxis(1, myCameraController.Z_AXIS); break;
+
+    // Y-axis controls.
+    case SDLK_SPACE: 
+      myCameraController.moveAxis(1, myCameraController.Y_AXIS); break;
+    case SDLK_LSHIFT: 
+      myCameraController.moveAxis(-1, myCameraController.Y_AXIS); break;
+
+    // Everything else.
     default: success = false; break;
   }
   return success;
@@ -28,10 +45,10 @@ bool InputHandler::handleKeyUp(SDL_Event e)
 {
   bool validKey = true;
   switch(e.key.keysym.sym) {
-    case SDLK_a: std::cout << "A UP" << std::endl; break;
-    case SDLK_d: std::cout << "D UP" << std::endl; break;
-    case SDLK_w: std::cout << "W UP" << std::endl; break;
-    case SDLK_s: std::cout << "S UP" << std::endl; break;
+    case SDLK_a:  break;
+    case SDLK_d:  break;
+    case SDLK_w:  break;
+    case SDLK_s:  break;
     default: validKey = false; break;
   }
   return validKey;

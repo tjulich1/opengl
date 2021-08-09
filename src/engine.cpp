@@ -54,13 +54,6 @@ void Engine::start()
 
       // Change color used to clear buffer.
       glClearColor(0.2, 0.0, 0.0, 1.0);
-    
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
-      
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
       /*
         * Values for transforming the model.
         */
@@ -70,7 +63,7 @@ void Engine::start()
 
       float scaleX = 5.0f;
       float scaleY = 5.0f;
-      float scaleZ = 5.0f;
+      float scaleZ = 1.0f;
 
       int rotationAngle = 0;
 
@@ -101,28 +94,23 @@ void Engine::start()
 
       bool running = true;
 
-      // Main loop of engine.
-      while (running) {
-        SDL_Event e;
-
       /*
       * Setup model vertex data.
       */ 
       custom_math::Mat4 testTriangle;
-      
-      // Triangle with base at bottom of screen.
-      custom_math::Vec4 firstPoint(-1.0f, -1.0f, 0.0f, 1.0f);
-      custom_math::Vec4 secondPoint(1.0f, -1.0f, 0.0f, 1.0f);
-      custom_math::Vec4 thirdPoint(0.0f, 1.0f, 0.0f, 1.0f);
+  
+      custom_math::Vec4 firstPoint(-1.0f, 0, 0, 1.0f);
+      custom_math::Vec4 secondPoint(1.0f, 0, 0.0f, 1.0f);
+      custom_math::Vec4 thirdPoint(0.0f, 0, 50, 1.0f);  
 
-      std::vector<custom_math::Vec4> testList{firstPoint, secondPoint, thirdPoint};
-      Model testModel(testList);
-      testModel.listVertices();
+      SDL_Event e;
 
-      testTriangle.setRow(0, firstPoint);
-      testTriangle.setRow(1, secondPoint);
-      testTriangle.setRow(2, thirdPoint);
-      testTriangle.setElement(3, 3, 1);
+      // Main loop of engine.
+      while (running) {
+        testTriangle.setRow(0, firstPoint);
+        testTriangle.setRow(1, secondPoint);
+        testTriangle.setRow(2, thirdPoint);
+        testTriangle.setElement(3, 3, 1);
 
         custom_math::Mat4 perspectiveMatrix = frustum.createPerspectiveMatrix();
 

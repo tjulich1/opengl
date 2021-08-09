@@ -14,29 +14,47 @@ CameraController::CameraController()
   isCameraLinked = false;
 }
 
-
 CameraController::CameraController(Camera* theCamera) 
 {
   myCamera.reset(theCamera);
   isCameraLinked = true;
 }
 
-void CameraController::moveY(float theDistance)
+void CameraController::moveAxis(float theDistance, Axis theAxis)
 {
   GraphicsVec currentPosition = myCamera->getPosition();
-  GraphicsVec newPosition(
-    currentPosition.getX(),
-    currentPosition.getY() + theDistance, 
-    currentPosition.getZ()
-  );
-  myCamera->moveCamera(newPosition);
-  GraphicsVec currentLook = myCamera->getLookDest();
-  GraphicsVec newLook(
-    currentLook.getX(),
-    currentLook.getY() + theDistance,
-    currentLook.getZ()
-  );
-  myCamera->look(newLook);
+  GraphicsVec currentLook     = myCamera->getLookDest();
+
+  float posX = currentPosition.getX();
+  float posY = currentPosition.getY();
+  float posZ = currentPosition.getZ(); 
+  
+  float lookX = currentLook.getX();
+  float lookY = currentLook.getY();
+  float lookZ = currentLook.getZ();
+  
+  switch (theAxis) 
+  {
+    case X_AXIS: {
+      posX  += theDistance;
+      lookX += theDistance;
+      break;
+    }
+    case Y_AXIS: {
+      posY  += theDistance;
+      lookY += theDistance;
+      break;
+    }
+    case Z_AXIS: {
+      posZ  += theDistance;
+      lookZ += theDistance;
+      break;
+    }
+    // Don't move anything if invalid axis is somehow passed.
+    default: return;
+  }
+  myCamera->moveCamera(GraphicsVec(posX, posY, posZ));
+  myCamera->look(GraphicsVec(lookX, lookY, lookZ));
 }
 
 void CameraController::setCamera(Camera* newCamera) 

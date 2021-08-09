@@ -16,6 +16,12 @@
 class CameraController 
 {
 public:
+
+  enum Axis
+  {
+    X_AXIS, Y_AXIS, Z_AXIS
+  };
+
   /**
    * Default camera controller constructor, must be given camera object to be used.
    */
@@ -27,11 +33,30 @@ public:
   CameraController(Camera* theCamera);
 
   /**
+   * Moves the camera along the x-axis by the given amount.
+   * 
+   * theDistance: The amont to move the camera.
+   */
+  void moveX(float theDistance);
+
+  /**
    * Moves the camera along the y-axis by the given amount.
    * 
    * theDistance: The amount to move the camera.
    */
   void moveY(float theDistance);
+
+  /**
+   * Moves the camera along the z-axis by the given amount.
+   * 
+   * theDistance: The amount to move the camera.
+   */
+  void moveZ(float theDistance);
+
+  /**
+   * Method used to move the camera a fixed distance along a single axis. 
+   */
+  void moveAxis(float theDistance, Axis theAxis);
 
   /**
    * Setter for the camera that this controller should control.
