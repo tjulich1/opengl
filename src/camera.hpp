@@ -35,10 +35,34 @@ public:
   Camera();
 
   /**
+   * Moves the camera to position specified by given vector.
+   * 
+   * newPosition: 3D vector containing the new position of the camera.
+   */
+  void moveCamera(GraphicsVec newPosition);
+
+  /**
+   * Changes the point that the camera is looking at to the point specified by the given vector.
+   * 
+   * newLookPosition: 3D vector containing new position for camera to look.
+   */
+  void look(GraphicsVec newLookPosition);
+
+  /**
    * Method used to generate a lookat matrix using the given camera objects current orientation 
    * (camera position and camera view point).
    */
   custom_math::Mat4 getLookat();
+
+  /**
+   * Returns the current position of the camera.
+   */
+  GraphicsVec  getPosition() { return position; }
+
+  /**
+   * Returns the point the camera is currently looking at.
+   */
+  GraphicsVec getLookDest() { return lookDirection; }
 
 private:
 

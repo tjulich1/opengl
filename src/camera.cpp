@@ -7,6 +7,8 @@
  */
 #include "camera.hpp"
 
+#include <iostream>
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 Camera::Camera()
@@ -19,6 +21,26 @@ Camera::Camera(GraphicsVec cameraPosition, GraphicsVec cameraLook)
 {
   position = cameraPosition;
   lookDirection = cameraLook;
+}
+
+void Camera::moveCamera(GraphicsVec newPosition)
+{
+  if (newPosition.getSize() >= 3) {
+    std::cout << "Old: " << position.getX() << ", " << position.getY() << ", " << position.getZ() << std::endl;
+    position.setX(newPosition.getX());
+    position.setY(newPosition.getY());
+    position.setZ(newPosition.getZ());
+    std::cout << "New: " << position.getX() << ", " << position.getY() << ", " << position.getZ() << std::endl;
+  }
+}
+
+void Camera::look(GraphicsVec newLookPosition) 
+{
+  if (newLookPosition.getSize() >= 3) {
+    lookDirection.setX(newLookPosition.getX());
+    lookDirection.setY(newLookPosition.getY());
+    lookDirection.setZ(newLookPosition.getZ());
+  }
 }
 
 custom_math::Mat4 Camera::getLookat() 

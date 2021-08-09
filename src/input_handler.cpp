@@ -15,10 +15,10 @@ bool InputHandler::handleKeyDown(SDL_Event e)
 {
   bool success = true;
   switch(e.key.keysym.sym) {
-    case SDLK_a: std::cout << "A DOWN" << std::endl; break;
-    case SDLK_d: std::cout << "D DOWN" << std::endl; break;
-    case SDLK_w: std::cout << "W DOWN" << std::endl; break;
-    case SDLK_s: std::cout << "S DOWN" << std::endl; break;
+    case SDLK_a: std::cout << "Move camera left." << std::endl; break;
+    case SDLK_d: std::cout << "Move camera right." << std::endl; break;
+    case SDLK_w: myCameraController.moveY(1); break;
+    case SDLK_s: myCameraController.moveY(-1); break;
     default: success = false; break;
   }
   return success;

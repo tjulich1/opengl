@@ -4,6 +4,11 @@
 
 #pragma once
 
+/**
+ * Included from src.
+ */
+#include "camera_controller.hpp"
+
 #include <SDL.h>
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -21,6 +26,13 @@ public:
    */
   bool handleEvent(SDL_Event e);
 
+  /**
+   * Links camera object to receive user input.
+   * 
+   * theCamera: Camera object that should receive input.
+   */
+  void linkCamera(Camera* theCamera) { myCameraController.setCamera(theCamera); };
+
 private:
   /**
    * Helper method used to handle all valid key down events.
@@ -35,6 +47,11 @@ private:
    * returns: True for valid event, false otherwise.
    */
   bool handleKeyUp(SDL_Event e);
+
+  /**
+   * Camera controller object used to handle user inputs relating to the camera.
+   */
+  CameraController myCameraController;
 
 };
 

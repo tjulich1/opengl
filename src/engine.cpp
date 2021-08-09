@@ -6,6 +6,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <memory>
 
 /**
  * Included from src.
@@ -29,7 +30,7 @@ int create_fragment_shader(GLuint shaderProgram);
 Engine::Engine(SDL_Window* window) 
 {
   mainWindow = window;
-  camera = Camera(CAMERA_START, CAMERA_LOOK);
+  myCamera = std::make_shared<Camera>(Camera(CAMERA_START, CAMERA_LOOK));
   frustum = Frustum(LEFT, RIGHT, TOP, BOTTOM, NEAR_VAL, FAR_VAL);
 }
 
@@ -56,24 +57,7 @@ void Engine::start()
     
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-      /*
-        * Setup model vertex data.
-        */ 
-      custom_math::Mat4 testTriangle;
       
-      // Triangle with base at bottom of screen.
-      custom_math::Vec4 firstPoint(-1.0f, -1.0f, 0.0f, 1.0f);
-      custom_math::Vec4 secondPoint(1.0f, -1.0f, 0.0f, 1.0f);
-      custom_math::Vec4 thirdPoint(0.0f, 1.0f, 0.0f, 1.0f);
-
-      std::vector<custom_math::Vec4> testList{firstPoint, secondPoint, thirdPoint};
-      Model testModel(testList);
-      testModel.listVertices();
-
-      testTriangle.setRow(0, firstPoint);
-      testTriangle.setRow(1, secondPoint);
-      testTriangle.setRow(2, thirdPoint);
-      testTriangle.setElement(3, 3, 1);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -91,36 +75,7 @@ void Engine::start()
       int rotationAngle = 0;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-      custom_math::Mat4 perspectiveMatrix = frustum.createPerspectiveMatrix();
-
-      custom_math::Mat4 testTranslate = 
-        transformer.translation(translateX, translateY, translateZ);
-
-      custom_math::Vec4 temp = firstPoint * testTranslate;
-
-      custom_math::Mat4 testScale = 
-        transformer.scale(scaleX, scaleY, scaleZ);
-
-      custom_math::Mat4 view = camera.getLookat();
-    
-      // Apply transformations to model. (Model -> World).
-      testTriangle = testTriangle * testScale * testTranslate;
-
-      // View transformation (World -> Camera)
-      testTriangle = testTriangle * view;
       
-      // Projection
-      testTriangle = testTriangle * perspectiveMatrix;
-
-      GLfloat rawFloats[16];
-      testTriangle.getFloats(rawFloats);
-
-      // Strip homogeneous coordinates to draw to screen.
-      GLfloat* vertices = util::convertToScreen(rawFloats, 3);
-
-      for (int i = 0; i < 12; i++) {
-        std::cout << vertices[i] << std::endl;
-      }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -130,9 +85,6 @@ void Engine::start()
 
       // Set vertex buffer object as the current one.
       glBindBuffer(GL_ARRAY_BUFFER, VBO);
-
-      // Pass vertex information to opengl.
-      glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 9, vertices, GL_STATIC_DRAW);
 
       glEnableVertexAttribArray(0);
 
@@ -145,11 +97,63 @@ void Engine::start()
         (void *)0
       );
 
+      inputHandler.linkCamera(myCamera.get());
+
       bool running = true;
 
       // Main loop of engine.
       while (running) {
         SDL_Event e;
+
+      /*
+      * Setup model vertex data.
+      */ 
+      custom_math::Mat4 testTriangle;
+      
+      // Triangle with base at bottom of screen.
+      custom_math::Vec4 firstPoint(-1.0f, -1.0f, 0.0f, 1.0f);
+      custom_math::Vec4 secondPoint(1.0f, -1.0f, 0.0f, 1.0f);
+      custom_math::Vec4 thirdPoint(0.0f, 1.0f, 0.0f, 1.0f);
+
+      std::vector<custom_math::Vec4> testList{firstPoint, secondPoint, thirdPoint};
+      Model testModel(testList);
+      testModel.listVertices();
+
+      testTriangle.setRow(0, firstPoint);
+      testTriangle.setRow(1, secondPoint);
+      testTriangle.setRow(2, thirdPoint);
+      testTriangle.setElement(3, 3, 1);
+
+        custom_math::Mat4 perspectiveMatrix = frustum.createPerspectiveMatrix();
+
+        custom_math::Mat4 testTranslate = 
+          transformer.translation(translateX, translateY, translateZ);
+
+        custom_math::Vec4 temp = firstPoint * testTranslate;
+
+        custom_math::Mat4 testScale = 
+          transformer.scale(scaleX, scaleY, scaleZ);
+    
+        // Apply transformations to model. (Model -> World).
+        testTriangle = testTriangle * testScale * testTranslate;
+
+        custom_math::Mat4 view = myCamera->getLookat();
+
+        // View transformation (World -> Camera)
+        testTriangle = testTriangle * view;
+        
+        // Projection
+        testTriangle = testTriangle * perspectiveMatrix;
+
+        GLfloat rawFloats[16];
+        testTriangle.getFloats(rawFloats);
+
+        // Strip homogeneous coordinates to draw to screen.
+        GLfloat* vertices = util::convertToScreen(rawFloats, 3);
+
+        // Pass vertex information to opengl.
+        glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 9, vertices, GL_STATIC_DRAW); 
+
         while (SDL_PollEvent(&e)) {
 
           // Check if the user has requested to quit the program.

@@ -37,6 +37,8 @@ GraphicsVec::GraphicsVec(float x, float y, float z, float w)
   elements[3] = w;
 }
 
+int GraphicsVec::getSize() { return numElements; }
+
 float GraphicsVec::getX()
 {
   float x = -1;

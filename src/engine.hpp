@@ -58,7 +58,7 @@ private:
   /**
    * Main camera object, containing info about camera position and view direction.
    */
-  Camera camera;
+  std::shared_ptr<Camera> myCamera;
 
   /**
    * Holds information regarding the frustum that should be used when performing projections.

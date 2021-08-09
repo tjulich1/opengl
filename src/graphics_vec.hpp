@@ -34,6 +34,11 @@ public:
   GraphicsVec(float x, float y, float z, float w);
 
   /**
+   * Method used to get the size of the vector.
+   */
+  int getSize();
+
+  /**
    * Accesses the vector element corresponding to its x component. Vector must have size at least 
    * 1 to access x element.
    *
