@@ -17,6 +17,9 @@ class CameraController
 {
 public:
 
+  /**
+   * Enum used for specifying axis of movement for camera translations.
+   */
   enum Axis
   {
     X_AXIS, Y_AXIS, Z_AXIS
@@ -29,42 +32,31 @@ public:
 
   /**
    * Camera controller constructor which applies user inputs to the given camera object.
+   * 
+   * theCamera: Pointer to the camera that should be controlled.
    */
   CameraController(Camera* theCamera);
 
   /**
-   * Moves the camera along the x-axis by the given amount.
+   * Method used to move both the cameras position and look point a fixed direction along a given 
+   * axis.
    * 
-   * theDistance: The amont to move the camera.
-   */
-  void moveX(float theDistance);
-
-  /**
-   * Moves the camera along the y-axis by the given amount.
-   * 
-   * theDistance: The amount to move the camera.
-   */
-  void moveY(float theDistance);
-
-  /**
-   * Moves the camera along the z-axis by the given amount.
-   * 
-   * theDistance: The amount to move the camera.
-   */
-  void moveZ(float theDistance);
-
-  /**
-   * Method used to move the camera a fixed distance along a single axis. 
+   * theDistance: The distance to move the camera along the axis.
+   * theAxis: The desired axis to move the camera along.
    */
   void moveAxis(float theDistance, Axis theAxis);
 
   /**
    * Setter for the camera that this controller should control.
+   * 
+   * newCamera: Pointer to the camera that should be controlled.
    */
   void setCamera(Camera* newCamera);
 
   /**
    * Returns the status of whether a camera object is currently linked to this controller.
+   * 
+   * returns: True if a camera has been linked and can be controlled, else False.
    */
   bool getIsCameraLinked() { return isCameraLinked; } 
 
@@ -75,7 +67,7 @@ public:
 
 private:
   /**
-   * Pointer to the camera object associated with this camera controller.
+   * Pointer to the camera object associated with this controller.
    */
   std::shared_ptr<Camera> myCamera = nullptr;
 

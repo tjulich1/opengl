@@ -7,6 +7,7 @@
 #include <cmath>
 #include <sstream>
 
+
 using namespace custom_math;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -31,21 +32,21 @@ Mat4 Mat4::Identity() {
   return newVec;
 }
 
-Mat4 Mat4::LookAt(Vec4 cameraLocation, Vec4 viewDirection) {
+Mat4 Mat4::LookAt(GraphicsVec cameraLocation, GraphicsVec viewDirection) {
   // Vector in direction cam is pointing.
   float x = cameraLocation.getX() - viewDirection.getX();
   float y = cameraLocation.getY() - viewDirection.getY();
   float z = cameraLocation.getZ() - viewDirection.getZ();
 
   // Viewing plane normal.
-  Vec4 forward(x, y, z, 0);
+  GraphicsVec forward(x, y, z, 0);
   forward.normalize();
 
   // Normal vector pointing up along the y axis.
-  Vec4 temp(0, 1, 0, 0);
+  GraphicsVec temp(0, 1, 0, 0);
 
   // U vector
-  Vec4 right = temp.cross(forward);
+  GraphicsVec right = temp.cross(forward);
 
   Mat4 lookAt;
   lookAt.setRow(0, right);
@@ -67,7 +68,7 @@ void Mat4::setElement(int col, int row, float value) {
   values[row * 4 + col] = value;
 }
 
-void Mat4::setRow(int row, Vec4 rowValues) {
+void Mat4::setRow(int row, GraphicsVec rowValues) {
   // Make sure row is valid.
   if (row >= 0 && row < 4) {
     for (int i = 0; i < 4; i++) {

@@ -10,6 +10,7 @@
  * Included from source
  */
 #include "custom_math.hpp"
+#include "graphics_vec.hpp"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -24,7 +25,7 @@ public:
    * 
    * modelVertices: Vector of Vec4, containing vertex information for model.
    */
-  Model(std::vector<custom_math::Vec4>& modelVertices);
+  Model(std::vector<GraphicsVec>& modelVertices);
 
   /**
    * Prints the full list of model vertices to std::cout.
@@ -35,7 +36,7 @@ private:
   /**
    * Vector holding the vertex data.
    */
-  std::vector<custom_math::Vec4> vertices;
+  std::vector<GraphicsVec> vertices;
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

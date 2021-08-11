@@ -2,17 +2,18 @@
 /* Trent Julich ~ 2 August 2021                                                                   */
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
+#include <iostream>
+
 /**
  * Included from src. 
  */
 #include "camera.hpp"
 
-#include <iostream>
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 Camera::Camera()
 {
+  // Initialize with empty vectors.
   position = GraphicsVec(3);
   lookDirection = GraphicsVec(3);
 }
@@ -48,7 +49,7 @@ custom_math::Mat4 Camera::getLookat()
   custom_math::Mat4 lookat;
 
   // Calculate vector pointing in the direction the camera (new z-axis).
-  custom_math::Vec4 zAxis(
+  GraphicsVec zAxis(
     lookDirection.getX() - position.getX(), 
     lookDirection.getY() - position.getY(), 
     lookDirection.getZ() - position.getZ(), 
@@ -57,23 +58,23 @@ custom_math::Mat4 Camera::getLookat()
   zAxis.normalize();
 
   // Choose arbitrary vector pointing in positive y direction.
-  custom_math::Vec4 up(0, 1, 0, 0);
+  GraphicsVec up(0, 1, 0, 0);
 
   // Calculate x-axis from z-axis and arbitrary vector.
-  custom_math::Vec4 xAxis = zAxis.cross(up);
+  GraphicsVec xAxis = zAxis.cross(up);
   xAxis.normalize();
 
   // Calculate true camera up from z-axis and x-axis.
-  custom_math::Vec4 yAxis = xAxis.cross(zAxis);
+  GraphicsVec yAxis = xAxis.cross(zAxis);
   
   // Flip z-axis, so +z points behind the camera.
   zAxis.setX(-zAxis.getX());
   zAxis.setY(-zAxis.getY());
   zAxis.setZ(-zAxis.getZ());
 
-  custom_math::Vec4 cameraVec(position.getX(), position.getY(), position.getZ(), 0);
+  GraphicsVec cameraVec(position.getX(), position.getY(), position.getZ(), 0);
 
-  custom_math::Vec4 bottomRow(-xAxis.dot(cameraVec), -yAxis.dot(cameraVec), 
+  GraphicsVec bottomRow(-xAxis.dot(cameraVec), -yAxis.dot(cameraVec), 
     -zAxis.dot(cameraVec), 1);
 
   lookat.setElement(0, 0, xAxis.getX());

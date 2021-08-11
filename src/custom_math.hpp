@@ -8,151 +8,13 @@
 #include <gl/GL.h>
 #include <string>
 
+#include "graphics_vec.hpp"
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 namespace custom_math 
 {
-  class Vec4;
   class Mat4;
-
-  /**
-   * Class representing a 4D vector used in graphics programming.
-   */
-  class Vec4 
-  {
-  public:
-    static const int MAX_ELEMENTS = 4;
-
-    /**
-     * Default constructor, sets all elements equal to zero.
-     */
-    Vec4();
-
-    /**
-     * Constructor which initializes all elements to the same initial value.
-     * 
-     * initialValue: The value to initialize with.
-     */
-    Vec4(float initialValue);
-
-    /**
-     * Constructor which initializes Vec4 with given arguments.
-     * 
-     * x, y, z, w: initial values for corresponding elements.
-     */
-    Vec4(float x, float y, float z, float w);
-
-    /**
-     * Returns a new Vec4 containing the same elements as the Vec4 the method was called on.
-     */
-    Vec4 copy();
-
-    /**
-     * Calculates the cross product between the two vectors. 
-     * 
-     * other: The other matrix involved in the cross product. This matrix will be on the right hand
-     *        side.
-     */
-    Vec4 cross(Vec4 other);
-
-    /**
-     * Calculates the dot product between two Vec4's.
-     * 
-     * returns: The dot product of the two vectors.
-     */
-    float dot(Vec4 other);
-
-    /**
-     * Turns a Vec4 into a unit vector, dividing each element by the original length of the vector.
-     */
-    void normalize();
-
-    /**
-     * Sets the Vec4's x element.
-     * 
-     * newX: New x element value.
-     */
-    inline void setX(float newX) { values[0] = newX; }
-
-    /**
-     * Sets the Vec4's y element.
-     * 
-     * newY: New y element value.
-     */
-    inline void setY(float newY) { values[1] = newY; }
-
-    /**
-     * Sets the Vec4's z element.
-     * 
-     * newZ: New z element value.
-     */
-    inline void setZ(float newZ) { values[2] = newZ; }
-
-    /**
-     * Sets the Vec4's w element.
-     * 
-     * newW: New w element value.
-     */
-    inline void setW(float newW) { values[3] = newW; }
-
-    /**
-     * Returns the Vec4's current x value.
-     */
-    inline float getX() { return values[0]; }
-
-    /**
-     * Returns the Vec4's current y value.
-     */
-    inline float getY(){ return values[1]; }
-
-    /**
-     * Returns the Vec4's current z value.
-     */
-    inline float getZ() { return values[2]; }
-
-    /**
-     * Returns the Vec4's current w value.
-     */
-    inline float getW(){ return values[3]; }
-
-    /**
-     * Used to access the Vec4's elements by index. Takes an index within [0, 3] inclusive. If an 
-     * index outside this range is provided, an arbitrary value will be returned.
-     * 
-     * element: Index of the element to access.
-     */
-    inline float getElement(int element) 
-    {
-      float result = 0;
-      if (element >= 0 && element < MAX_ELEMENTS) {
-        result = values[element];
-      }
-      return result;
-    }
-
-    /**
-     * Used to set a Vec4's elements by index. Takes index within [0, 3] inclusive. No value set if 
-     * index is outside range. 
-     */
-    inline void setElement(int index, float element) 
-    {
-      if (index >= 0 && index <= 3) {
-        values[index] = element;
-      }
-    }
-
-    /**
-     * Multiplies a Vec4 (as a row-vector) on the left by a Mat4.
-     */
-    Vec4 operator*(const Mat4& other);
-
-  private:
-    /**
-     * Simple float array containing the elements of the Vec4.
-     */
-    float values[MAX_ELEMENTS];
-  };
-
   /**
    * Class representing a 4x4 matrix used for transformations in graphics programming.
    */
@@ -181,7 +43,7 @@ namespace custom_math
      * Factory method used to generate LookAt matrices. When this matrix is multiplied with a model 
      * matrix, it 
      */
-    static Mat4 LookAt(Vec4 cameraPosition, Vec4 viewDirection);
+    static Mat4 LookAt(GraphicsVec cameraPosition, GraphicsVec viewDirection);
 
     /**
      * Sets a single element within the Mat4.
@@ -198,7 +60,7 @@ namespace custom_math
      * row:       The row to set.
      * rowValues: Vec4 containing values to assign to elements.
      */
-    void setRow(int row, Vec4 rowValues);
+    void setRow(int row, GraphicsVec rowValues);
 
     /**
      * Retrieves an element from the Mat4.
@@ -218,9 +80,9 @@ namespace custom_math
     /**
      * Accesses a column within range [0, 3] and returns it as a vector.
      */
-    inline Vec4 getCol(int column) const
+    inline GraphicsVec getCol(int column) const
     {
-      Vec4 result(0);
+      GraphicsVec result(0);
       
       if (column >= 0 && column <= 3) {
         result.setX(getElement(column, 0));

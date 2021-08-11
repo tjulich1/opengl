@@ -22,12 +22,12 @@ bool InputHandler::handleKeyDown(SDL_Event e)
       myCameraController.moveAxis(-1, myCameraController.X_AXIS); break;
     case SDLK_d: 
       myCameraController.moveAxis(1, myCameraController.X_AXIS); break;
-      case SDLK_s: 
-
-    // Z-axis camera controls.
-      myCameraController.moveAxis(-1, myCameraController.Z_AXIS); break;
-    case SDLK_w: 
+      
+    // Z-axis camera controls.  
+    case SDLK_s: 
       myCameraController.moveAxis(1, myCameraController.Z_AXIS); break;
+    case SDLK_w: 
+      myCameraController.moveAxis(-1, myCameraController.Z_AXIS); break;
 
     // Y-axis controls.
     case SDLK_SPACE: 
@@ -41,6 +41,9 @@ bool InputHandler::handleKeyDown(SDL_Event e)
   return success;
 }
 
+/**
+ * Stub for now, some keys may have actions when released.
+ */
 bool InputHandler::handleKeyUp(SDL_Event e) 
 {
   bool validKey = true;

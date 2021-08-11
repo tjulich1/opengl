@@ -59,7 +59,7 @@ void Engine::start()
         */
       float translateX = 0.0f;
       float translateY = 0.0f;
-      float translateZ = 0.0f;
+      float translateZ = 10.0f;
 
       float scaleX = 5.0f;
       float scaleY = 5.0f;
@@ -94,53 +94,68 @@ void Engine::start()
 
       bool running = true;
 
-      /*
-      * Setup model vertex data.
-      */ 
-      custom_math::Mat4 testTriangle;
-  
-      custom_math::Vec4 firstPoint(-1.0f, 0, 0, 1.0f);
-      custom_math::Vec4 secondPoint(1.0f, 0, 0.0f, 1.0f);
-      custom_math::Vec4 thirdPoint(0.0f, 0, 50, 1.0f);  
+      static const GLfloat g_vertex_buffer_data[] = {
+          -1.0f,-1.0f,-1.0f, // triangle 1 : begin
+          -1.0f,-1.0f, 1.0f,
+          -1.0f, 1.0f, 1.0f, // triangle 1 : end
+          1.0f, 1.0f,-1.0f, // triangle 2 : begin
+          -1.0f,-1.0f,-1.0f,
+          -1.0f, 1.0f,-1.0f, // triangle 2 : end
+          1.0f,-1.0f, 1.0f,
+          -1.0f,-1.0f,-1.0f,
+          1.0f,-1.0f,-1.0f,
+          1.0f, 1.0f,-1.0f,
+          1.0f,-1.0f,-1.0f,
+          -1.0f,-1.0f,-1.0f,
+          -1.0f,-1.0f,-1.0f,
+          -1.0f, 1.0f, 1.0f,
+          -1.0f, 1.0f,-1.0f,
+          1.0f,-1.0f, 1.0f,
+          -1.0f,-1.0f, 1.0f,
+          -1.0f,-1.0f,-1.0f,
+          -1.0f, 1.0f, 1.0f,
+          -1.0f,-1.0f, 1.0f,
+          1.0f,-1.0f, 1.0f,
+          1.0f, 1.0f, 1.0f,
+          1.0f,-1.0f,-1.0f,
+          1.0f, 1.0f,-1.0f,
+          1.0f,-1.0f,-1.0f,
+          1.0f, 1.0f, 1.0f,
+          1.0f,-1.0f, 1.0f,
+          1.0f, 1.0f, 1.0f,
+          1.0f, 1.0f,-1.0f,
+          -1.0f, 1.0f,-1.0f,
+          1.0f, 1.0f, 1.0f,
+          -1.0f, 1.0f,-1.0f,
+          -1.0f, 1.0f, 1.0f,
+          1.0f, 1.0f, 1.0f,
+          -1.0f, 1.0f, 1.0f,
+          1.0f,-1.0f, 1.0f
+        };
 
       SDL_Event e;
 
       // Main loop of engine.
       while (running) {
-        testTriangle.setRow(0, firstPoint);
-        testTriangle.setRow(1, secondPoint);
-        testTriangle.setRow(2, thirdPoint);
-        testTriangle.setElement(3, 3, 1);
-
         custom_math::Mat4 perspectiveMatrix = frustum.createPerspectiveMatrix();
 
         custom_math::Mat4 testTranslate = 
           transformer.translation(translateX, translateY, translateZ);
 
-        custom_math::Vec4 temp = firstPoint * testTranslate;
-
         custom_math::Mat4 testScale = 
           transformer.scale(scaleX, scaleY, scaleZ);
     
         // Apply transformations to model. (Model -> World).
-        testTriangle = testTriangle * testScale * testTranslate;
 
         custom_math::Mat4 view = myCamera->getLookat();
 
         // View transformation (World -> Camera)
-        testTriangle = testTriangle * view;
+      
         
         // Projection
-        testTriangle = testTriangle * perspectiveMatrix;
-
-        GLfloat rawFloats[16];
-        testTriangle.getFloats(rawFloats);
-
-        // Strip homogeneous coordinates to draw to screen.
-        GLfloat* vertices = util::convertToScreen(rawFloats, 3);
 
         // Pass vertex information to opengl.
-        glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 9, vertices, GL_STATIC_DRAW); 
+        glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 12 * 9, g_vertex_buffer_data, GL_STATIC_DRAW); 
 
         while (SDL_PollEvent(&e)) {
 
@@ -160,7 +175,7 @@ void Engine::start()
         glUseProgram(shaderProgram);
 
         // Draw triangle using 3 vertices.
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glDrawArrays(GL_TRIANGLES, 0, 12*3);
         SDL_GL_SwapWindow(mainWindow);
       }
       glDisableVertexAttribArray(0);

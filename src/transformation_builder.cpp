@@ -77,7 +77,7 @@ Mat4 TransformationBuilder::zRotation(int angleOfRotation) {
   return rotateVec;
 }
 
-Mat4 TransformationBuilder::rotateFromAxisAngle(int angleOfRotation, Vec4 axis) {
+Mat4 TransformationBuilder::rotateFromAxisAngle(int angleOfRotation, GraphicsVec axis) {
   Mat4 rotate;
 
   float angleInRads = to_radians(angleOfRotation);

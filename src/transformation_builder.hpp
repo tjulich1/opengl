@@ -63,7 +63,7 @@ public:
    * angleOfRotation: The angle in degrees that the vertex should be rotated.
    * axis: A vector that points along the desired axis of rotation.
    */
-  Mat4 rotateFromAxisAngle(int angleOfRotation, Vec4 axis);
+  Mat4 rotateFromAxisAngle(int angleOfRotation, GraphicsVec axis);
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

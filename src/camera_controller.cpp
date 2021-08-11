@@ -33,6 +33,10 @@ void CameraController::moveAxis(float theDistance, Axis theAxis)
   float lookY = currentLook.getY();
   float lookZ = currentLook.getZ();
   
+  /**
+   * Depending on the axis, add the given distance to the x, y, or z components of the original
+   * position and view point.
+   */
   switch (theAxis) 
   {
     case X_AXIS: {

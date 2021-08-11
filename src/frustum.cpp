@@ -20,25 +20,25 @@ custom_math::Mat4 Frustum::createPerspectiveMatrix()
 {
   custom_math::Mat4 perspectiveMatrix;
 
-  custom_math::Vec4 firstRow {
+  GraphicsVec firstRow {
     2*nearValue / (rightValue-leftValue),
     0, 0, 0
   };
 
-  custom_math::Vec4 secondRow {
+  GraphicsVec secondRow {
     0, 
     2*nearValue / (topValue-bottomValue),
     0, 0
   };
 
-  custom_math::Vec4 thirdRow {
+  GraphicsVec thirdRow {
     (rightValue+leftValue) / (rightValue-leftValue),
     (topValue+bottomValue) / (topValue-bottomValue), 
     -(farValue+nearValue) / (farValue-nearValue),
     -1
   };
 
-  custom_math::Vec4 fourthRow {
+  GraphicsVec fourthRow {
     0, 0, 
     -2*farValue*nearValue / (farValue-nearValue),
     0
