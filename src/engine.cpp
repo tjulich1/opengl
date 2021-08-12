@@ -53,23 +53,19 @@ void Engine::start()
 
       // Change color used to clear buffer.
       glClearColor(0.2, 0.0, 0.0, 1.0);
+      
       /*
-        * Values for transforming the model.
-        */
+       * Values for transforming the model.
+       */
       float translateX = 0.0f;
       float translateY = 0.0f;
-      float translateZ = 10.0f;
+      float translateZ = 0.0f;
 
-      float scaleX = 5.0f;
-      float scaleY = 5.0f;
+      float scaleX = 1.0f;
+      float scaleY = 1.0f;
       float scaleZ = 1.0f;
 
       int rotationAngle = 0;
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-      
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
 
       // Generate vertex buffer object.
       unsigned int VBO;

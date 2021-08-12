@@ -42,7 +42,9 @@ public:
   
   /**
    * Factory method used to generate LookAt matrices. When this matrix is multiplied with a model 
-   * matrix, it 
+   * matrix, it converts the models world coordinates to camera space.
+   * 
+   * return: Mat4 encoding the lookat transformation.
    */
   static Mat4 LookAt(GraphicsVec cameraPosition, GraphicsVec viewDirection);
 
