@@ -9,7 +9,7 @@
 /**
  * Included from src.
  */
-#include "custom_math.hpp"
+#include "mat4.hpp"
 #include "graphics_vec.hpp"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -52,7 +52,7 @@ public:
    * Method used to generate a lookat matrix using the given camera objects current orientation 
    * (camera position and camera view point).
    */
-  custom_math::Mat4 getLookat();
+  Mat4 getLookat();
 
   /**
    * Returns the current position of the camera.

@@ -14,7 +14,6 @@
 #include "camera.hpp"
 #include "custom_math.hpp"
 #include "engine.hpp"
-#include "model.hpp"
 #include "shader.hpp"
 #include "transformation_builder.hpp"
 #include "util.hpp"
@@ -137,25 +136,25 @@ void Engine::start()
 
       // Main loop of engine.
       while (running) {
-        custom_math::Mat4 perspectiveMatrix = frustum.createPerspectiveMatrix();
+        Mat4 perspectiveMatrix = frustum.createPerspectiveMatrix();
 
-        custom_math::Mat4 testTranslate = 
-          transformer.translation(translateX, translateY, translateZ);
+        Mat4 testTranslate = transformer.translation(translateX, translateY, translateZ);
 
-        custom_math::Mat4 testScale = 
-          transformer.scale(scaleX, scaleY, scaleZ);
+        Mat4 testScale = transformer.scale(scaleX, scaleY, scaleZ);
     
         // Apply transformations to model. (Model -> World).
 
-        custom_math::Mat4 view = myCamera->getLookat();
+        Mat4 view = myCamera->getLookat();
 
         // View transformation (World -> Camera)
-      
-        
+
         // Projection
 
         // Pass vertex information to opengl.
-        glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 12 * 9, g_vertex_buffer_data, GL_STATIC_DRAW); 
+        glBufferData(GL_ARRAY_BUFFER,
+                     sizeof(GLfloat)*12*9,
+                     g_vertex_buffer_data, 
+                     GL_STATIC_DRAW); 
 
         while (SDL_PollEvent(&e)) {
 

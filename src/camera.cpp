@@ -27,11 +27,9 @@ Camera::Camera(GraphicsVec cameraPosition, GraphicsVec cameraLook)
 void Camera::moveCamera(GraphicsVec newPosition)
 {
   if (newPosition.getSize() >= 3) {
-    std::cout << "Old: " << position.getX() << ", " << position.getY() << ", " << position.getZ() << std::endl;
     position.setX(newPosition.getX());
     position.setY(newPosition.getY());
     position.setZ(newPosition.getZ());
-    std::cout << "New: " << position.getX() << ", " << position.getY() << ", " << position.getZ() << std::endl;
   }
 }
 
@@ -44,9 +42,9 @@ void Camera::look(GraphicsVec newLookPosition)
   }
 }
 
-custom_math::Mat4 Camera::getLookat() 
+Mat4 Camera::getLookat() 
 {
-  custom_math::Mat4 lookat;
+  Mat4 lookat;
 
   // Calculate vector pointing in the direction the camera (new z-axis).
   GraphicsVec zAxis(
@@ -55,14 +53,14 @@ custom_math::Mat4 Camera::getLookat()
     lookDirection.getZ() - position.getZ(), 
     0
   );
-  zAxis.normalize();
+  zAxis = zAxis.normalize();
 
   // Choose arbitrary vector pointing in positive y direction.
   GraphicsVec up(0, 1, 0, 0);
 
   // Calculate x-axis from z-axis and arbitrary vector.
   GraphicsVec xAxis = zAxis.cross(up);
-  xAxis.normalize();
+  xAxis = xAxis.normalize();
 
   // Calculate true camera up from z-axis and x-axis.
   GraphicsVec yAxis = xAxis.cross(zAxis);

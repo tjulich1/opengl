@@ -34,6 +34,29 @@ public:
   GraphicsVec(float x, float y, float z, float w);
 
   /**
+   * Method used to normalize a vector, i.e. convert to vector of size one.
+   */
+  GraphicsVec normalize();
+
+  /**
+   * Computes the cross product between the vector having the method called (on the left) and 
+   * "other" on the right. Will return an empty vector if called on non-3D vectors.
+   * 
+   * other: The vector on the right hand side of the cross product.
+   */
+  GraphicsVec cross(GraphicsVec other);
+
+  /**
+   * Computes the dot product between the two vectors. Will return 0 if the vectors are empty, or if
+   * the sizes of the vectors do not match.
+   * 
+   * other: The other vector to include in the dot product.
+   * 
+   * returns: Dot product of two vectors, or zero if mismatched sizes or empty.
+   */
+  float dot(GraphicsVec other);
+
+  /**
    * Method used to get the size of the vector.
    */
   int getSize();
@@ -71,6 +94,23 @@ public:
   float getW();
 
   /**
+   * Used access the euclidean length of the vector, or the square root of the sum of each element
+   * squared.
+   * 
+   * returns: The euclidean length of the vector.
+   */
+  float getEuclideanLength();
+
+  /**
+   * Used to access an element by index, as long as index within [0, numElements-1] inclusive.
+   * 
+   * index: Index of element to access.
+   * 
+   * returns: The element at given index, or arbitrary value.
+   */
+  float getElement(int index);
+
+  /**
    * Method used to assign a new value to the vectors x component. Vector must have size at least 1.
    * 
    * newX: The value to assign to the x component.
@@ -97,6 +137,12 @@ public:
    * newW: The value to assign to the w component.
    */
   void setW(float newW);
+
+  /**
+   * Method used to assign an element by index. No changes to elements are made if index is outside 
+   * of range [0, numElements-1] inclusive.
+   */
+  void setElement(int index, float element);
 
 private:
 

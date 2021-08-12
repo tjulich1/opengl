@@ -16,9 +16,9 @@ Frustum::Frustum(float left, float right, float top, float bottom, float nearVal
   farValue = farVal;
 }
 
-custom_math::Mat4 Frustum::createPerspectiveMatrix() 
+Mat4 Frustum::createPerspectiveMatrix() 
 {
-  custom_math::Mat4 perspectiveMatrix;
+  Mat4 perspectiveMatrix;
 
   GraphicsVec firstRow {
     2*nearValue / (rightValue-leftValue),

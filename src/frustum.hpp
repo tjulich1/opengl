@@ -7,7 +7,7 @@
 /**
  * Included from src.
  */
-#include "custom_math.hpp"
+#include "mat4.hpp"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -31,7 +31,7 @@ public:
    * Method used to generate a perspective matrix, used to perform perspective projection 
    * transformations (converts coordinates from camera space to screen space).
    */
-  custom_math::Mat4 createPerspectiveMatrix();
+  Mat4 createPerspectiveMatrix();
 
 private:
   /**
