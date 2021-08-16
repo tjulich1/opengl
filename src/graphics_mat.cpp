@@ -16,6 +16,13 @@ GraphicsMat::GraphicsMat()
   myCols = 0;
 }
 
+GraphicsMat::GraphicsMat(int cols) 
+{
+  myCols = cols;
+  myRows = 0;
+  isInitialized = false;
+}
+
 GraphicsMat::GraphicsMat(int rows, int cols) 
 {
   if (rows > 0 && cols > 0) {
@@ -42,20 +49,44 @@ bool GraphicsMat::initialize(int rows, int cols)
   return success;
 }
 
-/**
- * TODO
- */
 bool GraphicsMat::setElement(int rowIndex, int colIndex, float value)
 {
-  return false;
+  bool success = false;
+
+  if (isInitialized && rowIndex >= 0 && colIndex >= 0 && rowIndex < myRows && colIndex < myCols) {
+    matrixValues.at(rowIndex).setElement(colIndex, value);
+    success = true;
+  }
+
+  return success;
 }
 
-/**
- * TODO
- */
 bool GraphicsMat::setRow(int rowIndex, GraphicsVec elements) 
 {
-  return false;
+  bool success = true;
+
+  // Ensure the row index is valid for this matrix.
+  if (isInitialized && rowIndex < myRows) {
+    for (int i = 0; i < elements.getSize(); i++) {
+      matrixValues.at(rowIndex).setElement(i, elements.getElement(i));
+    }
+    success = true;
+  }
+  return success;
 }
 
+void GraphicsMat::addRow(GraphicsVec elements)
+{
+  int numValuesSupplied = elements.getSize();
+
+  // Padding will be required.
+  if (numValuesSupplied < myCols) {
+
+  }
+
+  // Fill rest of values.
+  for (int i = 0; i < elements.getSize(); i++) {
+    
+  }
+}
 ////////////////////////////////////////////////////////////////////////////////////////////////////

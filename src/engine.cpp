@@ -14,6 +14,7 @@
 #include "camera.hpp"
 #include "custom_math.hpp"
 #include "engine.hpp"
+#include "model.hpp"
 #include "shader.hpp"
 #include "transformation_builder.hpp"
 #include "util.hpp"
@@ -89,7 +90,7 @@ void Engine::start()
 
       bool running = true;
 
-      static const GLfloat g_vertex_buffer_data[] = {
+      GLfloat g_vertex_buffer_data[] = {
           -1.0f,-1.0f,-1.0f, // triangle 1 : begin
           -1.0f,-1.0f, 1.0f,
           -1.0f, 1.0f, 1.0f, // triangle 1 : end
@@ -128,19 +129,25 @@ void Engine::start()
           1.0f,-1.0f, 1.0f
         };
 
+      Model testModel(g_vertex_buffer_data, sizeof(g_vertex_buffer_data) / sizeof(g_vertex_buffer_data[0]));
+
+      Mat4 perspectiveMatrix = frustum.createPerspectiveMatrix();
+
+      Mat4 testTranslate = transformer.translation(translateX, translateY, translateZ);
+
+      Mat4 testScale = transformer.scale(scaleX, scaleY, scaleZ);
+
+      // Tell the model the order and type of transformations to apply to vertices.
+      testModel.transform(testTranslate);
+      testModel.transform(testScale);
+
       SDL_Event e;
 
       // Main loop of engine.
       while (running) {
-        Mat4 perspectiveMatrix = frustum.createPerspectiveMatrix();
-
-        Mat4 testTranslate = transformer.translation(translateX, translateY, translateZ);
-
-        Mat4 testScale = transformer.scale(scaleX, scaleY, scaleZ);
-    
-        // Apply transformations to model. (Model -> World).
-
         Mat4 view = myCamera->getLookat();
+
+        // Apply transformations to model. (Model -> World).
 
         // View transformation (World -> Camera)
 

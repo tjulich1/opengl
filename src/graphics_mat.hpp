@@ -27,6 +27,13 @@ public:
   GraphicsMat();
 
   /**
+   * Constructor for an entirely empty matrix. Takes the desired number of columns, and allows for 
+   * immediate addition of rows (different from set row). Once at least a single row is present in
+   * the matrix, 
+   */
+  GraphicsMat(int cols);
+
+  /**
    * Constructor which takes initial dimensions of the matrix. Each element is set to zero 
    * initially.
    * 
@@ -64,14 +71,23 @@ public:
   bool setRow(int rowIndex, GraphicsVec elements); 
 
   /**
+   * Appends a new row to the bottom of the matrix. If not enough values are found in the supplied 
+   * vector zeros will be used as padding. If too many values are supplied, elements equal to the 
+   * number of columns will be used.
+   * 
+   * elements: Vector containing the elements within the row to add.
+   */
+  void addRow(GraphicsVec elements);
+
+  /**
    * Accesses the number of columns in the matrix.
    */
-  int getCols() { return myCols; }
+  int getCols() const { return myCols; }
 
   /**
    * Accesses the number of rows in the matrix.
    */
-  int getRows() { return myRows; }
+  int getRows() const { return myRows; }
 
 private:
 
@@ -91,9 +107,9 @@ private:
   bool isInitialized;
 
   /**
-   * Vector containing the float values held within the matrix.
+   * Vector of GraphicsVecs containing matrix values.
    */
-  std::vector<float> matrixValues;
+  std::vector<GraphicsVec> matrixValues;
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
