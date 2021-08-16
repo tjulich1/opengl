@@ -6,6 +6,8 @@
 
 #include <vector>
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
 /**
  * Class adding operations to vector that are needed for graphics transformations.
  */
@@ -14,14 +16,9 @@ class GraphicsVec
 public:
 
   /**
-   * Default constructor for empty graphics vector.
-   */
-  GraphicsVec();
-
-  /**
    * Constructor which takes the size of the desired vector.
    */
-  GraphicsVec(int size);
+  GraphicsVec(int size = 0);
 
   /**
    * Constructor for 3D vector, taking intial values for each element.

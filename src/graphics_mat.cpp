@@ -2,37 +2,17 @@
 /* Trent Julich ~ 12 August 2021                                                                  */
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-/**
- * Included from src.
- */
+// Included from src.
 #include "graphics_mat.hpp"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-GraphicsMat::GraphicsMat()
+GraphicsMat::GraphicsMat(int rows, int cols)
 {
-  isInitialized = true;
-  myRows = 0;
-  myCols = 0;
-}
-
-GraphicsMat::GraphicsMat(int cols) 
-{
+  myRows = rows;
   myCols = cols;
-  myRows = 0;
-  isInitialized = false;
-}
-
-GraphicsMat::GraphicsMat(int rows, int cols) 
-{
-  if (rows > 0 && cols > 0) {
-    myRows = rows;
-    myCols = cols;
+  if (cols <= 0) {
     isInitialized = false;
-  } else {
-    myRows = 0;
-    myCols = 0;
-    isInitialized = true;
   }
 }
 
@@ -44,6 +24,7 @@ bool GraphicsMat::initialize(int rows, int cols)
     success = true;
     myRows = rows;
     myCols = cols;
+    isInitialized = true;
   }
 
   return success;

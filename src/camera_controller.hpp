@@ -6,9 +6,7 @@
 
 #include <memory>
 
-/**
- * Included from src.
- */
+// Included from src.
 #include "camera.hpp"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -26,16 +24,11 @@ public:
   };
 
   /**
-   * Default camera controller constructor, must be given camera object to be used.
-   */
-  CameraController();
-
-  /**
    * Camera controller constructor which applies user inputs to the given camera object.
    * 
    * theCamera: Pointer to the camera that should be controlled.
    */
-  CameraController(Camera* theCamera);
+  CameraController(Camera* theCamera = 0);
 
   /**
    * Method used to move both the cameras position and look point a fixed direction along a given 

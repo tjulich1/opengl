@@ -6,22 +6,14 @@
 #include <cmath>
 #include <sstream>
 
-/**
- * Included from src.
- */
+// Included from src.
 #include "mat4.hpp"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-Mat4::Mat4() {
-  for (int i = 0; i < 16; i++) {
-    values[i] = 0.0f;
-  }
-}
-
 Mat4::Mat4(float initialValue) {
   for (int i = 0; i < 16; i++) {
-    values[i] = initialValue;
+    values[i] = 0.0f;
   }
 }
 

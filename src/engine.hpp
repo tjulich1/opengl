@@ -6,9 +6,7 @@
 
 #include <SDL.h>
 
-/**
- * Included from src.
- */
+// Included from src.
 #include "camera.hpp"
 #include "frustum.hpp"
 #include "input_handler.hpp"

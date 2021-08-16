@@ -9,17 +9,14 @@
  */
 #include "graphics_vec.hpp"
 
-GraphicsVec::GraphicsVec() 
-{
-  numElements = 0;
-}
-
 GraphicsVec::GraphicsVec(int size) 
 {
   numElements = size;
-  elements = std::vector<float>(size);
-  for (int i = 0; i < numElements; i++) {
-    elements[i] = 0;
+  if (size != 0) {
+    elements = std::vector<float>(size);
+    for (int i = 0; i < numElements; i++) {
+      elements[i] = 0;
+    }
   }
 }
 

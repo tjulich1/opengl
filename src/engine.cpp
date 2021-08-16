@@ -8,11 +8,8 @@
 #include <vector>
 #include <memory>
 
-/**
- * Included from src.
- */
+// Included from src.
 #include "camera.hpp"
-#include "custom_math.hpp"
 #include "engine.hpp"
 #include "model.hpp"
 #include "shader.hpp"
@@ -149,7 +146,11 @@ void Engine::start()
 
         // Apply transformations to model. (Model -> World).
 
+        
+        // Model vertex data from after transformations.
+
         // View transformation (World -> Camera)
+
 
         // Projection
 

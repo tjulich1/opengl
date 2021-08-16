@@ -6,9 +6,7 @@
 
 #include <array>
 
-/**
- * Included from src.
- */
+// Included from src.
 #include "mat4.hpp"
 #include "graphics_vec.hpp"
 
@@ -27,12 +25,7 @@ public:
    * cameraPosition: A 3D vector defining the position of the camera in 3D space.
    * cameraLook: A 3D vector defining the direction the camera is viewing in 3D space.
    */
-  Camera(GraphicsVec cameraPosition, GraphicsVec cameraLook);
-
-  /**
-   * Default constructor for empty camera object.
-   */
-  Camera();
+  Camera(GraphicsVec cameraPosition = GraphicsVec(3), GraphicsVec cameraLook = GraphicsVec(3));
 
   /**
    * Moves the camera to position specified by given vector.

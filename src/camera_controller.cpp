@@ -2,22 +2,20 @@
 /* Trent Julich ~ 8 August 2021                                                                   */
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-/**
- * Included from src.
- */
+// Included from src.
+
 #include "camera_controller.hpp"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-CameraController::CameraController()
-{
-  isCameraLinked = false;
-}
-
 CameraController::CameraController(Camera* theCamera) 
 {
-  myCamera.reset(theCamera);
-  isCameraLinked = true;
+  if (theCamera == 0) {
+    isCameraLinked = false;
+  } else {
+    myCamera.reset(theCamera);
+    isCameraLinked = true;
+  }
 }
 
 void CameraController::moveAxis(float theDistance, Axis theAxis)

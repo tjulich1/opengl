@@ -4,19 +4,10 @@
 
 #include <iostream>
 
-/**
- * Included from src. 
- */
+// Included from src.
 #include "camera.hpp"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-
-Camera::Camera()
-{
-  // Initialize with empty vectors.
-  position = GraphicsVec(3);
-  lookDirection = GraphicsVec(3);
-}
 
 Camera::Camera(GraphicsVec cameraPosition, GraphicsVec cameraLook) 
 {

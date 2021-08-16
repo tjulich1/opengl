@@ -2,11 +2,12 @@
 /* Trent Julich ~ 30 July 2021                                                                    */
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#include "transformation_builder.hpp"
-
 #define _USE_MATH_DEFINES
 
 #include <math.h>
+
+// Included from src.
+#include "transformation_builder.hpp"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 /* Helper Methods                                                                                 */

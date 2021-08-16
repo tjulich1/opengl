@@ -4,23 +4,19 @@
 
 #pragma once
 
+#include <vector>
+#include <gl/GL.h>
+
+// Included from src.
 #include "graphics_mat.hpp"
 #include "graphics_vec.hpp"
 #include "mat4.hpp"
-
-#include <vector>
-#include <gl/GL.h>
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 class Model 
 {
 public:
-
-  /**
-   * Constructor for empty model object.
-   */
-  Model();
 
   /**
    * Constructor for model that should be rendered with the given vertex data. 
@@ -30,7 +26,7 @@ public:
    * 
    * numValues: The number of data points in the given buffer. 
    */
-  Model(GLfloat* vertexBuffer, int numValues);
+  Model(GLfloat* vertexBuffer = 0, int numValues = 0);
 
   /**
    * Used to get a matrix containing vertex information of the model in its local coordinate space.
@@ -38,6 +34,15 @@ public:
    * returns: Local-space coordinates of model encoded in matrix.
    */
   GraphicsMat getVertexMat();
+
+  /**
+   * Moves the model from its previous position by the desired amounts along each axis.
+   * 
+   * x: amount to shift x.
+   * y: amount to shift y.
+   * z: amount to shift z.
+   */
+  void translate(float x, float y, float z = 0);
 
   /**
    * Used to get a matrix containing vertex information of the model in world space, or after 
@@ -56,6 +61,13 @@ public:
    */
   void transform(Mat4 theTransformation);
 
+  /**
+   * Gets the number of vertices that this model has.
+   * 
+   * returns: Vertex count of model.
+   */
+  int getVertexCount();
+
 private:
 
   /**
@@ -69,7 +81,8 @@ private:
   int vertexCount;
 
   /**
-   * Mat4 that has all previous transformations that have been applied to this model encoded.
+   * Mat4 that has all previous transformations (except for rotations) that have been applied to,
+   * this model encoded.
    */
   Mat4 transformMatrix;
 
@@ -78,6 +91,9 @@ private:
    * getTransformedVertexMat().
    */
   bool seenNewTransform;
+
+
+
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

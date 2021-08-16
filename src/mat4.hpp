@@ -8,9 +8,7 @@
 #include <gl/GL.h>
 #include <string>
 
-/**
- * Included from src.
- */
+// Included from src.
 #include "graphics_vec.hpp"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -23,16 +21,9 @@ class Mat4
 {
 public:
   /**
-   * Default constructor, initializes all matrix elements to zero.
+   * Constructor for new Mat4, takes an initial value. If none is provided, 0 will be used.
    */
-  Mat4();
-
-  /**
-   * Constructor which sets all elements of the matrix to the same value.
-   * 
-   * initialValue: The value to initialize the matrix with.
-   */
-  Mat4(float initialValue);
+  Mat4(float initialValue = 0.0f);
   
   /**
    * Factory method used to generate Identity matrices, or matrices with the value 1 along the 

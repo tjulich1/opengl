@@ -6,9 +6,7 @@
 
 #include <vector>
 
-/**
- * Included from src.
- */
+// Included from src.
 #include "graphics_vec.hpp"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -24,23 +22,7 @@ public:
   /**
    * Default constructor for an entirely empty matrix. Dimensions must be set using initialize().
    */
-  GraphicsMat();
-
-  /**
-   * Constructor for an entirely empty matrix. Takes the desired number of columns, and allows for 
-   * immediate addition of rows (different from set row). Once at least a single row is present in
-   * the matrix, 
-   */
-  GraphicsMat(int cols);
-
-  /**
-   * Constructor which takes initial dimensions of the matrix. Each element is set to zero 
-   * initially.
-   * 
-   * rows: The number of rows in the matrix.
-   * cols: The number of columns in the matrix. 
-   */
-  GraphicsMat(int rows, int cols);
+  GraphicsMat(int rows = 0, int cols = 0);
 
   /**
    * Attempts to initialize matrix with the given number of rows and columns. Will only set values 

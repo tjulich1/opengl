@@ -4,9 +4,7 @@
 
 #pragma once
 
-/**
- * Included from src.
- */
+// Included from src.
 #include "mat4.hpp"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -20,12 +18,8 @@ public:
   /**
    * Constructor for a Frustum based on the 6 defining planes.
    */
-  Frustum(float left, float right, float top, float bottom, float nearVal, float farVal);
-
-  /**
-   * Default constructor, initializes with default values.
-   */
-  Frustum() { }
+  Frustum(float left = 0, float right = 0, float top = 0, float bottom = 0, float nearVal = 0,
+          float farVal = 0);
 
   /**
    * Method used to generate a perspective matrix, used to perform perspective projection 

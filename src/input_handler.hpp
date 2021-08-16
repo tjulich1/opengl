@@ -4,12 +4,10 @@
 
 #pragma once
 
-/**
- * Included from src.
- */
-#include "camera_controller.hpp"
-
 #include <SDL.h>
+
+// Included from source 
+#include "camera_controller.hpp"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
