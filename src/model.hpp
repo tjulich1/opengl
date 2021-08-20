@@ -42,24 +42,14 @@ public:
    * y: amount to shift y.
    * z: amount to shift z.
    */
-  void translate(float x, float y, float z = 0);
+  void translate(float x, float y, float z);
 
   /**
-   * Used to get a matrix containing vertex information of the model in world space, or after 
-   * transformations have been applied and the model has been positioned in place.
+   * Gets a copy of this models vertex coordinates after all transformations have been applied.
    * 
    * returns: World-space coordinates of model encoded in matrix.
    */
   GraphicsMat getTransformedVertexMat();
-
-  /**
-   * Used to multiply an additional transformation matrix into this models current matrix. Callers 
-   * of this method are responsible for order dependent transformations, e.g. rotations before 
-   * translations vs. translations before rotations.
-   *
-   * theTransformation: The Mat4 encoding the desired transformation.
-   */
-  void transform(Mat4 theTransformation);
 
   /**
    * Gets the number of vertices that this model has.
@@ -68,12 +58,19 @@ public:
    */
   int getVertexCount();
 
-private:
+  void test();
 
+private:
   /**
    * Matrix encoding the local-space coordinates of the model.
    */
   GraphicsMat localVertexData;
+
+  /**
+   * Matrix encoding the world-space coordinates of the model. While 2 copies of vertex data must be
+   * stored, it saves computing the world-space coordinates repeatedly for mostly-static models.
+   */
+  GraphicsMat cachedWorldVertexData;
 
   /**
    * The number of vertices this model contains.
@@ -81,8 +78,7 @@ private:
   int vertexCount;
 
   /**
-   * Mat4 that has all previous transformations (except for rotations) that have been applied to,
-   * this model encoded.
+   * Mat4 that encodes all transformations this model has undergone.
    */
   Mat4 transformMatrix;
 
@@ -92,8 +88,11 @@ private:
    */
   bool seenNewTransform;
 
-
-
+  /**
+   * Helper method used to compute the values of this models vertices after all transformations have 
+   * been applied.
+   */
+  void computeWorldCoordinates();
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -2,6 +2,8 @@
 /* Trent Julich ~ 12 August 2021                                                                  */
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
+#include <iostream>
+
 // Included from src.
 #include "graphics_mat.hpp"
 
@@ -58,16 +60,65 @@ bool GraphicsMat::setRow(int rowIndex, GraphicsVec elements)
 
 void GraphicsMat::addRow(GraphicsVec elements)
 {
-  int numValuesSupplied = elements.getSize();
+  int numValues = elements.getSize();
 
-  // Padding will be required.
-  if (numValuesSupplied < myCols) {
-
-  }
-
-  // Fill rest of values.
   for (int i = 0; i < elements.getSize(); i++) {
-    
+    std::cout << "Element " << i << ": " << elements.getElement(i) << std::endl;
   }
+
+  // Vector starts filled with zeros.
+  GraphicsVec theNewRow(myCols);
+
+  if (numValues < myCols) {
+    std::cout << "Here" << std::endl;
+    // Less values were given than available space, so take all the values.
+    for (int i = 0; i < numValues; i++) {
+      theNewRow.setElement(i, elements.getElement(i));
+    }
+  } else {
+    std::cout << "Here two" << std::endl;
+    // More values were given, so only take what we can store.
+    for (int i = 0; i < myCols; i++) {
+      theNewRow.setElement(i, elements.getElement(i));
+    }
+  }
+
+  for (int i = 0; i < myCols; i++) {
+    std::cout << "New row value: " << theNewRow.getElement(i) << std::endl;
+  }
+
+  matrixValues.push_back(theNewRow);
+  myRows++;
+}
+
+float GraphicsMat::getElement(int col, int row) const {
+  float result = -1;
+  if (col >= 0 && col < myCols && row >= 0 && row < myRows) {
+    result = matrixValues[row].getElement(col);
+  }
+  return result;
+}
+
+GraphicsVec GraphicsMat::accessRow(int rowIndex) const{
+  GraphicsVec theRow(myCols);
+  if (rowIndex >= 0 && rowIndex < myRows) {
+    for (int i = 0; i < myCols; i++) {
+      theRow.setElement(i, matrixValues.at(i).getElement(i));
+    }
+  }
+  return theRow;
+}
+
+std::ostream& operator <<(std::ostream &os, const GraphicsMat& mat) {
+  os << "[\n";
+  for (int i = 0; i < mat.getRows(); i++) {
+    os << "\t[";
+    for (int j = 0; j < mat.getCols(); j++) {
+      os << " " << mat.getElement(j, i);
+    }
+    os << " ]" << std::endl;
+  }
+  os << "]";
+  return os;
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////

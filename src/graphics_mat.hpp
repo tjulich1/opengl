@@ -5,6 +5,7 @@
 #pragma once
 
 #include <vector>
+#include <ostream>
 
 // Included from src.
 #include "graphics_vec.hpp"
@@ -71,6 +72,17 @@ public:
    */
   int getRows() const { return myRows; }
 
+  /**
+   * Accesses the element in the given row/column, or an arbitrary value if indices are out of 
+   * bounds.
+   */
+  float getElement(int col, int row) const;
+
+  /**
+   * Returns a vector containing the values in the desired row.
+   */
+  GraphicsVec accessRow(int rowIndex) const;
+
 private:
 
   /**
@@ -93,5 +105,13 @@ private:
    */
   std::vector<GraphicsVec> matrixValues;
 };
+
+/**
+ * Override of the << operator, used to put a representation of the Mat4 to the output stream.
+ * 
+ * matrix: Matrix to print to output.
+ * stream: Output stream to write to.
+ */
+std::ostream& operator<< (std::ostream& stream, const GraphicsMat& matrix);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

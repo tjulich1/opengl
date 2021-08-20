@@ -12,7 +12,8 @@
 #include "graphics_vec.hpp"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-class Mat4;
+
+class GraphicsVec;
 
 /**
  * Class representing a 4x4 matrix used for transformations in graphics programming.
@@ -25,20 +26,6 @@ public:
    */
   Mat4(float initialValue = 0.0f);
   
-  /**
-   * Factory method used to generate Identity matrices, or matrices with the value 1 along the 
-   * diagonal (from top left to bottom right).
-   */
-  static Mat4 Identity();
-  
-  /**
-   * Factory method used to generate LookAt matrices. When this matrix is multiplied with a model 
-   * matrix, it converts the models world coordinates to camera space.
-   * 
-   * return: Mat4 encoding the lookat transformation.
-   */
-  static Mat4 LookAt(GraphicsVec cameraPosition, GraphicsVec viewDirection);
-
   /**
    * Sets a single element within the Mat4.
    * 
@@ -74,19 +61,7 @@ public:
   /**
    * Accesses a column within range [0, 3] and returns it as a vector.
    */
-  inline GraphicsVec getCol(int column) const
-  {
-    GraphicsVec result(0);
-    
-    if (column >= 0 && column <= 3) {
-      result.setX(getElement(column, 0));
-      result.setY(getElement(column, 1));
-      result.setZ(getElement(column, 2));
-      result.setW(getElement(column, 3));
-    }
-
-    return result;
-  }
+  GraphicsVec getCol(int column) const;
 
   /**
    * Override of the * operator. When used, it will perform matrix multiplication between the 

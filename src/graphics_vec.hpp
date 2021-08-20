@@ -5,8 +5,11 @@
 #pragma once
 
 #include <vector>
+#include "mat4.hpp"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+class Mat4;
 
 /**
  * Class adding operations to vector that are needed for graphics transformations.
@@ -31,7 +34,9 @@ public:
   GraphicsVec(float x, float y, float z, float w);
 
   /**
-   * Method used to normalize a vector, i.e. convert to vector of size one.
+   * Creates and normalizes a new vector using this vectors values (converts to unit vector). 
+   * 
+   * returns: Normalized version of vector method is called on.
    */
   GraphicsVec normalize();
 
@@ -42,6 +47,16 @@ public:
    * other: The vector on the right hand side of the cross product.
    */
   GraphicsVec cross(GraphicsVec other);
+
+  /**
+   * Multiplies this vector on the left side of a 4x4 matrix. Will only succeed for vectors of 
+   * length 4.
+   * 
+   * theMatrix: The matrix to multiply against the vector.
+   * 
+   * returns: Vector containing the result of the multiplication, or an empty vector.
+   */
+  GraphicsVec operator*(const Mat4& theMatrix);
 
   /**
    * Computes the dot product between the two vectors. Will return 0 if the vectors are empty, or if
@@ -56,7 +71,7 @@ public:
   /**
    * Method used to get the size of the vector.
    */
-  int getSize();
+  int getSize() { return numElements; }
 
   /**
    * Accesses the vector element corresponding to its x component. Vector must have size at least 
@@ -64,7 +79,14 @@ public:
    *
    * returns: x component of vector. 
    */
-  float getX();
+  float getX()
+  {
+    float x = -1;
+    if (numElements >= 1) {
+      x = elements[0];
+    }
+    return x;
+  }
 
   /**
    * Accesses the vector element corresponding to its y component. Vector must have size at least 
@@ -72,7 +94,14 @@ public:
    *
    * returns: y component of vector. 
    */
-  float getY();
+  float getY() 
+  {
+    float y = -1;
+    if (numElements >= 2) {
+      y = elements[1];
+    }
+    return y;
+  }
 
   /**
    * Accesses the vector element corresponding to its z component. Vector must have size at least 
@@ -80,7 +109,14 @@ public:
    *
    * returns: z component of vector. 
    */
-  float getZ();
+  float getZ() 
+  {
+    float result = -1;
+    if (numElements >= 3) {
+      result = elements[2];
+    }
+    return result;
+  }
 
   /**
    * Accesses the vector element corresponding to its w component. Vector must have size at least 
@@ -88,7 +124,14 @@ public:
    *
    * returns: w component of vector. 
    */
-  float getW();
+  float getW() 
+  {
+    float result = -1;
+    if (numElements >= 4) {
+      result = elements[3];
+    }
+    return result;
+  }
 
   /**
    * Used access the euclidean length of the vector, or the square root of the sum of each element
@@ -105,7 +148,7 @@ public:
    * 
    * returns: The element at given index, or arbitrary value.
    */
-  float getElement(int index);
+  float getElement(int index) const;
 
   /**
    * Method used to assign a new value to the vectors x component. Vector must have size at least 1.

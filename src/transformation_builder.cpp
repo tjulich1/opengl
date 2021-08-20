@@ -19,12 +19,52 @@ float to_radians(int angleOfRotation) {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
+Mat4 TransformationBuilder::Identity() {
+  Mat4 newVec;
+  for (int i = 0; i < 4; i++) {
+    newVec.setElement(i, i, 1.0f);
+  } 
+  return newVec;
+}
+
 Mat4 TransformationBuilder::translation(float xTranslate, float yTranslate, float zTranslate) {
-  Mat4 translateVec = Mat4::Identity();
+  Mat4 translateVec = TransformationBuilder::Identity();
   translateVec.setElement(0, 3, xTranslate);
   translateVec.setElement(1, 3, yTranslate);
   translateVec.setElement(2, 3, zTranslate);
   return translateVec;
+}
+
+Mat4 TransformationBuilder::LookAt(GraphicsVec cameraLocation, GraphicsVec viewDirection) {
+  // Vector in direction cam is pointing.
+  float x = cameraLocation.getX() - viewDirection.getX();
+  float y = cameraLocation.getY() - viewDirection.getY();
+  float z = cameraLocation.getZ() - viewDirection.getZ();
+
+  // Viewing plane normal.
+  GraphicsVec forward(x, y, z, 0);
+  forward.normalize();
+
+  // Normal vector pointing up along the y axis.
+  GraphicsVec temp(0, 1, 0, 0);
+
+  // U vector
+  GraphicsVec right = temp.cross(forward);
+
+  Mat4 lookAt;
+  lookAt.setRow(0, right);
+  lookAt.setRow(1, temp);
+  lookAt.setRow(2, forward);
+  lookAt.setElement(3, 3, 1);
+
+  Mat4 posMat = TransformationBuilder::Identity();
+  posMat.setElement(0, 3, -cameraLocation.getX());
+  posMat.setElement(1, 3, -cameraLocation.getY());
+  posMat.setElement(2, 3, -cameraLocation.getZ());
+
+  Mat4 result = lookAt*posMat;
+
+  return result;
 }
 
 Mat4 TransformationBuilder::scale(float xFactor, float yFactor, float zFactor) {
@@ -37,7 +77,7 @@ Mat4 TransformationBuilder::scale(float xFactor, float yFactor, float zFactor) {
 }
 
 Mat4 TransformationBuilder::xRotation(int angleOfRotation) {
-  Mat4 rotateVec = Mat4::Identity();
+  Mat4 rotateVec = TransformationBuilder::Identity();
   float angleInRads =  to_radians(angleOfRotation);
   float rotateCos = cos(angleInRads);
   float rotateSin = sin(angleInRads);
@@ -51,7 +91,7 @@ Mat4 TransformationBuilder::xRotation(int angleOfRotation) {
 }
 
 Mat4 TransformationBuilder::yRotation(int angleOfRotation) {
-  Mat4 rotateVec = Mat4::Identity();
+  Mat4 rotateVec = TransformationBuilder::Identity();
   float angleInRads = to_radians(angleOfRotation);
   float rotateCos = cos(angleInRads);
   float rotateSin = sin(angleInRads);
@@ -65,7 +105,7 @@ Mat4 TransformationBuilder::yRotation(int angleOfRotation) {
 }
 
 Mat4 TransformationBuilder::zRotation(int angleOfRotation) {
-  Mat4 rotateVec = Mat4::Identity();
+  Mat4 rotateVec = TransformationBuilder::Identity();
   float angleInRads = to_radians(angleOfRotation);
   float rotateCos = cos(angleInRads);
   float rotateSin = sin(angleInRads);

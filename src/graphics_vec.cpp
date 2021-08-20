@@ -39,7 +39,7 @@ GraphicsVec::GraphicsVec(float x, float y, float z, float w)
   elements[3] = w;
 }
 
-GraphicsVec GraphicsVec::normalize() 
+GraphicsVec GraphicsVec::normalize()
 {
   // Get the vectors euclidean length
   float length = getEuclideanLength();
@@ -55,7 +55,7 @@ GraphicsVec GraphicsVec::normalize()
   return normalizedVec;
 }
 
-GraphicsVec GraphicsVec::cross(GraphicsVec other) 
+GraphicsVec GraphicsVec::cross(GraphicsVec other)
 {
   GraphicsVec crossVec(3);
 
@@ -68,7 +68,22 @@ GraphicsVec GraphicsVec::cross(GraphicsVec other)
   return crossVec;
 }
 
-float GraphicsVec::dot(GraphicsVec other) 
+GraphicsVec GraphicsVec::operator*(const Mat4& theMatrix) 
+{
+  GraphicsVec result(0);
+  
+  if (numElements == 4) {
+    result = GraphicsVec(4);
+    for (int i = 0; i < 4; i++) {
+      GraphicsVec currentColumn = theMatrix.getCol(i);
+      result.setElement(i, dot(currentColumn));
+    }
+  }
+
+  return result;
+}
+
+float GraphicsVec::dot(GraphicsVec other)
 {
   float dot = 0;
 
@@ -79,44 +94,6 @@ float GraphicsVec::dot(GraphicsVec other)
   }
 
   return dot;
-}
-
-int GraphicsVec::getSize() { return numElements; }
-
-float GraphicsVec::getX()
-{
-  float x = -1;
-  if (numElements >= 1) {
-    x = elements[0];
-  }
-  return x;
-}
-
-float GraphicsVec::getY() 
-{
-  float y = -1;
-  if (numElements >= 2) {
-    y = elements[1];
-  }
-  return y;
-}
-
-float GraphicsVec::getZ()
-{
-  float z = -1;
-  if (numElements >= 3) {
-    z = elements[2];
-  } 
-  return z;
-}
-
-float GraphicsVec::getW()
-{
-  float w = -1;
-  if (numElements >= 4) {
-    w = elements[3];
-  }
-  return w;
 }
 
 float GraphicsVec::getEuclideanLength()
@@ -130,7 +107,7 @@ float GraphicsVec::getEuclideanLength()
   return sqrt(sum);
 }
 
-float GraphicsVec::getElement(int index) 
+float GraphicsVec::getElement(int index) const
 {
   float returnVal = 0;
   if (index >= 0 && index < numElements) {
