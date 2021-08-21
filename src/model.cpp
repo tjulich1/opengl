@@ -41,12 +41,15 @@ GraphicsMat Model::getVertexMat()
   return localVertexData;
 }
 
-/**
- * TODO
- */
 void Model::translate(float x, float y, float z) 
 {
+  // Build the translate matrix.
   Mat4 translateMatrix = TransformationBuilder::translation(x, y, z);
+
+  // Add translation into previous transformations.
+  transformMatrix = transformMatrix * translateMatrix;
+
+  seenNewTransform = true;
 }
 
 int Model::getVertexCount()
@@ -61,6 +64,7 @@ GraphicsMat Model::getTransformedVertexMat()
   if (seenNewTransform) {
     // Compute the result of all transformations on original vertex values.
     computeWorldCoordinates();
+    worldSpaceVertices = cachedWorldVertexData;
   }
   return worldSpaceVertices;
 }

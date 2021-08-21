@@ -55,9 +55,9 @@ void Engine::start()
       /*
        * Values for transforming the model.
        */
-      float translateX = 0.0f;
-      float translateY = 0.0f;
-      float translateZ = 0.0f;
+      float translateX = 1.0f;
+      float translateY = 2.0f;
+      float translateZ = 3.0f;
 
       float scaleX = 1.0f;
       float scaleY = 1.0f;
@@ -127,19 +127,20 @@ void Engine::start()
         };
 
       Model testModel(g_vertex_buffer_data, sizeof(g_vertex_buffer_data) / sizeof(g_vertex_buffer_data[0]));
+      std::cout << testModel.getVertexMat() << std::endl;
 
       Mat4 perspectiveMatrix = frustum.createPerspectiveMatrix();
 
       // Tell the model the order and type of transformations to apply to vertices.
-      testModel.translate(scaleX, scaleY, scaleZ);
+      testModel.translate(translateX, translateY, translateZ);
+
+      std::cout << testModel.getTransformedVertexMat() << std::endl;
 
       SDL_Event e;
 
       // Main loop of engine.
       while (running) {
         Mat4 view = myCamera->getLookat();
-
-        // std::cout << testModel.getVertexMat() << std::endl;
 
         // Apply transformations to model. (Model -> World).
         // Each model keeps track of its own transformations, and a "world-space" vertex list for 

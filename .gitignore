@@ -7,3 +7,5 @@ test_opengl.exe
 visualinfo.exe
 makefile
 SDL2.dll
+/test/engine_test.exe
+test.bat

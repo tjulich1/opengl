@@ -3,6 +3,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #include <cmath>
+#include <stdexcept>
 
 /**
  * Included from src.
@@ -11,12 +12,12 @@
 
 GraphicsVec::GraphicsVec(int size) 
 {
+  if (size < 0) {
+    throw std::invalid_argument("Cannot construct vector with negative size.");
+  } 
   numElements = size;
   if (size != 0) {
     elements = std::vector<float>(size);
-    for (int i = 0; i < numElements; i++) {
-      elements[i] = 0;
-    }
   }
 }
 

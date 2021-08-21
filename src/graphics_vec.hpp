@@ -4,8 +4,11 @@
 
 #pragma once
 
-#include <vector>
+// Included from src.
 #include "mat4.hpp"
+
+#include <stdexcept>
+#include <vector>
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -81,11 +84,8 @@ public:
    */
   float getX()
   {
-    float x = -1;
-    if (numElements >= 1) {
-      x = elements[0];
-    }
-    return x;
+    if (numElements >= 1) return elements[0];
+    throw std::out_of_range("Cannot access x element of empty vector.");
   }
 
   /**
@@ -96,11 +96,9 @@ public:
    */
   float getY() 
   {
-    float y = -1;
-    if (numElements >= 2) {
-      y = elements[1];
-    }
-    return y;
+    if (numElements >= 2) return elements[1];
+    throw std::out_of_range("Cannot access y element of vector without at least 2 elements: num=" 
+      + numElements);
   }
 
   /**
@@ -111,11 +109,9 @@ public:
    */
   float getZ() 
   {
-    float result = -1;
-    if (numElements >= 3) {
-      result = elements[2];
-    }
-    return result;
+    if (numElements >= 3) return elements[2];
+    throw std::out_of_range("Cannot access z element of vector without at least 3 elements: num="
+      + numElements);
   }
 
   /**
@@ -126,11 +122,9 @@ public:
    */
   float getW() 
   {
-    float result = -1;
-    if (numElements >= 4) {
-      result = elements[3];
-    }
-    return result;
+    if (numElements >= 4) return elements[3];
+    throw std::out_of_range("Cannot access w element of vector without at least 4 lements: num=" 
+      + numElements);
   }
 
   /**
