@@ -4,11 +4,12 @@
 
 // Included from src.
 #include "graphics_vec.hpp"
+#include "rng.hpp"
+#include "custom_exceptions.hpp"
 
 #define BOOST_TEST_MODULE engine_test
 // Included from external libraries.
 #include <boost/test/included/unit_test.hpp>
-#include "rng.hpp"
 
 #include <stdexcept>
 #include <random>
@@ -25,7 +26,7 @@ const int NUM_CASES = 100;
 /**
  * The amount by which a value can be off from the expected value and still be acceptable.
  */
-const float TOLERANCE = 0.000001;
+const float TOLERANCE = 0.00001;
 
 /**
  * Test fixture for graphics vec tests. Reinitializes a 3D vector before each test runs.
@@ -337,6 +338,62 @@ BOOST_AUTO_TEST_CASE(normalize_4D_large_elements, * utf::tolerance(TOLERANCE))
     vec = vec.normalize();
     BOOST_TEST(vec.getEuclideanLength() == 1.0f);
   }
+}
+
+BOOST_AUTO_TEST_CASE(normalize_empty) 
+{
+  vec = GraphicsVec(0);
+  BOOST_CHECK_THROW(vec.normalize(), InvalidOperationException);
+}
+
+BOOST_AUTO_TEST_CASE(normalize_all_negative, * utf::tolerance(TOLERANCE))
+{
+  const int VEC_SIZE = 100;
+  vec = GraphicsVec(VEC_SIZE);
+  generator.setFloatRange(-10000.0f, -1.0f);
+  for (int i = 0; i < NUM_CASES; i++) {
+    for (int j = 0; j < VEC_SIZE; j++) {
+      vec.setElement(j, generator.getRandFloat());
+    }
+    vec = vec.normalize();
+    BOOST_TEST(vec.getEuclideanLength() == 1.0f);
+  }
+}
+
+BOOST_AUTO_TEST_CASE(normalize_all_positive, * utf::tolerance(TOLERANCE))
+{
+  const int VEC_SIZE = 100;
+  vec = GraphicsVec(VEC_SIZE);
+  generator.setFloatRange(1.0f, 10000.0f);
+  for (int i = 0; i < NUM_CASES; i++) {
+    for (int j = 0; j < VEC_SIZE; j++) {
+      vec.setElement(j, generator.getRandFloat());
+    }
+    vec = vec.normalize();
+    BOOST_TEST(vec.getEuclideanLength() == 1.0f);
+  }
+}
+
+BOOST_AUTO_TEST_CASE(cross_test_one, * utf::tolerance(TOLERANCE)) 
+{
+  vec = GraphicsVec(3, -3, 1);
+  GraphicsVec vecTwo = GraphicsVec(4, 9, 2);
+  GraphicsVec result = vec.cross(vecTwo);
+
+  BOOST_TEST(result.getX() == -15.0f);
+  BOOST_TEST(result.getY() == -2.0f);
+  BOOST_TEST(result.getZ() == 39.0f);
+}
+
+BOOST_AUTO_TEST_CASE(cross_test_two, * utf::tolerance(TOLERANCE)) 
+{
+  vec = GraphicsVec(1.23f, 4.95f, 37.4f);
+  GraphicsVec vecTwo = GraphicsVec(26.8f, 8.67f, 2.59f);
+  GraphicsVec result = vec.cross(vecTwo);
+
+  BOOST_TEST(result.getX() == -311.4375f);
+  BOOST_TEST(result.getY() == 999.1343f);
+  BOOST_TEST(result.getZ() == -121.9959f);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

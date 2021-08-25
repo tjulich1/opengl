@@ -2,8 +2,14 @@
 /* Trent Julich ~ 7 August 2021                                                                   */
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// Included from src.
+#include "custom_exceptions.hpp"
+
 #include <cmath>
 #include <stdexcept>
+
+// Temp
+#include <iostream>
 
 /**
  * Included from src.
@@ -42,6 +48,10 @@ GraphicsVec::GraphicsVec(float x, float y, float z, float w)
 
 GraphicsVec GraphicsVec::normalize()
 {
+  if (numElements <= 0) {
+    throw InvalidOperationException(std::string("Cannot normalize vector with less than one element."));
+  }
+
   // Get the vectors euclidean length
   float length = getEuclideanLength();
 
@@ -61,9 +71,9 @@ GraphicsVec GraphicsVec::cross(GraphicsVec other)
   GraphicsVec crossVec(3);
 
   if (numElements == 3 && other.getSize() == 3) {
-    crossVec.setX(getY()*other.getZ() - getZ()*other.getY());
-    crossVec.setY(getZ()*other.getX() - getX()*other.getZ());
-    crossVec.setZ(getX()*other.getY() - getY()-other.getX());
+    crossVec.setX((getY()*other.getZ()) - (getZ()*other.getY()));
+    crossVec.setY((getZ()*other.getX()) - (getX()*other.getZ()));
+    crossVec.setZ((getX()*other.getY()) - (getY()*other.getX()));
   }
 
   return crossVec;
