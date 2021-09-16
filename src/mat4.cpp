@@ -67,7 +67,7 @@ Mat4 Mat4::operator*(const Mat4& other) {
 
 GraphicsVec Mat4::getCol(int column) const
 {
-  GraphicsVec result(0);
+  GraphicsVec result(4);
   
   if (column >= 0 && column <= 3) {
     result.setX(getElement(column, 0));

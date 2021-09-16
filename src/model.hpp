@@ -14,6 +14,9 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
+/**
+ * 
+ */
 class Model 
 {
 public:
@@ -21,44 +24,42 @@ public:
   /**
    * Constructor for model that should be rendered with the given vertex data. 
    * 
-   * vertices: Array of GLfloats, with each consecutive group of 3 numbers corresponding to a single
+   * @param vertices Array of GLfloats, with each consecutive group of 3 numbers corresponding to a single
    *           model vertex. If numValues % 3 != 0, any remaining values will not be used.
    * 
-   * numValues: The number of data points in the given buffer. 
+   * @param numValues The number of data points in the given buffer. 
    */
   Model(GLfloat* vertexBuffer = 0, int numValues = 0);
 
   /**
    * Used to get a matrix containing vertex information of the model in its local coordinate space.
    * 
-   * returns: Local-space coordinates of model encoded in matrix.
+   * @returns Local-space coordinates of model encoded in matrix.
    */
   GraphicsMat getVertexMat();
 
   /**
    * Moves the model from its previous position by the desired amounts along each axis.
    * 
-   * x: amount to shift x.
-   * y: amount to shift y.
-   * z: amount to shift z.
+   * @param x amount to shift x.
+   * @param y amount to shift y.
+   * @param z amount to shift z.
    */
   void translate(float x, float y, float z);
 
   /**
    * Gets a copy of this models vertex coordinates after all transformations have been applied.
    * 
-   * returns: World-space coordinates of model encoded in matrix.
+   * @returns World-space coordinates of model encoded in matrix.
    */
   GraphicsMat getTransformedVertexMat();
 
   /**
    * Gets the number of vertices that this model has.
    * 
-   * returns: Vertex count of model.
+   * @returns Vertex count of model.
    */
   int getVertexCount();
-
-  void test();
 
 private:
   /**

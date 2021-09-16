@@ -62,6 +62,7 @@ GraphicsMat Model::getTransformedVertexMat()
   GraphicsMat worldSpaceVertices;
   // Model has seen another transformation since last request for world-space coordinates.
   if (seenNewTransform) {
+
     // Compute the result of all transformations on original vertex values.
     computeWorldCoordinates();
     worldSpaceVertices = cachedWorldVertexData;
@@ -71,11 +72,32 @@ GraphicsMat Model::getTransformedVertexMat()
 
 void Model::computeWorldCoordinates()
 {
+
+  std::cout << "Transform matrix: " << transformMatrix << std::endl;
+
+  /**
+   * Each model has local vertex data aligned in rows:
+   * 
+   * x1, y1, z1, 
+   * x2, y2, ...
+   * ...
+   * ...
+   * 
+   * Grab a row at a time, and multiply with the models current transformation matrix. 
+   */
+
   if (seenNewTransform) {
     // For each vertex in the model...
     for (int i = 0; i < vertexCount; i++) {
+      std::cout << "I: " << i << std::endl;
       GraphicsVec currentVertex = localVertexData.accessRow(i);
+
+      std::cout << "Current vertex: " << currentVertex << std::endl;
+
       GraphicsVec transformedVertex = currentVertex * transformMatrix;
+
+      std::cout << "Transformed vertex: " << transformedVertex << std::endl;
+
       cachedWorldVertexData.setRow(i, transformedVertex);
     }
   }

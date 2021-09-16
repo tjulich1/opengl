@@ -103,7 +103,7 @@ GraphicsVec GraphicsMat::accessRow(int rowIndex) const{
   GraphicsVec theRow(myCols);
   if (rowIndex >= 0 && rowIndex < myRows) {
     for (int i = 0; i < myCols; i++) {
-      theRow.setElement(i, matrixValues.at(i).getElement(i));
+      theRow.setElement(i, matrixValues.at(rowIndex).getElement(i));
     }
   }
   return theRow;

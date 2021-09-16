@@ -8,6 +8,7 @@
 #include "mat4.hpp"
 
 #include <stdexcept>
+#include <ostream>
 #include <vector>
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -23,31 +24,43 @@ public:
 
   /**
    * Constructor which takes the size of the desired vector.
+   * 
+   * @param size The number of elements to put in vector.
    */
   GraphicsVec(int size = 0);
 
   /**
    * Constructor for 3D vector, taking intial values for each element.
+   * 
+   * @param x
+   * @param y
+   * @param z
    */
   GraphicsVec(float x, float y, float z);
 
   /**
    * Constructor for 4D vector, taking initial values for each element.
+   * 
+   * @param x The initial value for the first vector element.
+   * @param y The initial value for the second vector element.
+   * @param z The initial value for the third vector element.
+   * @param w The initial value for the fourth vector element.
    */
   GraphicsVec(float x, float y, float z, float w);
 
   /**
    * Creates and normalizes a new vector using this vectors values (converts to unit vector). 
    * 
-   * returns: Normalized version of vector method is called on.
+   * @returns Normalized version of vector method is called on.
    */
   GraphicsVec normalize();
 
   /**
    * Computes the cross product between the vector having the method called (on the left) and 
-   * "other" on the right. Will return an empty vector if called on non-3D vectors.
+   * "other" on the right.
    * 
-   * other: The vector on the right hand side of the cross product.
+   * @param other The vector on the right hand side of the cross product.
+   * @returns The resulting vector from the cross product, or empty vector for non-3D vectors.
    */
   GraphicsVec cross(GraphicsVec other);
 
@@ -55,32 +68,33 @@ public:
    * Multiplies this vector on the left side of a 4x4 matrix. Will only succeed for vectors of 
    * length 4.
    * 
-   * theMatrix: The matrix to multiply against the vector.
+   * @param theMatrix The matrix to multiply against the vector.
    * 
-   * returns: Vector containing the result of the multiplication, or an empty vector.
+   * @returns Vector containing the result of the multiplication, or an empty vector.
    */
   GraphicsVec operator*(const Mat4& theMatrix);
 
   /**
-   * Computes the dot product between the two vectors. Will return 0 if the vectors are empty, or if
-   * the sizes of the vectors do not match.
+   * Computes the dot product between two vectors of the same size.
    * 
-   * other: The other vector to include in the dot product.
+   * @param other The other vector to include in the dot product.
    * 
-   * returns: Dot product of two vectors, or zero if mismatched sizes or empty.
+   * @returns Dot product of two vectors, or zero if mismatched sizes or empty.
    */
   float dot(GraphicsVec other);
 
   /**
    * Method used to get the size of the vector.
+   * 
+   * @returns The number of elements this vector holds.
    */
-  int getSize() { return numElements; }
+  int getSize() const { return numElements; }
 
   /**
    * Accesses the vector element corresponding to its x component. Vector must have size at least 
    * 1 to access x element.
    *
-   * returns: x component of vector. 
+   * @returns x component of vector. 
    */
   float getX()
   {
@@ -92,7 +106,7 @@ public:
    * Accesses the vector element corresponding to its y component. Vector must have size at least 
    * 2 to access y element.
    *
-   * returns: y component of vector. 
+   * @returns y component of vector. 
    */
   float getY() 
   {
@@ -105,7 +119,7 @@ public:
    * Accesses the vector element corresponding to its z component. Vector must have size at least 
    * 3 to access z element.
    *
-   * returns: z component of vector. 
+   * @returns z component of vector. 
    */
   float getZ() 
   {
@@ -118,7 +132,7 @@ public:
    * Accesses the vector element corresponding to its w component. Vector must have size at least 
    * 4 to access w element.
    *
-   * returns: w component of vector. 
+   * @returns w component of vector. 
    */
   float getW() 
   {
@@ -131,50 +145,52 @@ public:
    * Used access the euclidean length of the vector, or the square root of the sum of each element
    * squared.
    * 
-   * returns: The euclidean length of the vector.
+   * @returns The euclidean length of the vector.
    */
   float getEuclideanLength();
 
   /**
    * Used to access an element by index, as long as index within [0, numElements-1] inclusive.
    * 
-   * index: Index of element to access.
-   * 
-   * returns: The element at given index, or arbitrary value.
+   * @param index Index of element to access.
+   * @returns The element at given index, or arbitrary value.
    */
   float getElement(int index) const;
 
   /**
    * Method used to assign a new value to the vectors x component. Vector must have size at least 1.
    * 
-   * newX: The value to assign to the x component.
+   * @param newX The value to assign to the x component.
    */
   void setX(float newX);
 
   /**
    * Method used to assign a new value to the vectors y component. Vector must have size at least 2.
    * 
-   * newY: The value to assign to the y component.
+   * @param newY The value to assign to the y component.
    */
   void setY(float newY);
   
   /**
    * Method used to assign a new value to the vectors z component. Vector must have size at least 3.
    * 
-   * newZ: The value to assign to the z component.
+   * @param newZ The value to assign to the z component.
    */
   void setZ(float newZ);
 
   /**
    * Method used to assign a new value to the vectors w component. Vector must have size at least 4.
    * 
-   * newW: The value to assign to the w component.
+   * @param newW The value to assign to the w component.
    */
   void setW(float newW);
 
   /**
    * Method used to assign an element by index. No changes to elements are made if index is outside 
    * of range [0, numElements-1] inclusive.
+   * 
+   * @param index The index within vector of the element to assign value to.
+   * @param element The value assigned to the given index.
    */
   void setElement(int index, float element);
 
@@ -190,5 +206,13 @@ private:
    */
   std::vector<float> elements; 
 };
+
+/**
+ * Override of the << operator, used to write a representation of the vector to the output stream.
+ * 
+ * @param vec Vector to print to output.
+ * @param stream Output stream to write to.
+ */
+std::ostream& operator<< (std::ostream& stream, const GraphicsVec& vec);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -162,4 +162,14 @@ void GraphicsVec::setElement(int index, float element)
   }
 }
 
+std::ostream& operator<< (std::ostream& stream, const GraphicsVec& vec) 
+{
+  stream << "[\n\t";
+  for (int i = 0; i < vec.getSize() - 1; i++) {
+    stream << vec.getElement(i) << ", ";
+  }
+  stream << vec.getElement(vec.getSize() - 1) << "\n]";
+  return stream;
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
