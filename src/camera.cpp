@@ -2,8 +2,6 @@
 /* Trent Julich ~ 2 August 2021                                                                   */
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#include <iostream>
-
 // Included from src.
 #include "camera.hpp"
 

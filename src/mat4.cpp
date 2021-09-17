@@ -67,6 +67,19 @@ Mat4 Mat4::operator*(const Mat4& other) {
   return temp;
 }
 
+GraphicsVec Mat4::getRow(int row) const 
+{
+  GraphicsVec result(4);
+
+  if (row >= 0 && row < 4) {
+    result.setX(getElement(0, row));
+    result.setY(getElement(1, row));
+    result.setZ(getElement(2, row));
+    result.setW(getElement(3, row));
+  }
+  return result;
+}
+
 GraphicsVec Mat4::getCol(int column) const
 {
   GraphicsVec result(4);
@@ -77,7 +90,6 @@ GraphicsVec Mat4::getCol(int column) const
     result.setZ(getElement(column, 2));
     result.setW(getElement(column, 3));
   }
-
   return result;
 }
 

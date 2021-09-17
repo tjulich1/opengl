@@ -59,6 +59,11 @@ public:
   GLfloat* getFloats(GLfloat dest[]);
 
   /**
+   * Access a row within range [0, 3] and returns it as a vector.
+   */
+  GraphicsVec getRow(int row) const;
+
+  /**
    * Accesses a column within range [0, 3] and returns it as a vector.
    */
   GraphicsVec getCol(int column) const;

@@ -6,8 +6,8 @@
 #include "mat4.hpp"
 #include "rng.hpp"
 
+// Included from external libraries.
 #include <boost/test/unit_test.hpp>
-#include <iostream>
 
 namespace utf = boost::unit_test;
 
@@ -80,20 +80,65 @@ BOOST_AUTO_TEST_CASE(test_get_col_valid)
 {
   generator.setFloatRange(-100.0f, 100.0f);
   generator.setIntRange(0, 3);
-  
+
   for (int i = 0; i < NUM_CASES; i++) {
     const int col = generator.getRandInt();
     std::vector<float> randomVals;
     for (int j = 0; j < 4; j++) {
       float randVal = generator.getRandFloat();
       mat.setElement(col, j, randVal);
-      std::cout << "Value written: " << mat.getElement(col, j) << std::endl;
       randomVals.push_back(randVal);
     }
     
     GraphicsVec theColumn = mat.getCol(col);
     for (int j = 0; j < 4; j++) {
       BOOST_TEST(theColumn.getElement(j) == randomVals.at(j));
+    }
+  }
+}
+
+BOOST_AUTO_TEST_CASE(test_get_row_valid) 
+{
+  generator.setFloatRange(-100.0f, 100.0f);
+  generator.setIntRange(0, 3);
+
+  for (int i = 0; i < NUM_CASES; i++) {
+    const int row = generator.getRandInt();
+    std::vector<float> randomVals;
+    for (int j = 0; j < 4; j++) {
+      float randVal = generator.getRandFloat();
+      mat.setElement(j, row, randVal);
+      randomVals.push_back(randVal);
+    }
+    
+    GraphicsVec theRow = mat.getRow(row);
+    for (int j = 0; j < 4; j++) {
+      BOOST_TEST(theRow.getElement(j) == randomVals.at(j));
+    }
+  }
+}
+
+BOOST_AUTO_TEST_CASE(test_mult_mat4) 
+{
+  generator.setFloatRange(-100.0f, 100.0f);
+  generator.setIntRange(0, 3);
+
+  Mat4 other;
+  
+  for (int curCase = 0; curCase < NUM_CASES; curCase++) {
+    for (int col = 0; col < 4; col++) {
+      for (int row = 0; row < 4; row++) {
+        mat.setElement(col, row, generator.getRandFloat());
+        other.setElement(col, row, generator.getRandFloat());
+      }
+    }
+    Mat4 result = mat * other;
+
+    // Test 5 random elements in the result vector.
+    for (int test = 0; test < 5; test++) {
+      const int row = generator.getRandInt();
+      const int col = generator.getRandInt();
+      BOOST_TEST(mat.getRow(row).dot(other.getCol(col)) == result.getElement(col, row));
     }
   }
 }
