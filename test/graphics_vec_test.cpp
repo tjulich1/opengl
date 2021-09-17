@@ -32,8 +32,8 @@ const float TOLERANCE = 0.00001;
 /**
  * Test fixture for graphics vec tests. Reinitializes a 3D vector before each test runs.
  */
-struct GraphicsVecFixture {
-  
+struct GraphicsVecFixture 
+{
   GraphicsVecFixture() 
   {
     // Most operations are using 3D vectors, so use that initially. 
@@ -53,17 +53,13 @@ struct GraphicsVecFixture {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
- * This test suite handles running tests of the GraphicsVec object. Runs tests over
- * 
+ * This test suite handles running tests of the GraphicsVec object.
  */
 BOOST_FIXTURE_TEST_SUITE(graphics_vec_suite, GraphicsVecFixture)
 
 BOOST_AUTO_TEST_CASE(test_empty_vec_constructor) 
 {
   vec = GraphicsVec(0);
-
-  std::cout << "SHOULD BE SIZE 0: " << vec.getSize() << std::endl;
-
   BOOST_TEST(vec.getSize() == 0);
 }
 
@@ -469,6 +465,19 @@ BOOST_AUTO_TEST_CASE(dot_test_two, * utf::tolerance(TOLERANCE)) {
     }
 
     BOOST_TEST(vec.dot(other) == dotProduct);
+  }
+}
+
+/**
+ * Test of Graphics vec getSize method.
+ */
+BOOST_AUTO_TEST_CASE(get_size_test, * utf::tolerance(TOLERANCE)) {
+  generator.setIntRange(1, 1000);
+  for (int caseNum = 0; caseNum < NUM_CASES; caseNum++) {
+    const int vecSize = generator.getRandInt();
+    vec = GraphicsVec(vecSize);
+
+    BOOST_TEST(vec.getSize() == vecSize);
   }
 }
 

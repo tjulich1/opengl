@@ -12,13 +12,15 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-Mat4::Mat4(float initialValue) {
+Mat4::Mat4(float initialValue) 
+{
   for (int i = 0; i < 16; i++) {
-    values[i] = 0.0f;
+    values[i] = initialValue;
   }
 }
 
-void Mat4::setElement(int col, int row, float value) {
+void Mat4::setElement(int col, int row, float value) 
+{
   values[row * 4 + col] = value;
 }
 

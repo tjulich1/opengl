@@ -68,7 +68,7 @@ public:
    */
   void setIntRange(int min, int max) 
   {
-    intDistr = std::uniform_int_distribution<int>(minInt, maxInt);
+    intDistr = std::uniform_int_distribution<int>(min, max);
   }
   
 
