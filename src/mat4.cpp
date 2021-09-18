@@ -69,28 +69,26 @@ Mat4 Mat4::operator*(const Mat4& other) {
 
 GraphicsVec Mat4::getRow(int row) const 
 {
-  GraphicsVec result(4);
+  if (row < 0 || row > 3) throw std::out_of_range("Invalid row index: " + row);
 
-  if (row >= 0 && row < 4) {
-    result.setX(getElement(0, row));
-    result.setY(getElement(1, row));
-    result.setZ(getElement(2, row));
-    result.setW(getElement(3, row));
-  }
-  return result;
+  return GraphicsVec{
+    getElement(0, row),
+    getElement(1, row),
+    getElement(2, row),
+    getElement(3, row)
+  };
 }
 
 GraphicsVec Mat4::getCol(int column) const
 {
-  GraphicsVec result(4);
+  if (column < 0 || column > 3) throw std::out_of_range("Invalid column index: " + column);
   
-  if (column >= 0 && column <= 3) {
-    result.setX(getElement(column, 0));
-    result.setY(getElement(column, 1));
-    result.setZ(getElement(column, 2));
-    result.setW(getElement(column, 3));
-  }
-  return result;
+  return GraphicsVec{
+    getElement(column, 0), 
+    getElement(column, 1),
+    getElement(column, 2),
+    getElement(column, 3)
+  };
 }
 
 std::ostream& operator <<(std::ostream &os, const Mat4& mat) {

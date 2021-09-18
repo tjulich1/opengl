@@ -9,6 +9,8 @@
 // Included from external libraries.
 #include <boost/test/unit_test.hpp>
 
+#include <stdexcept>
+
 namespace utf = boost::unit_test;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -140,6 +142,50 @@ BOOST_AUTO_TEST_CASE(test_mult_mat4)
       const int col = generator.getRandInt();
       BOOST_TEST(mat.getRow(row).dot(other.getCol(col)) == result.getElement(col, row));
     }
+  }
+}
+
+/**
+ * Test to ensure indices < 0 passed to getCol raise an exception. 
+ */
+BOOST_AUTO_TEST_CASE(get_col_negative) 
+{
+  generator.setIntRange(-10000, -1);
+  for (int curCase = 0; curCase < NUM_CASES; curCase++) {
+    BOOST_CHECK_THROW(mat.getCol(generator.getRandInt()), std::out_of_range);
+  }
+}
+
+/**
+ * Test to ensure indices > 3 passed to getCol raise an exception.
+ */
+BOOST_AUTO_TEST_CASE(get_col_excess) 
+{
+  generator.setIntRange(4, 10000);
+  for (int curCase = 0; curCase < NUM_CASES; curCase++) {
+    BOOST_CHECK_THROW(mat.getCol(generator.getRandInt()), std::out_of_range);
+  }
+}
+
+/**
+ * Test to ensure indices < 0 passed to getRow raise an exception.
+ */
+BOOST_AUTO_TEST_CASE(get_row_negative) 
+{
+  generator.setIntRange(-10000, -1);
+  for (int curCase = 0; curCase < NUM_CASES; curCase++) {
+    BOOST_CHECK_THROW(mat.getRow(generator.getRandInt()), std::out_of_range);
+  }
+}
+
+/**
+ * Test to ensure indices > 3 passed to getRow raise an exception.
+ */
+BOOST_AUTO_TEST_CASE(get_row_excess) 
+{
+  generator.setIntRange(4, 10000);
+  for (int curCase = 0; curCase < NUM_CASES; curCase++) {
+    BOOST_CHECK_THROW(mat.getRow(generator.getRandInt()), std::out_of_range);
   }
 }
 

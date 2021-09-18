@@ -107,7 +107,7 @@ float GraphicsVec::dot(GraphicsVec other)
   return dot;
 }
 
-float GraphicsVec::getEuclideanLength()
+float GraphicsVec::getEuclideanLength() const
 {
   // Sum up all square of all elements
   float sum = 0;
@@ -120,11 +120,11 @@ float GraphicsVec::getEuclideanLength()
 
 float GraphicsVec::getElement(int index) const
 {
-  float returnVal = 0;
-  if (index >= 0 && index < numElements) {
-    returnVal = elements[index];
+  if (index < 0 || index >= numElements) {
+    throw std::out_of_range("Given index is invalid for vector: " + index); 
   }
-  return returnVal;
+
+  return elements[index];
 }
 
 void GraphicsVec::setX(float newX) 

@@ -100,6 +100,18 @@ BOOST_AUTO_TEST_CASE(test_four_element_constructor)
   } 
 }
 
+BOOST_AUTO_TEST_CASE(negative_get_element) 
+{
+  BOOST_CHECK_THROW(vec.getElement(-1), std::out_of_range);
+}
+
+BOOST_AUTO_TEST_CASE(excess_get_element) 
+{
+  vec = GraphicsVec(1);
+  // Index way above range of vector.
+  BOOST_CHECK_THROW(vec.getElement(100000), std::out_of_range);
+}
+
 BOOST_AUTO_TEST_CASE(negative_constructor_size)
 {
   BOOST_CHECK_THROW(GraphicsVec vec(-1), std::invalid_argument);

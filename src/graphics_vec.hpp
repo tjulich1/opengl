@@ -147,12 +147,13 @@ public:
    * 
    * @returns The euclidean length of the vector.
    */
-  float getEuclideanLength();
+  float getEuclideanLength() const;
 
   /**
    * Used to access an element by index, as long as index within [0, numElements-1] inclusive.
    * 
    * @param index Index of element to access.
+   * @throws out_of_range if an index < 0 or >= numElements is provided.
    * @returns The element at given index, or arbitrary value.
    */
   float getElement(int index) const;
