@@ -15,7 +15,10 @@ GraphicsMat::GraphicsMat(int rows, int cols)
   myCols = cols;
   if (cols <= 0) {
     isInitialized = false;
+  } else {
+    isInitialized = true;
   }
+
 }
 
 bool GraphicsMat::initialize(int rows, int cols) 
@@ -70,21 +73,15 @@ void GraphicsMat::addRow(GraphicsVec elements)
   GraphicsVec theNewRow(myCols);
 
   if (numValues < myCols) {
-    std::cout << "Here" << std::endl;
     // Less values were given than available space, so take all the values.
     for (int i = 0; i < numValues; i++) {
       theNewRow.setElement(i, elements.getElement(i));
     }
   } else {
-    std::cout << "Here two" << std::endl;
     // More values were given, so only take what we can store.
     for (int i = 0; i < myCols; i++) {
       theNewRow.setElement(i, elements.getElement(i));
     }
-  }
-
-  for (int i = 0; i < myCols; i++) {
-    std::cout << "New row value: " << theNewRow.getElement(i) << std::endl;
   }
 
   matrixValues.push_back(theNewRow);

@@ -18,7 +18,7 @@ Model::Model(GLfloat vertexBuffer[], int numValues)
   /**
    * Have 4 columns in the model vertex matrix (x, y, z, w=1). While there is higher memory cost 
    * having to store all of the additional w values, having to construct a new vertex matrix with 
-   * the homogeneous coordinates each frame would have much more impact.
+   * the homogeneous coordinates each frame would have more impact.
    */
   localVertexData = GraphicsMat(0, 4);
   if (numValues > 0) {
@@ -34,6 +34,7 @@ Model::Model(GLfloat vertexBuffer[], int numValues)
       vertexCount++;
     }
   }
+  cachedWorldVertexData = localVertexData;
 }
 
 GraphicsMat Model::getVertexMat()
@@ -62,7 +63,6 @@ GraphicsMat Model::getTransformedVertexMat()
   GraphicsMat worldSpaceVertices;
   // Model has seen another transformation since last request for world-space coordinates.
   if (seenNewTransform) {
-
     // Compute the result of all transformations on original vertex values.
     computeWorldCoordinates();
     worldSpaceVertices = cachedWorldVertexData;
@@ -72,9 +72,6 @@ GraphicsMat Model::getTransformedVertexMat()
 
 void Model::computeWorldCoordinates()
 {
-
-  std::cout << "Transform matrix: " << transformMatrix << std::endl;
-
   /**
    * Each model has local vertex data aligned in rows:
    * 
@@ -85,7 +82,6 @@ void Model::computeWorldCoordinates()
    * 
    * Grab a row at a time, and multiply with the models current transformation matrix. 
    */
-
   if (seenNewTransform) {
     // For each vertex in the model...
     for (int i = 0; i < vertexCount; i++) {
