@@ -21,27 +21,35 @@ Mat4::Mat4(float initialValue)
 
 void Mat4::setElement(int col, int row, float value) 
 {
+  if (col < 0 || col > 3) throw std::out_of_range("Invalid index for col: " + col);
+  if (row < 0 || row > 3) throw std::out_of_range("Invalid index for row: " + row);
+  
   values[row * 4 + col] = value;
 }
 
-void Mat4::setRow(int row, GraphicsVec rowValues) {
-  // Make sure row is valid.
-  if (row >= 0 && row < 4) {
-    for (int i = 0; i < 4; i++) {
-      values[row * 4 + i] = rowValues.getElement(i);
-    }
+void Mat4::setRow(int row, GraphicsVec rowValues)
+{
+  if (row < 0 || row > 3) throw std::out_of_range("Invalid index for row: " + row);
+
+  /** Continue writing values until:
+   *    -> All values have been taken from vector
+   *    -> Or 4 values have been taken (filling row)
+   */
+  for (int i = 0; i < rowValues.getSize() && i < 4; i++) {
+    values[row * 4 + i] = rowValues.getElement(i);
   }
 }
 
-float Mat4::getElement(int col, int row) const {
-  float element = 0.0f;
-  if (col < 4 && col >= 0 && row < 4 && row >= 0) {
-    element = values[row * 4 + col];
-  }
-  return element;
+float Mat4::getElement(int col, int row) const 
+{
+  if (col < 0 || col > 3) throw std::out_of_range("Invalid index for col: " + col);
+  if (row < 0 || row > 3) throw std::out_of_range("Invalid index for row: " + row);
+  
+  return values[row * 4 + col];
 }
 
-GLfloat* Mat4::getFloats(GLfloat dest[]) {
+GLfloat* Mat4::getFloats(GLfloat dest[]) 
+{
   for (int i = 0; i < 4; i++) {
     for (int j = 0; j < 4; j++) {
       dest[i * 4 + j] = values[i * 4 + j];
@@ -50,7 +58,8 @@ GLfloat* Mat4::getFloats(GLfloat dest[]) {
   return dest;
 }
 
-Mat4 Mat4::operator*(const Mat4& other) {
+Mat4 Mat4::operator*(const Mat4& other) 
+{
   Mat4 temp;
   // Loop iterates over the rows of the first matrix.
   for (int i = 0; i < 4; i++) {
@@ -91,7 +100,8 @@ GraphicsVec Mat4::getCol(int column) const
   };
 }
 
-std::ostream& operator <<(std::ostream &os, const Mat4& mat) {
+std::ostream& operator <<(std::ostream &os, const Mat4& mat) 
+{
   os << "[\n";
   for (int i = 0; i < 4; i++) {
     os << "\t[";

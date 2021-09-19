@@ -35,8 +35,7 @@ void CameraController::moveAxis(float theDistance, Axis theAxis)
    * Depending on the axis, add the given distance to the x, y, or z components of the original
    * position and view point.
    */
-  switch (theAxis) 
-  {
+  switch (theAxis) {
     case X_AXIS: {
       posX  += theDistance;
       lookX += theDistance;

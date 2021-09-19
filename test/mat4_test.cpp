@@ -189,6 +189,128 @@ BOOST_AUTO_TEST_CASE(get_row_excess)
   }
 }
 
+/**
+ * Tests that setRow accurately sets the values that are passed to it (with value indices).
+ */ 
+BOOST_AUTO_TEST_CASE(set_row_valid) 
+{
+  generator.setFloatRange(-1000.0f, 1000.0f);
+  generator.setIntRange(0, 3);
+  for (int curCase = 0; curCase < NUM_CASES; curCase++) {
+    GraphicsVec newRow(4);
+    for (int curIndex = 0; curIndex < 4; curIndex++) {
+      newRow.setElement(curIndex, generator.getRandFloat());
+    }
+    const int rowToSet = generator.getRandInt();
+    mat.setRow(rowToSet, newRow);
+    
+    for (int i = 0; i < 4; i++) {
+      BOOST_TEST(mat.getElement(i, rowToSet) == newRow.getElement(i));
+    }
+  }
+}
+
+BOOST_AUTO_TEST_CASE(set_row_invalid) 
+{
+  generator.setIntRange(4, 10000);
+  for (int curCase = 0; curCase < NUM_CASES; curCase++) {
+    BOOST_CHECK_THROW(mat.setRow(generator.getRandInt(), 0), std::out_of_range);
+  }
+}
+
+BOOST_AUTO_TEST_CASE(set_row_invalid_negative) 
+{
+  generator.setIntRange(-10000, -1);
+  for (int curCase = 0; curCase < NUM_CASES; curCase++) {
+    BOOST_CHECK_THROW(mat.setRow(generator.getRandInt(), 0), std::out_of_range);
+  }
+}
+
+BOOST_AUTO_TEST_CASE(test_get_element) 
+{
+  generator.setFloatRange(-1000.0f, 1000.0f);
+  generator.setIntRange(0, 3);
+  for (int curCase = 0; curCase < NUM_CASES; curCase++) {
+    const int   row = generator.getRandInt();
+    const int   col = generator.getRandInt();
+    const float val = generator.getRandFloat();
+    mat.setElement(col, row, val);
+    BOOST_TEST(mat.getElement(col, row) == val);
+  }
+}
+
+BOOST_AUTO_TEST_CASE(test_get_element_negative) 
+{
+  generator.setIntRange(-100, -1);
+  for (int curCase = 0; curCase < NUM_CASES; curCase++) {
+    const int row = generator.getRandInt();
+    const int col = generator.getRandInt();
+    BOOST_CHECK_THROW(mat.getElement(col, row), std::out_of_range);
+  }
+}
+
+BOOST_AUTO_TEST_CASE(test_get_element_excessive_index) 
+{
+  generator.setIntRange(4, 100);
+  for (int curCase = 0; curCase < NUM_CASES; curCase++) {
+    const int row = generator.getRandInt();
+    const int col = generator.getRandInt();
+    BOOST_CHECK_THROW(mat.getElement(col, row), std::out_of_range);
+  }
+}
+
+BOOST_AUTO_TEST_CASE(test_set_element) 
+{
+  // Don't include zero, in possible values to generate, but use zero as initial value of mat.
+  mat = Mat4(0.0f);
+  generator.setFloatRange(1.0f, 1000.0f);
+  generator.setIntRange(0, 3);
+
+  for (int curCase = 0; curCase < NUM_CASES; curCase++) {
+    const int row = generator.getRandInt();
+    const int col = generator.getRandInt();
+    const int val = generator.getRandFloat();
+
+    const float oldVal = mat.getElement(col, row);
+    mat.setElement(col, row, val);
+    BOOST_TEST(mat.getElement(col, row) == val);
+    BOOST_TEST(mat.getElement(col, row) != oldVal);
+  }
+}
+
+BOOST_AUTO_TEST_CASE(test_set_element_negative_both) 
+{
+  generator.setIntRange(-100, -1);
+  for (int curCase = 0; curCase < NUM_CASES; curCase++) {
+    const int row = generator.getRandInt();
+    const int col = generator.getRandInt();
+    BOOST_CHECK_THROW(mat.setElement(col, row, 0.0f), std::out_of_range);
+  }
+}
+
+/**
+ * Test if only one of the indices passed is negative.
+ */
+BOOST_AUTO_TEST_CASE(test_set_element_negative_col) {
+  generator.setIntRange(0, 3);
+  const int row = generator.getRandInt();
+  generator.setIntRange(-100, -1);
+  for (int curCase = 0; curCase < NUM_CASES; curCase++) {
+    const int col = generator.getRandInt();
+    BOOST_CHECK_THROW(mat.setElement(col, row, 0.0f), std::out_of_range);
+  }
+}
+
+BOOST_AUTO_TEST_CASE(test_set_element_excessive_index) 
+{
+  generator.setIntRange(4, 1000);
+  for (int curCase = 0; curCase < NUM_CASES; curCase++) {
+    const int row = generator.getRandInt();
+    const int col = generator.getRandInt();
+    BOOST_CHECK_THROW(mat.setElement(col, row, 0.0f), std::out_of_range);
+  }
+}
+
 BOOST_AUTO_TEST_SUITE_END()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
