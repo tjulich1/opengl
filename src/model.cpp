@@ -20,7 +20,7 @@ Model::Model(GLfloat vertexBuffer[], int numValues)
    * having to store all of the additional w values, having to construct a new vertex matrix with 
    * the homogeneous coordinates each frame would have more impact.
    */
-  localVertexData = GraphicsMat(0, 4);
+  localVertexData = GraphicsMat(4);
   if (numValues > 0) {
     for (int i = 0; i < numValues; i += 3) {
       // Add a new row of vertices to the local vertex data matrix.
@@ -85,15 +85,8 @@ void Model::computeWorldCoordinates()
   if (seenNewTransform) {
     // For each vertex in the model...
     for (int i = 0; i < vertexCount; i++) {
-      std::cout << "I: " << i << std::endl;
       GraphicsVec currentVertex = localVertexData.accessRow(i);
-
-      std::cout << "Current vertex: " << currentVertex << std::endl;
-
       GraphicsVec transformedVertex = currentVertex * transformMatrix;
-
-      std::cout << "Transformed vertex: " << transformedVertex << std::endl;
-
       cachedWorldVertexData.setRow(i, transformedVertex);
     }
   }

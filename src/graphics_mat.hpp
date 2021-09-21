@@ -21,26 +21,33 @@ class GraphicsMat
 public:
 
   /**
-   * Default constructor for an entirely empty matrix. Dimensions must be set using initialize().
+   * Default constructor for an empty GraphicsMat. Number of columns must be set before adding rows
+   * to the matrix (using setCols()).
    */
-  GraphicsMat(int rows = 0, int cols = 0);
+  GraphicsMat();
 
   /**
-   * Attempts to initialize matrix with the given number of rows and columns. Will only set values 
-   * on an empty matrix and for positive values.
+   * Constructor for new row-major GraphicsMat. Takes parameter for the number of columns that this
+   * matrix will contain. 
    * 
-   * rows: The desired number of rows in the matrix.
-   * cols: The desired number of columns in the matrix.
+   * @param cols the number of columns that should be present in the matrix.
    * 
-   * returns: True if dimensions were set, false otherwise.
+   * @throws invalid_argument exception if negative values are given for either cols or rows.
    */
-  bool initialize(int rows, int cols);
+  GraphicsMat(int cols);
 
   /**
    * Method used to set a single element within the matrix, as long as the given indices fall within
-   * valid ranges, i.e. are non-negative and do not equal or exceed matrix row/column counts.
+   * [0, row/colCount - 1] respectively. 
+   * 
+   * @param rowIndex index of the row in which to modify element.
+   * @param colIndex index of the column in which to modify element.
+   * @param value float value to be written to the matrix.
+   * 
+   * @throws out_of_range exception for row/col indices less than zero or above this matrices 
+   *         dimensions.
    */
-  bool setElement(int rowIndex, int colIndex, float value);
+  void setElement(int colIndex, int rowIndex, float value);
 
   /**
    * Used to set new values to a whole row within the matrix. Row index must not exceed the number 
@@ -48,38 +55,63 @@ public:
    * the supplied vector, and if not enough values are found, matrix values will be left to their 
    * previous values.
    * 
-   * rowIndex: The row that should be set within the matrix.
-   * elements: Vector containing values that should be put in matrix.
+   * @param rowIndex the row that should be set within the matrix.
+   * @param elements vector containing values that should be put in matrix.
+   * 
+   * @return true if row was set, false otherwise.
    */
-  bool setRow(int rowIndex, GraphicsVec elements); 
+  void setRow(int rowIndex, GraphicsVec elements); 
 
   /**
    * Appends a new row to the bottom of the matrix. If not enough values are found in the supplied 
    * vector zeros will be used as padding. If too many values are supplied, elements equal to the 
    * number of columns will be used.
    * 
-   * elements: Vector containing the elements within the row to add.
+   * @param elements Vector containing the elements within the row to add.
    */
   void addRow(GraphicsVec elements);
 
   /**
    * Accesses the number of columns in the matrix.
+   * 
+   * @return number of columns in the matrix.
    */
   int getCols() const { return myCols; }
 
   /**
    * Accesses the number of rows in the matrix.
+   * 
+   * @return nunmber of rows in the matrix.
    */
   int getRows() const { return myRows; }
 
   /**
+   * Used to set the number of columns this matrix should contain. Should only be called on matrices 
+   * that have not had dimensions set, i.e. from default constructor.
+   * 
+   * @param cols
+   * 
+   * @throws invalid_argument exception if number of cols is <= 0. 
+   */
+  void setCols(int cols);
+
+  /**
    * Accesses the element in the given row/column, or an arbitrary value if indices are out of 
    * bounds.
+   * 
+   * @param col column of element desired.
+   * @param row row of element desired.
+   * 
+   * @return element at the given row/col in the matrix.
    */
   float getElement(int col, int row) const;
 
   /**
    * Returns a vector containing the values in the desired row.
+   * 
+   * @param rowIndex the index of the row to access.
+   * 
+   * @return vector containing all elements in the desired row.
    */
   GraphicsVec accessRow(int rowIndex) const;
 

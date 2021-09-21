@@ -63,15 +63,16 @@ public:
 
 private:
   /**
-   * Matrix encoding the local-space coordinates of the model.
+   * Matrix encoding the local-space coordinates of the model. Matrix has 4 columns, one for each of 
+   * the x, y, z, and w components of each vertex.
    */
-  GraphicsMat localVertexData;
+  GraphicsMat localVertexData = GraphicsMat(4);
 
   /**
    * Matrix encoding the world-space coordinates of the model. While 2 copies of vertex data must be
    * stored, it saves computing the world-space coordinates repeatedly for mostly-static models.
    */
-  GraphicsMat cachedWorldVertexData;
+  GraphicsMat cachedWorldVertexData = GraphicsMat(4);
 
   /**
    * The number of vertices this model contains.

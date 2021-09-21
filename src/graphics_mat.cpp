@@ -9,65 +9,46 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-GraphicsMat::GraphicsMat(int rows, int cols)
+GraphicsMat::GraphicsMat() : myRows(0), myCols(0) { };
+
+GraphicsMat::GraphicsMat(int cols)
 {
-  myRows = rows;
+  if (cols <= 0) throw std::invalid_argument("Number of columns must be positive: " + cols);
+
+  // Vector filled with zeros, containing as many elements as there are columns.
+  GraphicsVec emptyVec(cols);
+
   myCols = cols;
-  if (cols <= 0) {
-    isInitialized = false;
-  } else {
-    isInitialized = true;
-  }
-
+  myRows = 0;
+  isInitialized = true;
 }
 
-bool GraphicsMat::initialize(int rows, int cols) 
+void GraphicsMat::setElement(int colIndex, int rowIndex, float value)
 {
-  bool success = false;
+  if (rowIndex < 0 || rowIndex >= myRows) 
+    throw std::out_of_range("Invalid index for row: " + rowIndex);
+  if (colIndex < 0 || colIndex >= myCols) 
+    throw std::out_of_range("Invalid index for col: " + colIndex);
 
-  if (!isInitialized && rows > 0 && cols > 0) {
-    success = true;
-    myRows = rows;
-    myCols = cols;
-    isInitialized = true;
-  }
-
-  return success;
+  matrixValues.at(rowIndex).setElement(colIndex, value);    
 }
 
-bool GraphicsMat::setElement(int rowIndex, int colIndex, float value)
+void GraphicsMat::setRow(int rowIndex, GraphicsVec elements) 
 {
-  bool success = false;
-
-  if (isInitialized && rowIndex >= 0 && colIndex >= 0 && rowIndex < myRows && colIndex < myCols) {
-    matrixValues.at(rowIndex).setElement(colIndex, value);
-    success = true;
-  }
-
-  return success;
-}
-
-bool GraphicsMat::setRow(int rowIndex, GraphicsVec elements) 
-{
-  bool success = true;
+  if (rowIndex < 0 || rowIndex >= myRows)  
+    throw std::out_of_range("Invalid index for row: " + rowIndex);
 
   // Ensure the row index is valid for this matrix.
   if (isInitialized && rowIndex < myRows) {
-    for (int i = 0; i < elements.getSize(); i++) {
+    for (int i = 0; i < elements.getSize() && i < myRows; i++) {
       matrixValues.at(rowIndex).setElement(i, elements.getElement(i));
     }
-    success = true;
   }
-  return success;
 }
 
 void GraphicsMat::addRow(GraphicsVec elements)
 {
   int numValues = elements.getSize();
-
-  for (int i = 0; i < elements.getSize(); i++) {
-    std::cout << "Element " << i << ": " << elements.getElement(i) << std::endl;
-  }
 
   // Vector starts filled with zeros.
   GraphicsVec theNewRow(myCols);

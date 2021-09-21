@@ -311,6 +311,28 @@ BOOST_AUTO_TEST_CASE(test_set_element_excessive_index)
   }
 }
 
+BOOST_AUTO_TEST_CASE(test_get_floats) 
+{
+  generator.setFloatRange(-1000.0f, 1000.0f);
+  for (int curCase = 0; curCase < NUM_CASES; curCase++) {
+    std::vector<float> generatedValues;
+    for (int row = 0; row < 4; row++) {
+      for (int col = 0; col < 4; col++) {
+        float value = generator.getRandFloat();
+        generatedValues.push_back(value);
+        mat.setElement(col, row, value);
+      }
+    }
+
+    GLfloat floats[16];
+    mat.getFloats(floats); 
+
+    for (int i = 0; i < 16; i++) {
+      BOOST_TEST(floats[i] == generatedValues[i]);
+    }
+  }
+} 
+
 BOOST_AUTO_TEST_SUITE_END()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

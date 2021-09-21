@@ -56,7 +56,7 @@ public:
    */
   void setFloatRange(float min, float max)
   {
-    floatDistr = std::uniform_real_distribution<float>(minFloat, (std::nextafter(maxFloat,
+    floatDistr = std::uniform_real_distribution<float>(min, (std::nextafter(max,
       std::numeric_limits<float>::max())));
   }
 
